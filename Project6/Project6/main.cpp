@@ -4,6 +4,11 @@
 using namespace std;
 
 int main() {
-	menu();
+	try {
+		menu();
+	}
+	catch (const char* ex) {
+		cout << ex;
+	}
 	return 0;
 }
