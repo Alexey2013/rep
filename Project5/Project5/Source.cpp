@@ -75,14 +75,22 @@ void group::ShowAllStudents() {
 	}
 }
 
-int group::menu(const string& path) {
-		 int answer = intro1();
+ group::group(const string& path) {
+	 int answer;
+	 do {
+		 this->n = amount(path);
+		 this->s = new student[n + this->step];
+
+		 answer = intro1();
 		 switch (answer) {
-		 case 1: {ShowAllStudents();break;}
+		 case 1: {
+			 adding(path);
+			 ShowAllStudents(); break; }
 		 case 2: {
+			 adding(path);
 			 int answer2 = intro2();
 			 switch (answer2) {
-			 case 1: {SearchByName(); break; }
+			 case 1: { SearchByName(); break; }
 			 case 2: {SearchBySurname(); break; }
 			 case 3: {SearchByDate(); break; }
 			 case 4: {SearchByGroup(); break; }
@@ -90,10 +98,12 @@ int group::menu(const string& path) {
 			 }
 			 break;
 		 }
-		 case 3: {AddStudent(path); break;}
-		 case 4: {RemoveStudent(path); break; }
-		 case 0: {return 0; }
+		 case 3: {AddStudent(path); break; }
+		 case 4: {
+			 adding(path);
+			 RemoveStudent(path); break; }
 		 }
+	 } while (answer != 0);
 	} 
 
 void group::AddStudent(const string& path) {
@@ -168,9 +178,7 @@ student::student(const string  first, const string  last_name, Date  date, int  
 	this->phone_number = phone_number;
 }
 
-group::group(const string& path) {
-	this->n = amount(path);
-	this->s = new student[n+this->step];
+void group::adding(const string& path) {
 	fstream file;
 	Date date;
 	string   name, last_name;
@@ -223,3 +231,4 @@ ostream& operator<<(ostream& out, const student& s)
 	out << s.name << " " << s.surname << " " << s.date.day << "." << s.date.mounth << "." << s.date.year << " " << s.group_number <<" "<< s.phone_number << endl;
 	return out;
 }
+
