@@ -5,7 +5,6 @@
 #include <string.h>
 #include "header.h";
 
-
 void group::SearchByName() {
 	string Name;
 	int counter = 0;
