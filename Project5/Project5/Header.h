@@ -33,12 +33,13 @@ class group {
 private:
 	student* s;
 	int n;
-	int step;
+	int step=0;
 	int amount(const string& path);
 public:
 	group();
 	~group();
 	group(const string& path);
+	void adding(const string& path);
 	void AddStudent(const string& path);
 	void RemoveStudent(const string& path);
 	int SearchBySurname();
@@ -48,10 +49,7 @@ public:
 	void SearchByPhone();
 	void ShowAllStudents();
 	void FileRewrite(const string& path);
-	int  menu(const string& path);
 };
-int intro1();
-int intro2();
-string get_path();
 
 #endif 
+
