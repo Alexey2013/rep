@@ -5,18 +5,19 @@
 #include <string.h>
 #include "header.h";
 
-void group::SearchByName() {
+int* group::SearchByName() {
 	string Name;
-	int counter = 0;
+	int j = 0;
+	int* mas = new int[n];
 	cout << "Enter the name of the student to be searched for:";
 	cin >> Name;
 	for (int i = 0; i < n; i++) {
 		if (s[i].get_name() == Name) {
-			cout << s[i];
-			counter++;
+			mas[j] = i;
+			j++;
 		}
 	}
-	if (counter == 0) { cout << "There are no people with this name in the database" << endl; }
+	return mas;
 }
 
 int group::SearchBySurname() {
@@ -25,15 +26,13 @@ int group::SearchBySurname() {
 	cin >> Surname;
 	for (int i = 0; i < n; i++) {
 		if (s[i].get_surname() == Surname) {
-			cout << s[i];
 			return i;
 		}
 	}
-	cout << "There are no people with this surname in the database" << endl;
-	return -1;
+
 }
 
-void group::SearchByDate() {
+int group::SearchByDate() {
 	Date date;
 	Date date2;
 	int counter = 0;
@@ -46,37 +45,35 @@ void group::SearchByDate() {
 	for (int i = 0; i < n; i++) {
 		date2 = s[i].get_date();
 		if ((date2.day == date.day) && (date2.mounth == date.mounth) && (date2.year == date.year)) {
-			cout << s[i];
-			counter++;
+			return i;
 		}
 	}
-	if (counter == 0) { cout << "There are no people with this name in the database" << endl; }
 }
 
-void group::SearchByGroup() {
+int* group::SearchByGroup() {
 	int group;
-	int counter = 0;
+	int j = 0;
+	int* mas = new int[n];
 	cout << "Enter the number of group of the student to be searched for:";
 	cin >> group;
 	for (int i = 0; i < n; i++) {
 		if (s[i].get_group() == group) {
-			cout << s[i];
-			counter++;
+			mas[j] = i;
+			j++;
 		}
 	}
-	if (counter == 0) { cout << "There are no people with this number of group in the database" << endl; }
+	return mas;
 }
 
-void group::SearchByPhone() {
+int group::SearchByPhone() {
 	int phone;
 	int counter = 0;
 	cout << "Enter the number of phone of the student to be searched for:";
 	cin >> phone;
 	for (int i = 0; i < n; i++) {
 		if (s[i].get_phone() == phone) {
-			cout << s[i];
-			counter++;
+			return i;
 		}
 	}
-	if (counter == 0) { cout << "There are no people with this number of phone in the database" << endl; }
+
 }
