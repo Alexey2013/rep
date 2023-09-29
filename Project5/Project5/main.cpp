@@ -4,7 +4,12 @@
 using namespace std;
 
 int main() {
-	string path = get_path();
-	group group(path);
+	try {
+		string path = get_path();
+		group group(path);
+	}
+	catch (const char* ex) {
+		cout << ex;
+	}
 	return 0;
 }
