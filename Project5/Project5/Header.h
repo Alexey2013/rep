@@ -18,8 +18,8 @@ private:
 	int  phone_number;
 public:
 	student();
-	student(const string  name, const string  surname, Date  date, int  group_number, int  phone_number);
-	void adding(string  _name, string  _surname, Date _date, int _group_number, int  _phone_number);
+	student(const string&  name, const string& surname, Date  date, int  group_number, int  phone_number);
+	void adding(string& _name, string& _surname, Date _date, int _group_number, int  _phone_number);
 	friend ostream& operator<<(ostream& out, const student& s);
 	friend istream& operator>>(istream& in, const student& s);
 	string get_name() const { return name; } ;
@@ -35,18 +35,18 @@ private:
 	int n;
 	int step=0;
 	int amount(const string& path);
+	void adding(const string& path);
 public:
 	group();
 	~group();
 	group(const string& path);
-	void adding(const string& path);
 	void AddStudent(const string& path);
 	void RemoveStudent(const string& path);
+	int* SearchByName();
 	int SearchBySurname();
-	void SearchByName();
-	void SearchByDate();
-	void SearchByGroup();
-	void SearchByPhone();
+	int SearchByDate();
+	int* SearchByGroup();
+	int SearchByPhone();
 	void ShowAllStudents();
 	void FileRewrite(const string& path);
 };
