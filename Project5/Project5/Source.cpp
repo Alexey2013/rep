@@ -80,7 +80,6 @@ void group::ShowAllStudents() {
 	 do {
 		 this->n = amount(path);
 		 this->s = new student[n + this->step];
-
 		 answer = intro1();
 		 switch (answer) {
 		 case 1: {
@@ -90,11 +89,37 @@ void group::ShowAllStudents() {
 			 adding(path);
 			 int answer2 = intro2();
 			 switch (answer2) {
-			 case 1: { SearchByName(); break; }
-			 case 2: {SearchBySurname(); break; }
-			 case 3: {SearchByDate(); break; }
-			 case 4: {SearchByGroup(); break; }
-			 case 5: {SearchByPhone(); break; }
+			 case 1: {
+				 int* a = SearchByName();
+				 for (int i = 0; i < n; i++) {
+					 for (int j = 0; j < sizeof(a); j++)
+						 if (i == a[j]) {
+							 cout << s[i];
+						 }}
+				 break; 
+			 }
+			 case 2: {
+				 int a=SearchBySurname();
+				 cout << s[a];
+				 break; 
+			 }
+			 case 3: {
+				 int a = SearchByDate(); 
+				 cout << s[a];
+				 break; 
+			 }
+			 case 4: {
+				 int* a = SearchByGroup();
+				 for (int i = 0; i < n; i++) {
+					 for (int j = 0; j < sizeof(a); j++)
+						 if (i == a[j]) {
+							 cout << s[i];
+						 }
+				 }
+				 break; }
+			 case 5: { int a = SearchByDate();
+				 cout << s[a];
+				 break;   }
 			 }
 			 break;
 		 }
@@ -133,12 +158,16 @@ void group::AddStudent(const string& path) {
 void group::RemoveStudent(const string& path) {
 	string surname;
 	int a = SearchBySurname();
-	if (a !=-1) {
+	if(a!=0){
 		for (int i = a; i < n - 1; i++) {
 			s[i] = s[i+1];
 		}
 		n--;
 		FileRewrite(path);
+	}
+	if (a == 0) {
+	
+		throw("No such students found");
 	}
 }
 
@@ -151,7 +180,7 @@ void group::FileRewrite(const string& path) {
 	}
 }
 
-void student::adding(string  _name, string  _surname, Date _date, int _group_number, int  _phone_number)
+void student::adding(string& _name, string& _surname, Date _date, int _group_number, int  _phone_number)
 {
 	name = _name;
 	surname = _surname;
@@ -170,7 +199,7 @@ student::student() {
 	phone_number = 0;
 }
 
-student::student(const string  first, const string  last_name, Date  date, int  group_number, int  phone_number) {
+student::student(const string& first, const string& last_name, Date  date, int  group_number, int  phone_number) {
 	this->name = first;
 	this->surname = last_name;
 	this->date = date;
