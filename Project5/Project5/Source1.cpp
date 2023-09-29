@@ -29,7 +29,7 @@ int group::SearchBySurname() {
 			return i;
 		}
 	}
-
+	throw("No such students found");
 }
 
 int group::SearchByDate() {
@@ -48,6 +48,7 @@ int group::SearchByDate() {
 			return i;
 		}
 	}
+	throw("No such students found");
 }
 
 int* group::SearchByGroup() {
@@ -75,5 +76,5 @@ int group::SearchByPhone() {
 			return i;
 		}
 	}
-
+	throw("No such students found");
 }
