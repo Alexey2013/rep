@@ -21,10 +21,6 @@ string get_path() {
 	} while (true);
 }
 
-group::~group()  {
-	delete[] this->s;
-}
-
 int group::amount(const string& path)
 {
 	fstream file;
@@ -75,62 +71,6 @@ void group::ShowAllStudents() {
 	}
 }
 
- group::group(const string& path) {
-	 int answer;
-	 do {
-		 this->n = amount(path);
-		 this->s = new student[n + this->step];
-		 answer = intro1();
-		 switch (answer) {
-		 case 1: {
-			 adding(path);
-			 ShowAllStudents(); break; }
-		 case 2: {
-			 adding(path);
-			 int answer2 = intro2();
-			 switch (answer2) {
-			 case 1: {
-				 int* a = SearchByName();
-				 for (int i = 0; i < n; i++) {
-					 for (int j = 0; j < sizeof(a); j++)
-						 if (i == a[j]) {
-							 cout << s[i];
-						 }}
-				 break; 
-			 }
-			 case 2: {
-				 int a=SearchBySurname();
-				 cout << s[a];
-				 break; 
-			 }
-			 case 3: {
-				 int a = SearchByDate(); 
-				 cout << s[a];
-				 break; 
-			 }
-			 case 4: {
-				 int* a = SearchByGroup();
-				 for (int i = 0; i < n; i++) {
-					 for (int j = 0; j < sizeof(a); j++)
-						 if (i == a[j]) {
-							 cout << s[i];
-						 }
-				 }
-				 break; }
-			 case 5: { int a = SearchByDate();
-				 cout << s[a];
-				 break;   }
-			 }
-			 break;
-		 }
-		 case 3: {AddStudent(path); break; }
-		 case 4: {
-			 adding(path);
-			 RemoveStudent(path); break; }
-		 }
-	 } while (answer != 0);
-	} 
-
 void group::AddStudent(const string& path) {
 	Date date;
 	string   name, last_name;
@@ -156,8 +96,10 @@ void group::AddStudent(const string& path) {
 }
 
 void group::RemoveStudent(const string& path) {
-	string surname;
-	int a = SearchBySurname();
+	string Surname;
+	cout << "Enter the surname of the student to be searched for:";
+	cin >> Surname;
+	int a = SearchBySurname(Surname);
 	if(a!=0){
 		for (int i = a; i < n - 1; i++) {
 			s[i] = s[i+1];
@@ -189,23 +131,6 @@ void student::adding(string& _name, string& _surname, Date _date, int _group_num
 	phone_number = _phone_number;
 }
 
-student::student() {
-	name = " ";
-	surname = " ";
-	date.day = 0;
-	date.mounth = 0;
-	date.year = 0;
-	group_number = 0;
-	phone_number = 0;
-}
-
-student::student(const string& first, const string& last_name, Date  date, int  group_number, int  phone_number) {
-	this->name = first;
-	this->surname = last_name;
-	this->date = date;
-	this->group_number = group_number;
-	this->phone_number = phone_number;
-}
 
 void group::adding(const string& path) {
 	fstream file;

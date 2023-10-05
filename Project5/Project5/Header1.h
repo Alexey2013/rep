@@ -7,5 +7,4 @@ int intro1();
 int intro2();
 string get_path();
 
-
 #endif 

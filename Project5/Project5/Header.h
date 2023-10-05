@@ -42,11 +42,11 @@ public:
 	group(const string& path);
 	void AddStudent(const string& path);
 	void RemoveStudent(const string& path);
-	int* SearchByName();
-	int SearchBySurname();
-	int SearchByDate();
-	int* SearchByGroup();
-	int SearchByPhone();
+	int* SearchByName(const string &name);
+	int SearchBySurname(const string&surname);
+	int SearchByDate(Date  date);
+	int* SearchByGroup(int  group_number);
+	int SearchByPhone(int  phone_number);
 	void ShowAllStudents();
 	void FileRewrite(const string& path);
 };
