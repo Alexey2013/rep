@@ -1,15 +1,19 @@
 #include <iostream>
 #include "tset.h"
-const int n=5;
+//const int n=5;
 using namespace std;
 
 void set() {
+    int n;
+    cout << "Enter n:" << endl;;
+    cin >> n;
+    TBitField bf1(n);
     TSet s1(n);
-    TSet s2(n);
-    cout << "Enter s1:";
+    TSet s2(n+1);
+    cout << "Enter s1:" << endl;
     cin >> s1;
     cout << "1:" << s1 << endl;
-    cout << "Enter s2:";
+    cout << "Enter s2:" << endl;
     cin >> s2;
     cout << "2:" << s2 <<endl;
     cout << "1==2:" << (s1 == s2) << "\n" << endl;

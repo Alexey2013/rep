@@ -28,7 +28,7 @@ public:
   // теоретико-множественные операции
   int operator== (const TSet &s) const; // сравнение
   int operator!= (const TSet &s) const; // сравнение
-  TSet& operator=(const TSet &s);  // присваивание
+ const  TSet& operator=(const TSet &s);  // присваивание
   TSet operator+ (const int Elem); // объединение с элементом
                                    // элемент должен быть из того же универса
   TSet operator- (const int Elem); // разность с элементом

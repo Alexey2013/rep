@@ -74,7 +74,7 @@ int TBitField::GetBit(const int n) const {
     return (pMem[GetMemIndex(n)] & GetMemMask(n)) ? 1 : 0;
 }
 
-  TBitField & TBitField::operator=(const TBitField & bf)
+const  TBitField & TBitField::operator=(const TBitField & bf)
 {
     if (*this == bf) return *this;
     if (BitLen != bf.BitLen)

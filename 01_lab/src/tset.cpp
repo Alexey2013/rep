@@ -24,7 +24,7 @@ void TSet::DelElem(const int Elem)
     return BitField.ClrBit(Elem);
 }
 
-TSet& TSet::operator=(const TSet& s) 
+const TSet& TSet::operator=(const TSet& s) 
 {
     if (*this == s) return *this;
         MaxPower = s.MaxPower;
@@ -91,6 +91,15 @@ TSet TSet::operator~(void)
  }
 
  istream& operator>>(std::istream& istr, TSet& s) {
-     istr >> s.BitField;
+     int elemt;
+     int n;
+     cout << "Enter the number of positions you want to insert:";
+     cin >> n;
+     for (int i = 0; i < n; i++)
+     {
+    istr>>elemt;
+    s.InsElem(elemt);
+     }
      return istr;
- }
+}
+

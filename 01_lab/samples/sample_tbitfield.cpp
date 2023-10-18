@@ -1,14 +1,16 @@
 #include "tbitfield.h"
-const int n = 5;
 
 void bitfield()
 {
+	cout << "Enter n:";
+	int n;
+	cin >> n;
 	TBitField bf1(n);
-	TBitField bf2(n);
-	cout << "Enter bf1:";
+	TBitField bf2(n+1);
+	cout << "Enter bf1(n):" << endl;;
 	cin >> bf1;
 	cout << "1:" << bf1 << endl;
-	cout << "Enter bf2:";
+	cout << "Enter bf2(n+1):" << endl;;
 	cin>>bf2;
 	cout << "2:" << bf2 << endl;
 	bf2.ClrBit(1);
@@ -17,7 +19,7 @@ void bitfield()
 	cout << "1|2:" << (bf1 | bf2) << endl;
 	cout << "1==2:" << (bf1 == bf2) << endl;
 	cout << "~1:" << (~bf1) << endl;
-	cout << "Bitfield length: " << bf1.GetLength() << endl;
+	cout << "Bitfield length(bf1): " << bf1.GetLength() << endl;
 }
 
 int main()
