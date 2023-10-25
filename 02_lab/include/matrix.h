@@ -48,28 +48,28 @@ TMatrix<ValueType>::TMatrix(int size) : TVector<TVector<ValueType>>(size) {
 template <typename ValueType>
 TMatrix<ValueType>::TMatrix(const TMatrix& mt) : TVector<TVector<ValueType>>(mt) { }
 
-template <class ValueType>
+template <typename ValueType>
 TMatrix<ValueType>::TMatrix(const TVector<TVector<ValueType>>& mt) :TVector<TVector<ValueType> >(mt) {}
 
-template <class ValueType>
+template <typename ValueType>
 int TMatrix<ValueType>::operator==(const TMatrix<ValueType>& mt) const
 {
 	return TVector<TVector<ValueType> >::operator==(mt);
 }
 
-template <class ValueType>
+template <typename ValueType>
 int TMatrix<ValueType>::operator!=(const TMatrix<ValueType>& mt) const
 {
 	return TVector<TVector<ValueType> >::operator!=(mt);
 }
 
-template <class ValueType>
+template <typename ValueType>
 const TMatrix<ValueType>& TMatrix<ValueType>::operator=(const TMatrix<ValueType>& mt)
 {
 	return TVector<TVector<ValueType> >::operator=(mt);
 }
 
-template <class ValueType>
+template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator+(const TMatrix<ValueType>& mt)
 {
 	if (size != mt.size) {
@@ -82,7 +82,7 @@ TMatrix<ValueType> TMatrix<ValueType>::operator+(const TMatrix<ValueType>& mt)
 	return tmp;
 }
 
-template <class ValueType>
+template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator-(const TMatrix<ValueType>& mt)
 {
 	if (size != mt.size) {
