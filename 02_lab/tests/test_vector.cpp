@@ -20,7 +20,11 @@ TEST(TVector, can_create_copied_vector)
 
 TEST(TVector, copied_vector_is_equal_to_source_one)
 {
-    TVector<int> v(10);
+    TVector<int> v(4);
+    v[0] = 0;
+    v[1] = 1;
+    v[2] = 2;
+    v[3] = 3;
     TVector<int> v1(v);
     EXPECT_EQ(v, v1);
 }
@@ -28,9 +32,14 @@ TEST(TVector, copied_vector_is_equal_to_source_one)
 TEST(TVector, copied_vector_has_its_own_memory)
 {
     TVector<int> v(3);
+    v[0] = 0;
+    v[1] = 1;
+    v[2] = 2;
+    v[3] = 3;
+
     TVector<int> v1(v);
-    v[2] = 1;
     v1[2] = 0;
+
     EXPECT_NE(v, v1);
 }
 
@@ -68,20 +77,6 @@ TEST(TVector, can_assign_vector_to_itself)
     ASSERT_NO_THROW(v=v);
 }
 
-TEST(TVector, can_assign_vectors_of_equal_size)
-{
-    TVector<int>v1(5);
-    TVector<int>v2(5);
-    EXPECT_EQ(v1.GetSize(), v2.GetSize());
-}
-
-TEST(TVector, assign_operator_change_vector_size)
-{
-    TVector<int> v1(4);
-    TVector<int> v2(5);
-    ASSERT_NO_THROW(v1 = v2);
-}
-
 TEST(TVector, can_assign_vectors_of_different_size)
 {
 
@@ -91,11 +86,36 @@ TEST(TVector, can_assign_vectors_of_different_size)
     ASSERT_NO_THROW(v1 = v2);
 }
 
-TEST(TVector, compare_equal_vectors_return_true)
+TEST(TVector, compare_equal_vectors_of_equal_size)
 {
     TVector<int> v1(4);
     TVector<int> v2(4);
+
     ASSERT_NO_THROW(v1 = v2);
+}
+
+TEST(TVector, assign_vectors_of_different_size)
+{
+    TVector<int> v1(2);
+    TVector<int> v2(3);
+    v2[0] = 1;
+    v2[1] = 2;
+    v2[2] = 3;
+    v1 = v2;
+
+    ASSERT_EQ(v1, v2);
+}
+
+TEST(TVector, assign_vectors_of_equal_size)
+{
+    TVector<int> v1(3);
+    TVector<int> v2(3);
+    v2[0] = 1;
+    v2[1] = 2;
+    v2[2] = 3;
+    v1 = v2;
+
+    ASSERT_EQ(v1, v2);
 }
 
 TEST(TVector, compare_vector_with_itself_return_true)
