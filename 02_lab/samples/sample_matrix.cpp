@@ -13,10 +13,10 @@ int main()
 cout << "1:" <<endl << m1 <<endl;
 cout << "2:" << endl <<m2<< endl;
 cout << "1+ 2:" << endl << m1+m2 <<endl;
-cout << "1- 2:" << endl << m1 - m2 << endl;
+//cout << "1- 2:" << endl << m1 - m2 << endl;
 cout << "1*2:" <<endl << m1* m2 << endl;
-m1 = m2;
-cout << "1:" << endl << m1 << endl;
-cout << "1==2:" <<( m1== m2);
+//m1 = m2;
+//cout << "1:" << endl << m1 << endl;
+//cout << "1==2:" <<( m1== m2);
     return 0;
 }

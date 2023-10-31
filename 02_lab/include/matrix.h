@@ -97,20 +97,21 @@ TMatrix<ValueType> TMatrix<ValueType>::operator-(const TMatrix<ValueType>& mt)
 
 template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator*(const TMatrix& m) {
-	if (size != m.size)		
-		throw ("Matrices must have the same size ");
-	int size =GetSize();
-	TMatrix<ValueType> tmp(size);
+	if (size != m.size)
+		throw "Can't multiply matrix with different dimensions!";
+	int size = this->GetSize();
+	TMatrix<ValueType> result(size);
+
 	for (int k = 0; k < size; k++) {
 		for (int j = k; j < size; j++) {
 			ValueType sum = 0;
 			for (int r = k; r <= j; r++) {
 				sum += this->pVector[k][r - k] * m.pVector[r][j - r];
 			}
-			tmp.pVector[k][j - k] = sum;
+			result.pVector[k][j - k] = sum;
 		}
 	}
-	return tmp;
+	return result;
 }
 
 #endif
