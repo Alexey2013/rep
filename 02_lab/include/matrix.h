@@ -72,27 +72,13 @@ const TMatrix<ValueType>& TMatrix<ValueType>::operator=(const TMatrix<ValueType>
 template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator+(const TMatrix<ValueType>& mt)
 {
-	if (size != mt.size) {
-		throw ("Matrices must have the same size ");
-	}
-	TMatrix tmp(*this);
-	for (int i = 0; i <size; ++i) {
-		tmp.pVector[i] = tmp.pVector[i] + mt.pVector[i];
-	}
-	return tmp;
+	return TVector<TVector<ValueType> >::operator+(mt);
 }
 
 template <typename ValueType>
 TMatrix<ValueType> TMatrix<ValueType>::operator-(const TMatrix<ValueType>& mt)
 {
-	if (size != mt.size) {
-		throw ("Matrices must have the same size ");
-	}
-	TMatrix tmp(*this);
-	for (int i = 0; i <size; ++i) {
-		tmp.pVector[i] = tmp.pVector[i] - mt.pVector[i];
-	}
-	return tmp;
+	return TVector<TVector<ValueType> >::operator-(mt);
 }
 
 template <typename ValueType>

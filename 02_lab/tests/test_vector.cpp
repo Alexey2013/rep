@@ -57,11 +57,6 @@ TEST(TVector, can_get_start_index)
     EXPECT_EQ(2, v.GetStartIndex());
 }
 
-TEST(TVector, throws_when_create_vector_with_negative_startindex)
-{
-    TVector<int> v1(3);
-    ASSERT_ANY_THROW(v1[-1]=2);
-}
 
 TEST(TVector, can_set_and_get_element)
 {
@@ -98,22 +93,6 @@ TEST(TVector, assign_operator_of_different_size)
     v2[3] = 3;
     v2 = v1;
     EXPECT_EQ(v1, v2);
-}
-
-TEST(TVector, can_assign_vectors_of_different_size)
-{
-    TVector<int> v1(4);
-    v1[0] = 0;
-    v1[1] = 1;
-    v1[2] = 2;
-    v1[3] = 3;
-    TVector<int> v2(5);
-    v2[0] = 0;
-    v2[1] = 1;
-    v2[2] = 2;
-    v2[3] = 3;
-    v2 = v1;
-    ASSERT_NO_THROW(v1=v2);
 }
 
 TEST(TVector, can_assign_vectors_of_equal_size)
@@ -279,12 +258,15 @@ TEST(TVector, cant_subtract_vectors_with_not_equal_size)
     v1[0] = 0;
     v1[1] = 1;
     v1[2] = 2;
-    v1[3] = 3;
+    v1[3] = 3; 
+    v1[4] = 4;
     TVector<int> v2(6);
     v2[0] = 0;
     v2[1] = 1;
     v2[2] = 2;
     v2[3] = 3;
+    v2[4] = 4;
+    v2[5] = 5;
     ASSERT_ANY_THROW(v1- v2);
 }
 

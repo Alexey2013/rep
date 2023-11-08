@@ -109,8 +109,11 @@ template <typename ValueType>
 const TVector<ValueType>& TVector<ValueType>::operator=(const TVector& v)
 {
 	if (this == &v) return *this;
-	delete[] pVector;
-	size = v.size;
+	if (this->size != v.size)
+	{
+		delete[] pVector;
+		size = v.size;
+	}
 	startIndex = v.startIndex;
 	pVector = new ValueType[size];
 	for (int i = 0; i < size; ++i) {
@@ -174,7 +177,7 @@ double TVector<ValueType>::operator*(const TVector<ValueType>& v)
 {
 	if ((size != v.size) || (startIndex != v.startIndex))
 		throw	("Vectors must have the same size");
-	ValueType tmp = 0;
+	double tmp = 0;
 	for (int i = 0; i < size; i++)
 		tmp += pVector[i] * v.pVector[i];
 	return tmp;
