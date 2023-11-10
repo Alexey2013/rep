@@ -15,7 +15,7 @@ int main()
 	cout << "v2:" << v2 << endl;
 	cout << "v1+v2:" <<v1 + v2 << endl;
 	cout << "v1-v2:" << v1 - v2 << endl;
-	cout << "v1*v2:" << v1 * v2 << endl;
+	cout << "v1*v2:" << v1 * v2 << endl << endl;
 	cout << "v1+5: " << v1 - 2 << endl;
 	cout << "v2-10: " << v2 + 2 << endl;
 	cout << "Size:" << v1.GetSize() << endl;
