@@ -89,7 +89,7 @@ void TStack<T>::Push(const T& elm) {
 	{
 		Realloc(_step);
 	}
-	else { elems[++top] = elm; }
+	  elems[++top] = elm; 
 }
 
 template <typename T>
