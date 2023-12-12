@@ -15,6 +15,18 @@ bool TArithmeticExpression::IsConst(const string& s) const {
 	return true;
 }
 
+bool TArithmeticExpression::IsOperator(char c) {
+	return (c == '+' || c == '-' || c == '*' || c == '/');
+}
+
+bool TArithmeticExpression::IsParenthesis(char c) {
+	return (c == '(' || c == ')');
+}
+
+bool TArithmeticExpression::IsDigitOrLetter(char c) {
+	return (isdigit(c) || c == '.' || isalpha(c));
+}
+
 void TArithmeticExpression::SetValues(){
 	double value;
 	for (auto& op : operands){
@@ -29,15 +41,16 @@ void TArithmeticExpression::SetValues(){
 void TArithmeticExpression::Parse()
 {
 	string currentElement;
-	for (char c : infix) {
-		if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') {
+	for (int i = 0; i < infix.size(); i++) {
+		char c = infix[i];
+		if (IsOperator(c) || IsParenthesis(c) || c==' ') {
 			if (!currentElement.empty()) {
 				lexems.push_back(currentElement);
 				currentElement = "";
 			}
 			lexems.push_back(string(1, c));
 		}
-		else if (isdigit(c) || c == '.' || isalpha(c)) {
+		else if (IsDigitOrLetter(c)) {
 			currentElement += c;
 		}
 	}
@@ -56,13 +69,15 @@ void TArithmeticExpression::ToPostfix() {
 			}
 			else if (item == ")") {
 				while (st.Top() != "(") {
-					postfix.push_back(st.Top());st.Pop();
+					postfix.push_back(st.Top());
+					st.Pop();
 				}
 				st.Pop();
 			}
 			else if (item == "+" || item == "-" || item == "*" || item == "/") {
 				while (!st.IsEmpty() && priority[item] <= priority[st.Top()]) {
-					postfix.push_back(st.Top());st.Pop();
+					postfix.push_back(st.Top());
+					st.Pop();
 				}
 				st.Push(item);
 			}
@@ -73,7 +88,8 @@ void TArithmeticExpression::ToPostfix() {
 			}
 		}
 	while (!st.IsEmpty()) {
-		postfix.push_back(st.Top());st.Pop();
+		postfix.push_back(st.Top());
+		st.Pop();
 	}
 }
 
@@ -113,4 +129,20 @@ double TArithmeticExpression::Calculate(const map<string, double>& values) {
 
 double TArithmeticExpression::Calculate() {
 	return Calculate(operands);
+}
+
+bool TArithmeticExpression::isCorrectInfixExpression()
+{
+	int openParentheses = 0;
+	int closeParentheses = 0;
+
+	for (char c : infix) {
+		if (c == '(') {
+		openParentheses++;
+		}
+		else if (c == ')') {
+		closeParentheses++;
+		}
+	}
+	return openParentheses == closeParentheses;
 }

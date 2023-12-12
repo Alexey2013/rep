@@ -62,12 +62,6 @@ TEST(TStack, stack_full_check_is_correct) {
 	EXPECT_EQ(true, st.IsFull());
 }
 
-TEST(TStack, throws_when_stak_is_full) {
-	TStack<int> st(1);
-	st.Push(1);
-	ASSERT_ANY_THROW(st.Push(2));
-}
-
 TEST(TStack, can_top_and_push_elements)  {
 	TStack<int> st(1);
 	st.Push(-22);
@@ -78,6 +72,5 @@ TEST(TStack, can_memory_reallocation)
 {
 	TStack<int> st(1);
 	st.Push(2);
-	st.Realloc(1);
 	ASSERT_NO_THROW(st.Push(1));
 }

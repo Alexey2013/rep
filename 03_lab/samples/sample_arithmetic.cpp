@@ -6,12 +6,14 @@ using namespace std;
 
 int main() {
 	try {
-		string s;
+		string str;
 		cout << "Enter expression:";
-		cin >> s;
-		TArithmeticExpression example(s);
-		example.SetValues();
-		cout <<"Result:" <<example.Calculate() << endl;
+		cin >> str;
+		TArithmeticExpression example(str);
+		if (example.isCorrectInfixExpression()) {
+			example.SetValues();
+			cout << "Result:" << example.Calculate() << endl;
+		}
 	}
 	catch (string exp) {
 		cout << exp << endl;

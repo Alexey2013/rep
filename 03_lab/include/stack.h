@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 #include <string>
-const int _maxSize = 1000;
+const int _maxSize = 10;
 const int _step = 10;
 
 template <typename T>

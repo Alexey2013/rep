@@ -18,12 +18,15 @@ private:
 	void Parse();
 	void ToPostfix();
 	bool IsConst(const string& st) const;
-	double Calculate(const map<string, double>& values);
-
+	bool IsOperator(char c);
+	bool IsParenthesis(char c);
+	bool IsDigitOrLetter(char c);
 public:
 	TArithmeticExpression(string infx);
 	void SetValues();
 	double Calculate();
+	double Calculate(const map<string, double>& values);
+	bool isCorrectInfixExpression();
 };
 
 #endif 
