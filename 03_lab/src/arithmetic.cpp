@@ -1,9 +1,9 @@
 #include "stack.h"
 #include "arithmetic.h"
 
-TArithmeticExpression::TArithmeticExpression(string infx) :infix(infx) {
+TArithmeticExpression::TArithmeticExpression(const string& infx) :infix(infx) {
 	priority = { {"(",1},{")",1},{"+",2},{"-",2}, {"*",3},{"/",3} };
-	ToPostfix(); 
+	//ToPostfix(); 
 }
 
 bool TArithmeticExpression::IsConst(const string& s) const {
@@ -15,15 +15,15 @@ bool TArithmeticExpression::IsConst(const string& s) const {
 	return true;
 }
 
-bool TArithmeticExpression::IsOperator(char c) {
+bool TArithmeticExpression::IsOperator(char c) const {
 	return (c == '+' || c == '-' || c == '*' || c == '/');
 }
 
-bool TArithmeticExpression::IsParenthesis(char c) {
+bool TArithmeticExpression::IsParenthesis(char c) const {
 	return (c == '(' || c == ')');
 }
 
-bool TArithmeticExpression::IsDigitOrLetter(char c) {
+bool TArithmeticExpression::IsDigitOrLetter(char c) const{
 	return (isdigit(c) || c == '.' || isalpha(c));
 }
 
@@ -59,7 +59,7 @@ void TArithmeticExpression::Parse()
 	}
 }
 
-void TArithmeticExpression::ToPostfix() {
+string TArithmeticExpression::ToPostfix() {
 	Parse();
 	TStack<string> st;
 	string stackItem;

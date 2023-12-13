@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <string>
+
 const int _maxSize = 10;
 const int _step = 10;
 
@@ -13,6 +14,8 @@ private:
 	T* elems;
 	int maxSize;
 	int top;
+
+	void Realloc(int step = _step);
 public:
 	TStack(int Size=_maxSize);
 	TStack(const TStack<T>& stack);
@@ -22,7 +25,6 @@ public:
 	void Push(const T& elm);
 	bool IsEmpty(void) const;
 	bool IsFull(void) const;
-	void Realloc(int step = _step);
 };
 
 template <typename T>
@@ -62,7 +64,7 @@ void TStack<T>::Realloc(int step)
 	}
 	delete[] elems;
 	elems = tmp;
-	maxSize = maxSize + step;
+	maxSize += step;
 }
 
 template <typename T>
@@ -78,9 +80,7 @@ bool TStack<T>::IsEmpty(void) const {
 template <typename T>
 T TStack<T>::Top() const {
 	if (IsEmpty()) { throw "Stack is empty."; }
-	else {
-		return elems[top]; 
-	}
+	return elems[top]; 
 }
 
 template <typename T>
@@ -89,7 +89,7 @@ void TStack<T>::Push(const T& elm) {
 	{
 		Realloc(_step);
 	}
-	  elems[++top] = elm; 
+	 elems[++top] = elm; 
 }
 
 template <typename T>
@@ -98,7 +98,6 @@ T TStack<T>::Pop() {
 		throw "Stack is empty!";
 	}
 	else {
-
 		return elems[top--];
 	}
 }
