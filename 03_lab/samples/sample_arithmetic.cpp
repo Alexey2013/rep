@@ -10,10 +10,9 @@ int main() {
 		cout << "Enter expression:";
 		cin >> str;
 		TArithmeticExpression example(str);
-		if (example.isCorrectInfixExpression()) {
-			example.SetValues();
-			cout << "Result:" << example.Calculate() << endl;
-		}
+		cout <<"Postfix:"<< example.ToPostfix() << endl;
+		example.SetValues();
+		cout << "Result:" << example.Calculate() << endl;
 	}
 	catch (string exp) {
 		cout << exp << endl;
