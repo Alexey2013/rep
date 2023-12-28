@@ -1,10 +1,15 @@
 #include "stack.h"
 #include "arithmetic.h"
 
-TArithmeticExpression::TArithmeticExpression(const string& _infix)  { 
-    string noSpacesInfix = infix; 
-    RemoveSpaces(noSpacesInfix); 
-    infix = noSpacesInfix; 
+TArithmeticExpression::TArithmeticExpression(const string& _infix) {
+    if (_infix.empty()) {
+        throw("expression is empty");
+    }
+    infix = _infix;
+    RemoveSpaces(infix);
+    if (!(isCorrectInfixExpression())) {
+        throw("non-correct number of parentheses");
+    }
 }
 
 map<string, int> TArithmeticExpression::priority = {
@@ -52,12 +57,20 @@ void TArithmeticExpression::SetValues(){
 	}
 }
 
+void TArithmeticExpression::SetValues(const vector<double>& values) {
+    int i = 0;
+    for (auto& op : operands)
+    {
+        if (!IsConst(op.first)) {
+            operands[op.first] = values[i++];
+        }
+    }
+}
+
 void TArithmeticExpression::Parse()
 {
-    RemoveSpaces(infix);
     string currentElement;
-    for (int i = 0; i < infix.size(); i++) {
-        char c = infix[i];
+    for (char c:infix) {
         if (IsOperator(c) || IsParenthesis(c) || c == ' ') {
             if (!currentElement.empty()) {
                 lexems.push_back(currentElement);
@@ -77,22 +90,23 @@ void TArithmeticExpression::Parse()
 string TArithmeticExpression::ToPostfix() {
     Parse();
     TStack<string> st;
+    string postfixExpression;
     for (string item : lexems) {
         if (item == "(") {
             st.Push(item);
         }
         else if (item == ")") {
             while (st.Top() != "(") {
-                postfix += st.Top();
-                postfixExpression.push_back(st.Top());
+                postfixExpression += st.Top();
+                postfix.push_back(st.Top());
                 st.Pop();
             }
             st.Pop();
         }
         else if (IsOperator(item[0])) {
             while (!st.IsEmpty() && priority[item] <= priority[st.Top()]) {
-                postfix += st.Top();
-                postfixExpression.push_back(st.Top());
+                postfixExpression += st.Top();
+                postfix.push_back(st.Top());
                 st.Pop();
             }
             st.Push(item);
@@ -100,50 +114,55 @@ string TArithmeticExpression::ToPostfix() {
         else {
             double value = IsConst(item) ? stod(item) : 0.0;
             operands.insert({ item, value });
-            postfixExpression.push_back(item);
-            postfix += item;
+            postfix.push_back(item);
+            postfixExpression += item;
         }
     }
     while (!st.IsEmpty()) {
-        postfix += st.Top();
-        postfixExpression.push_back(st.Top());
+        postfixExpression += st.Top();
+        postfix.push_back(st.Top());
         st.Pop();
     }
-    return postfix;
+    return postfixExpression;
 }
 
-double TArithmeticExpression::Calculate(const map<string, double>& values) {
-    TStack<double> st;
-    for (const string& lexem : postfixExpression) {
-        if (lexem == "+") {
-            double rightOperand = st.Top(); st.Pop();
-            double leftOperand = st.Top(); st.Pop();
-            st.Push(leftOperand + rightOperand);
-        }
-        else if (lexem == "-") {
-            double rightOperand = st.Top(); st.Pop();
-            double leftOperand = st.Top(); st.Pop();
-            st.Push(leftOperand - rightOperand);
-        }
-        else if (lexem == "*") {
-            double rightOperand = st.Top(); st.Pop();
-            double leftOperand = st.Top(); st.Pop();
-            st.Push(leftOperand * rightOperand);
-        }
-        else if (lexem == "/") {
-            double rightOperand = st.Top(); st.Pop();
-            double leftOperand = st.Top(); st.Pop();
-            if (rightOperand == 0) { throw "Expression error: Division by zero"; }
-            st.Push(leftOperand / rightOperand);
-        }
-        else {
-            auto it = values.find(lexem);
-            if (it != values.end()) {
-                st.Push(it->second);
-            }      
-        }
-    }
-    return st.Top();
+double TArithmeticExpression::Calculate(const map<string, double>& values)
+{
+	for (auto& val : values) {
+		try {
+			operands.at(val.first) = val.second;
+		}
+		catch (out_of_range& e) {}
+	}
+	TStack<double> st;
+	double leftOperand, rightOperand;
+	for (string lexem : postfix) {
+		if (lexem == "+") {
+			rightOperand = st.Top();st.Pop();
+			leftOperand = st.Top();st.Pop();
+			st.Push(leftOperand + rightOperand);
+		}
+		else if (lexem == "-") {
+			rightOperand = st.Top();st.Pop();
+			leftOperand = st.Top();st.Pop();
+			st.Push(leftOperand - rightOperand);
+		}
+		else if (lexem == "*") {
+			rightOperand = st.Top();st.Pop();
+			leftOperand = st.Top();st.Pop();
+			st.Push(leftOperand * rightOperand);
+		}
+		else if (lexem == "/") {
+			rightOperand = st.Top();st.Pop();
+			leftOperand = st.Top();st.Pop();
+			if (rightOperand == 0) {throw"Error";}
+			st.Push(leftOperand / rightOperand);
+		}
+		else {
+			st.Push(operands[lexem]);
+		}
+	}
+	return st.Top();
 }
 
 double TArithmeticExpression::Calculate() {
@@ -152,11 +171,12 @@ double TArithmeticExpression::Calculate() {
 
 bool TArithmeticExpression::isCorrectInfixExpression()
 {
-	int countParenthesis =0;
-	for (char c : infix) {
-		if (IsParenthesis(c)) {
-			countParenthesis++;
-		}
-	}
-	return (countParenthesis %2 == 0);
+    int count = 0;
+    for (char c : infix)
+    {
+        if (c == '(') count++;
+        else if (c == ')') count--;
+        if (count < 0) return false;
+    }
+    return (count == 0);
 }

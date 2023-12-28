@@ -79,13 +79,13 @@ bool TStack<T>::IsEmpty(void) const {
 
 template <typename T>
 T TStack<T>::Top() const {
-	if (IsEmpty())  throw "Stack is empty.";
+	if (IsEmpty()) { throw "Stack is empty."; }
 	return elems[top];
 }
 
 template <typename T>
 void TStack<T>::Push(const T& elm) {
-	if (IsFull()) Realloc(_step);
+	if (IsFull()) { Realloc(_step); }
 	elems[++top] = elm;
 }
 

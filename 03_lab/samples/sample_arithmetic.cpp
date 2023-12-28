@@ -8,9 +8,9 @@ int main() {
 	try {
 		string str;
 		cout << "Enter expression:";
-		cin >> str;
+		getline(cin,str);
 		TArithmeticExpression example(str);
-		cout <<"Postfix:"<< example.ToPostfix() << endl;
+		cout << "Postfix:" << example.ToPostfix() << endl;;
 		example.SetValues();
 		cout << "Result:" << example.Calculate() << endl;
 	}

@@ -1,21 +1,17 @@
 #ifndef _ARITHMETIC_H
 #define _ARITHMETIC_H
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <map>
 #include <vector>
-#include < algorithm >
-#include < functional >
 #include "stack.h"
 using namespace std;
 
 class TArithmeticExpression {
 private:
 	string infix;
-	string postfix;
+	vector<string>  postfix;
 	vector<string> lexems;
-	vector<string>  postfixExpression;
 	static map<string, int> priority;
 	map<string, double> operands;
 
@@ -27,11 +23,12 @@ private:
 	double Calculate(const map<string, double>& values);
 	void RemoveSpaces(string& str) const;
 	bool isCorrectInfixExpression();
-
 public:
 	TArithmeticExpression(const string& _infix);
 	string ToPostfix();
+	string GetInfix() { return infix; }
 	void SetValues();
+	void SetValues(const vector<double>& values);
 	double Calculate();	
 };
 
