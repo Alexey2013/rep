@@ -52,7 +52,7 @@ TEST(TArithmeticExpression, can_copy_expression) {
 	ASSERT_NO_THROW(TArithmeticExpression expression2(expression1));
 }
 
-TEST(TArithmeticExpression, any_throw_when_expression_is_operator) {
+TEST(TArithmeticExpression, throw_when_expression_is_operator) {
 	TArithmeticExpression expression("+");
 	expression.ToPostfix();
 	ASSERT_ANY_THROW( expression.Calculate());
@@ -120,6 +120,12 @@ TEST(TArithmeticExpression, can_get_integer_const) {
 	EXPECT_EQ(3, expression.Calculate());
 }
 
+TEST(TArithmeticExpression, can_get_double_const) {
+	TArithmeticExpression expression("2.6-1.5");
+	expression.ToPostfix();
+	EXPECT_EQ(1.1, expression.Calculate());
+}
+
 TEST(TArithmeticExpression, expression_with_different_order_are_not_equal_in_div) {
 	vector<double> example = {1,2};
 	TArithmeticExpression expression1(" a/b");
@@ -140,12 +146,6 @@ TEST(TArithmeticExpression, expression_with_different_order_are_not_equal_in_sub
 	expression1.SetValues(example);
 	expression2.SetValues(example);
 	EXPECT_NE(expression1.Calculate(), expression2.Calculate());
-}
-
-TEST(TArithmeticExpression, can_get_float_const) {
-	TArithmeticExpression expression("2.6-1.5");
-	expression.ToPostfix();
-	EXPECT_EQ(1.1, expression.Calculate());
 }
 
 TEST(TArithmeticExpression, expression_with_spaces)

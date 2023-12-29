@@ -32,7 +32,9 @@ int main() {
 				cout << "Element on the top of stack: " << st.Top() << endl;
 				break;
 			}
-
+			default: {
+				return 0;
+			}
 			}
 		}
 	}
