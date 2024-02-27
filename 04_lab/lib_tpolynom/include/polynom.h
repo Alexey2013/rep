@@ -19,8 +19,12 @@ private:
 	static map<string, int> priority;
 	map<string, double> operands;
 	void Parse();
+	void transform();
+	void ParseMonoms();
+	void ParseMult();
 	bool IsConst(const string& st) const;
 	bool IsOperator(char c) const;
+	bool IsPlusOrMinus(char c) const;
 	bool IsParenthesis(char c) const;
 	bool IsDigitOrLetter(char c) const;
 	double Calculate(const map<string, double>& values);

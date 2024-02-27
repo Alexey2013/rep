@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <list>
 using namespace std;
 
 class TData {
@@ -257,6 +258,7 @@ public:
 //	return (pCurr == pStop);
 //}
 //
+
 class THeadRingList : public TList {
 private:
 	TNode* pHead;

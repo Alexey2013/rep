@@ -36,7 +36,7 @@ TPolynom& TPolynom::operator =(const TPolynom& p) {
 }
 
 map<string, int> TPolynom::priority = {
-	{"^", 3},
+	{"^", 4},
 	{"*", 3},
 	{"/", 3},
 	{"+", 2},
@@ -68,6 +68,31 @@ bool TPolynom::IsParenthesis(char c) const {
 
 bool TPolynom::IsDigitOrLetter(char c) const {
 	return (isdigit(c) || c == '.' || isalpha(c));
+}
+
+//
+//void TPolynom::ParseMonoms() {
+//	string currentMonom;
+//	for (char c : name) {
+//		if (c=='+'|| c=='-') {
+//			if (!currentMonom.empty()) {
+//				monoms.pushback(currentMonom);
+//				currentMonom = "";
+//			}
+//
+//		}
+//		else {
+//			currentMonom += c;
+//		}
+//	}
+//	if (!currentMonom.empty()) {
+//		monoms.push_back(currentMonom);
+//	}
+//}
+
+
+void TPolynom::ParseMult() {
+
 }
 
 void TPolynom::Parse()

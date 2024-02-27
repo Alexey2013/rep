@@ -23,7 +23,6 @@ public:
 	bool operator >=(const TData& data)const;
 	bool operator ==(const TData& data)const;
 	bool operator !=(const TData& data)const;
-	friend ostream& operator<<(ostream& os, const TMonom& monom);
 };
 
 #endif 
