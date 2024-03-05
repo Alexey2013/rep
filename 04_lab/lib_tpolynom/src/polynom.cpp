@@ -1,38 +1,28 @@
 #include "polynom.h"
 
 TPolynom::TPolynom() {
-	monoms = nullptr;
+	monoms = new TList<TMonom>;
 }
 
 TPolynom::TPolynom(const string& _name) {
 	name = _name;
 	RemoveSpaces(name);
 	ToPostfix();
-	monoms = nullptr;
+	monoms = new TList<TMonom>;
 }
 
-TPolynom::TPolynom(const THeadRingList* m) {
-	monoms = new THeadRingList(*m);
+TPolynom::TPolynom(const TList<TMonom>* m) {
+	monoms = new TList<TMonom>(*m);
 	name = "";
 }
 
 TPolynom::TPolynom(const TPolynom& p) {
 	name = p.name;
-	monoms = new THeadRingList(*(p.monoms));
+	monoms = new TList<TMonom>(*(p.monoms));
 }
 
 TPolynom::~TPolynom() {
 	delete monoms;
-}
-
-TPolynom& TPolynom::operator =(const TPolynom& p) {
-	if (this == &p) {
-		return *this;
-	}
-	delete monoms;
-	name = p.name;
-	*monoms = *(p.monoms);
-	return *this;
 }
 
 map<string, int> TPolynom::priority = {
@@ -70,30 +60,33 @@ bool TPolynom::IsDigitOrLetter(char c) const {
 	return (isdigit(c) || c == '.' || isalpha(c));
 }
 
+void TPolynom::ParseMonoms() {
+	string currentElement;
+	TMonom currentMonom;
+	for (char c : name) {
+		if (c == '+' || c == '-') {
+			if (!currentElement.empty()) {
+				monoms->insert_last(currentMonom);
+				currentElement = "";
+			}
+		}
+	}
+	if (!currentElement.empty()) {
+		monoms->insert_last(currentMonom);
+	}
+}
+
+//void TPolynom::Convert() {
+//	TMonom currentMonom;
+//	for (int i = 0; i < monoms->GetSize(); i++) {
+//		for (int j = i; j < monoms->GetSize(); j++) {
+//			if (monoms.)
 //
-//void TPolynom::ParseMonoms() {
-//	string currentMonom;
-//	for (char c : name) {
-//		if (c=='+'|| c=='-') {
-//			if (!currentMonom.empty()) {
-//				monoms.pushback(currentMonom);
-//				currentMonom = "";
-//			}
+//
 //
 //		}
-//		else {
-//			currentMonom += c;
-//		}
-//	}
-//	if (!currentMonom.empty()) {
-//		monoms.push_back(currentMonom);
 //	}
 //}
-
-
-void TPolynom::ParseMult() {
-
-}
 
 void TPolynom::Parse()
 {
@@ -209,12 +202,20 @@ void TPolynom::SetValues(const vector<double>& values) {
 }
 
 double TPolynom::operator ()(double x, double y, double z) {
-	vector<double> xyz = {x,y,z};
-	SetValues(xyz);
+	SetValues({ x,y,z });
 	return Calculate(operands);
 }
 
 ostream& operator<<(ostream& os, const TPolynom& polynom) {
 	os << polynom.name;
 	return os;
+}
+
+TPolynom& TPolynom::operator =(const TPolynom& p) {
+	if (this != &p) {
+		name = p.name;
+		delete monoms;
+		monoms = new TList<TMonom>(*(p.monoms));
+	}
+	return *this;
 }

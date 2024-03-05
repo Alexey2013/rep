@@ -1,6 +1,6 @@
 #include "monom.h"
 
-TMonom::TMonom() : coeff(0.0), degree(0) {};
+TMonom::TMonom() : coeff(0.0), degree(-1) {};
 
 TMonom::TMonom(double _coeff,  int _degree){
 	if (_degree < 0 || _degree > 999){
@@ -16,30 +16,30 @@ TData* TMonom::copy() const {
 
 bool TMonom::operator<(const TData& data)const {
 	const TMonom& monom = static_cast<const TMonom&>(data);
-	return degree < monom.degree;
+	return (degree < monom.degree);
 }
 
 bool TMonom::operator<=(const TData& data)const {
 	const TMonom& monom = static_cast<const TMonom&>(data);
-	return degree <= monom.degree;
+	return (degree <= monom.degree);
 }
 
 bool TMonom::operator>(const TData& data)const {
 	const TMonom& monom = static_cast<const TMonom&>(data);
-	return degree > monom.degree;
+	return (degree > monom.degree);
 }
 
 bool TMonom::operator>=(const TData& data)const {
 	const TMonom& monom = static_cast<const TMonom&>(data);
-	return degree >= monom.degree;
+	return (degree >= monom.degree);
 }
 
 bool TMonom::operator==(const TData& data)const {
 	const TMonom& monom = static_cast<const TMonom&>(data);
-	return coeff == monom.coeff && degree == monom.degree;
+	return  (degree == monom.degree && coeff == monom.coeff);
 }
 
 bool TMonom::operator!=(const TData& data)const {
 	const TMonom& monom = static_cast<const TMonom&>(data);
-	return coeff != monom.coeff || degree != monom.degree;
+	return !(degree == monom.degree || coeff == monom.coeff);
 }

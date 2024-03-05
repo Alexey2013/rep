@@ -9,17 +9,16 @@
 #include "list.h"
 using namespace std;
 
-class  TPolynom {
+class TPolynom {
 private:
 	string name;
-	THeadRingList* monoms;
-
+	TList<TMonom>* monoms;
 	vector<string>  postfix;
 	vector<string> lexems;
 	static map<string, int> priority;
 	map<string, double> operands;
 	void Parse();
-	void transform();
+	void Convert();
 	void ParseMonoms();
 	void ParseMult();
 	bool IsConst(const string& st) const;
@@ -29,10 +28,11 @@ private:
 	bool IsDigitOrLetter(char c) const;
 	double Calculate(const map<string, double>& values);
 	void RemoveSpaces(string& str) const;
+	void SetValues(const vector<double>& values);
 public:
 	TPolynom();
 	TPolynom(const string& _name);
-	TPolynom(const THeadRingList* m);
+	TPolynom(const TList<TMonom>* m);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
 	TPolynom operator +(const TPolynom& p);
@@ -43,8 +43,10 @@ public:
 	TPolynom dx() const;
 	TPolynom dy() const;
 	TPolynom dz() const;
+	void printMonoms(){
+	cout << monoms;
+	};
 	string ToPostfix();
-	void SetValues(const vector<double>& values);
 	friend ostream& operator<<(ostream& os, const TPolynom& polynom);
 };
 
