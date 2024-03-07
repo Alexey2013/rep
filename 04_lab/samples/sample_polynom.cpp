@@ -10,6 +10,7 @@ int main() {
 		TPolynom pol1(example1);
 		cout << example1<<endl;
 		cout << "Result(1, 2, 3):"<<pol1(1, 2, 3) << endl;
+		pol1.ParseMonoms();
 		pol1.printMonoms();
 	}
 	catch (char* exp) {
