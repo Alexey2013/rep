@@ -60,33 +60,49 @@ bool TPolynom::IsDigitOrLetter(char c) const {
 	return (isdigit(c) || c == '.' || isalpha(c));
 }
 
-void TPolynom::ParseMonoms() {
-	string currentElement;
-	TMonom currentMonom;
-	for (char c : name) {
-		if (c == '+' || c == '-') {
-			if (!currentElement.empty()) {
-				monoms->insert_last(currentMonom);
-				currentElement = "";
-			}
+TPolynom::TPolynom(const string& polinomStr)
+{
+	istringstream iss(polinomStr);
+	string token;
+	while (getline(iss, token, '+'))
+	{
+		if (token.empty()) continue;
+
+		double coefficient = 1.0;
+		int xDegree = 0;
+		int yDegree = 0;
+		int zDegree = 0;
+		size_t pos = 0;
+		if (token[pos] == '-' || token[pos] == '+')
+		{
+			++pos;
 		}
+		coefficient = stod(token.substr(pos));
+		while (pos < token.length())
+		{
+			if (token[pos] == 'x')
+			{
+				xDegree = (pos + 1 < token.length() && token[pos + 1] == '^') ? stoi(token.substr(pos + 2)) : 1;
+			}
+			else if (token[pos] == 'y')
+			{
+				yDegree = (pos + 1 < token.length() && token[pos + 1] == '^') ? stoi(token.substr(pos + 2)) : 1;
+			}
+			else if (token[pos] == 'z')
+			{
+				zDegree = (pos + 1 < token.length() && token[pos + 1] == '^') ? stoi(token.substr(pos + 2)) : 1;
+			}
+			++pos;
+		}
+
+		unsigned int combinedDegree = xDegree * 100 + yDegree * 10 + zDegree;
+		addMonom(monom(coefficient, combinedDegree));
 	}
-	if (!currentElement.empty()) {
-		monoms->insert_last(currentMonom);
-	}
+
+	simplify();
 }
 
-//void TPolynom::Convert() {
-//	TMonom currentMonom;
-//	for (int i = 0; i < monoms->GetSize(); i++) {
-//		for (int j = i; j < monoms->GetSize(); j++) {
-//			if (monoms.)
-//
-//
-//
-//		}
-//	}
-//}
+
 
 void TPolynom::Parse()
 {
@@ -204,11 +220,6 @@ void TPolynom::SetValues(const vector<double>& values) {
 double TPolynom::operator ()(double x, double y, double z) {
 	SetValues({ x,y,z });
 	return Calculate(operands);
-}
-
-ostream& operator<<(ostream& os, const TPolynom& polynom) {
-	os << polynom.name;
-	return os;
 }
 
 TPolynom& TPolynom::operator =(const TPolynom& p) {

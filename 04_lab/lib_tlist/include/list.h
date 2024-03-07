@@ -3,52 +3,18 @@
 #include <iostream>
 using namespace std;
 
-class TData {
-public:
-	virtual TData* copy() const = 0;
-	virtual bool operator <(const TData& data)const = 0;
-	virtual bool operator <=(const TData& data)const = 0;
-	virtual bool operator >(const TData& data)const = 0;
-	virtual bool operator >=(const TData& data)const = 0;
-	virtual bool operator ==(const TData& data)const = 0;
-	virtual bool operator !=(const TData& data)const = 0;
-};
-
 template<typename T> 
 class TNode {
 public:
 	T data;
 	TNode* pNext;
-	TNode();
-	TNode(const T& data_);
-	TNode(const TNode& Node_);
-	~TNode();
+	TNode() :data(), pNext(nullptr) {};
+	TNode(const T& data_) :data(data_), pNext(nullptr) {};
+	TNode( TNode* _pNext): data(), pNext(_pNext) {};
+	TNode(const TNode & Node) : data(TNode_.data), pNext(TNode_.pNext) {};
+	TNode(const T& _data, TNode* _pNext) : data(_data), pNext(_pNext) {};
+	~TNode() {delete pNext;};
 };
-
-template<typename T>
-TNode<T>::TNode() {
-	data = {};
-	pNext = nullptr;
-}
-
-template<typename T>
-TNode<T>::TNode(const T& data_) {
-	data = data_;
-	pNext = nullptr;
-}
-
-template<typename T>
-TNode<T>::TNode(const TNode& TNode_) {
-	data = TNode_.data;
-	pNext = TNode_.pNext;
-}
-
-template<typename T>
-TNode<T>::~TNode() {
-	delete pNext;
-	data = {};
-}
-
 
 template<typename T> class TList {
 private:
@@ -140,7 +106,6 @@ TNode<T>* TList<T>::search(const T& data_) {
 	}
 	return tmp;
 }
-
 
 template<typename T>
 void TList<T>::insert_first(const T& data_) {

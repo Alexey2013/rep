@@ -1,28 +1,22 @@
 #ifndef _MONOM_H
 #define _MONOM_H
 #include <iostream>
-#include <string>
-#include <map>
-#include <vector>
-#include "stack.h"
 #include "list.h"
 using namespace std;
 
-class TMonom : public TData {
-private:
+ struct TMonom  {
+public:
 	double coeff;
 	int degree;
-public:
 	TMonom();
 	TMonom(const TMonom& monom);
 	TMonom(double _coeff, int _degree);
-	TData* copy() const;
-	bool operator <(const TData& data)const;
-	bool operator <=(const TData& data)const;
-	bool operator >(const TData& data)const;
-	bool operator >=(const TData& data)const;
-	bool operator ==(const TData& data)const;
-	bool operator !=(const TData& data)const;
+	TMonom& operator=(const TMonom& _monom);
+	bool operator <(const TMonom& data)const;
+	bool operator <=(const TMonom& data)const;
+	bool operator >(const TMonom& data)const;
+	bool operator >=(const TMonom& data)const;
+	bool operator ==(const TMonom& data)const;
+	bool operator !=(const TMonom& data)const;
 };
-
 #endif 

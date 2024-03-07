@@ -13,7 +13,6 @@ private:
 	T* elems;
 	int maxSize;
 	int top;
-
 	void Realloc(int step = _step);
 public:
 	TStack(int Size = _maxSize);

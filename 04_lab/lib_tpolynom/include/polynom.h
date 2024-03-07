@@ -19,7 +19,6 @@ private:
 	map<string, double> operands;
 	void Parse();
 	void Convert();
-	void ParseMonoms();
 	void ParseMult();
 	bool IsConst(const string& st) const;
 	bool IsOperator(char c) const;
@@ -34,6 +33,7 @@ public:
 	TPolynom(const string& _name);
 	TPolynom(const TList<TMonom>* m);
 	TPolynom(const TPolynom& p);
+	TPolynom(const string& polinomStr);
 	~TPolynom();
 	TPolynom operator +(const TPolynom& p);
 	TPolynom operator -(const TPolynom& p);
@@ -43,9 +43,7 @@ public:
 	TPolynom dx() const;
 	TPolynom dy() const;
 	TPolynom dz() const;
-	void printMonoms(){
-	cout << monoms;
-	};
+	void ParseMonoms();
 	string ToPostfix();
 	friend ostream& operator<<(ostream& os, const TPolynom& polynom);
 };
