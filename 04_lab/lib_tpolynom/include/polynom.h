@@ -13,13 +13,14 @@ class TPolynom {
 private:
 	string name;
 	TList<TMonom>* monoms;
+
 	vector<string>  postfix;
 	vector<string> lexems;
 	static map<string, int> priority;
 	map<string, double> operands;
 	void Parse();
+	void ParseMonoms();
 	void Convert();
-	void ParseMult();
 	bool IsConst(const string& st) const;
 	bool IsOperator(char c) const;
 	bool IsPlusOrMinus(char c) const;
@@ -33,7 +34,6 @@ public:
 	TPolynom(const string& _name);
 	TPolynom(const TList<TMonom>* m);
 	TPolynom(const TPolynom& p);
-	TPolynom(const string& polinomStr);
 	~TPolynom();
 	TPolynom operator +(const TPolynom& p);
 	TPolynom operator -(const TPolynom& p);
@@ -43,7 +43,6 @@ public:
 	TPolynom dx() const;
 	TPolynom dy() const;
 	TPolynom dz() const;
-	void ParseMonoms();
 	string ToPostfix();
 	friend ostream& operator<<(ostream& os, const TPolynom& polynom);
 };

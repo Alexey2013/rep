@@ -1,7 +1,8 @@
 #include "polynom.h"
 
 TPolynom::TPolynom() {
-	monoms = new TList<TMonom>;
+	monoms = nullptr;
+	name = "";
 }
 
 TPolynom::TPolynom(const string& _name) {
@@ -9,6 +10,7 @@ TPolynom::TPolynom(const string& _name) {
 	RemoveSpaces(name);
 	ToPostfix();
 	monoms = new TList<TMonom>;
+	ParseMonoms();
 }
 
 TPolynom::TPolynom(const TList<TMonom>* m) {
@@ -60,50 +62,6 @@ bool TPolynom::IsDigitOrLetter(char c) const {
 	return (isdigit(c) || c == '.' || isalpha(c));
 }
 
-TPolynom::TPolynom(const string& polinomStr)
-{
-	istringstream iss(polinomStr);
-	string token;
-	while (getline(iss, token, '+'))
-	{
-		if (token.empty()) continue;
-
-		double coefficient = 1.0;
-		int xDegree = 0;
-		int yDegree = 0;
-		int zDegree = 0;
-		size_t pos = 0;
-		if (token[pos] == '-' || token[pos] == '+')
-		{
-			++pos;
-		}
-		coefficient = stod(token.substr(pos));
-		while (pos < token.length())
-		{
-			if (token[pos] == 'x')
-			{
-				xDegree = (pos + 1 < token.length() && token[pos + 1] == '^') ? stoi(token.substr(pos + 2)) : 1;
-			}
-			else if (token[pos] == 'y')
-			{
-				yDegree = (pos + 1 < token.length() && token[pos + 1] == '^') ? stoi(token.substr(pos + 2)) : 1;
-			}
-			else if (token[pos] == 'z')
-			{
-				zDegree = (pos + 1 < token.length() && token[pos + 1] == '^') ? stoi(token.substr(pos + 2)) : 1;
-			}
-			++pos;
-		}
-
-		unsigned int combinedDegree = xDegree * 100 + yDegree * 10 + zDegree;
-		addMonom(monom(coefficient, combinedDegree));
-	}
-
-	simplify();
-}
-
-
-
 void TPolynom::Parse()
 {
 	string currentElement;
@@ -123,6 +81,102 @@ void TPolynom::Parse()
 		lexems.push_back(currentElement);
 	}
 }
+
+void TPolynom::ParseMonoms() {
+	std::string str = name;
+	while (!str.empty()) {
+		int degree = 0;
+		TMonom tmp;
+		size_t j = str.find_first_of("+-", 1);
+		string monom = str.substr(0, j);
+		str.erase(0, j);
+		size_t coeff_end = monom.find_first_of("xyz");
+		std::string coeff_str = monom.substr(0, coeff_end);
+		tmp.Set_coeff((coeff_str == "" || coeff_str == "+") ? 1 : (coeff_str == "-") ? -1 : std::stod(coeff_str));
+		monom.erase(0, coeff_end);
+		for (size_t i = 0; i < monom.size(); ++i) {
+			if (isalpha(monom[i])) {
+				int exp = 1;
+				if (monom[i + 1] == '^' && isdigit(monom[i + 2])) {
+					exp = stoi(monom.substr(i + 2, 1));
+					i += 2;
+				}
+				switch (monom[i]) {
+				case 'x':
+					degree += exp * 100;
+					break;
+				case 'y':
+					degree += exp * 10;
+					break;
+				case 'z':
+					degree += exp * 1;
+					break;
+				default:
+					throw "Input error: end of string";
+					break;
+				}
+			}
+		}
+		tmp.Set_degree(degree);
+		if (tmp.Get_degree() != 0 && tmp.Get_coeff() != 0) {
+			monoms->insert_last(tmp);
+		}
+	}
+}
+
+//void TPolynom::ParseMonoms() {
+//	double coeff = 1;
+//	int degree = 0;
+//	TMonom currentMonom;
+//	bool coeffParsed = false;
+//	int exp = 1;
+//	for (int i = 0; i < name.size(); ++i) {
+//		char c = name[i];
+//		char c_next = (i + 1 < name.size()) ? name[i + 1] : '\0';
+//		char c_prev = (i - 1 >= 0) ? name[i - 1] : '\0';
+//		if (c == '+' || c == '-') {
+//			if (coeffParsed) {
+//				currentMonom.Set_coeff(coeff);
+//				currentMonom.Set_degree(degree);
+//				monoms->insert_last(currentMonom);
+//				coeff = 1;
+//				degree = 0;
+//				coeffParsed = false;
+//			}
+//		}
+//		if (isdigit(c)) {
+//			if (c_prev == '^') {
+//				coeff = 1;
+//			}
+//			else {
+//				coeff = coeff * 10 + (c - '0');
+//			}
+//		}
+//		if (c_next == '^') {
+//			exp = (i + 1 < name.size()) ? name[i + 1] : 1;
+//		}
+//		if (c == 'x' || c == 'y' || c == 'z') {
+//			if (!coeffParsed) {
+//				coeffParsed = true;
+//			}
+//			if (c == 'x') {
+//				degree += exp * 100;
+//			}
+//			else if (c == 'y') {
+//				degree += exp * 10;
+//			}
+//			else if (c == 'z') {
+//				degree += exp * 1;
+//			}
+//			exp = 1;
+//		}
+//	}
+//	if (coeffParsed) {
+//		currentMonom.Set_coeff(coeff);
+//		currentMonom.Set_degree(degree);
+//		monoms->insert_last(currentMonom);
+//	}
+//}
 
 string TPolynom::ToPostfix() {
 	Parse();
@@ -229,4 +283,49 @@ TPolynom& TPolynom::operator =(const TPolynom& p) {
 		monoms = new TList<TMonom>(*(p.monoms));
 	}
 	return *this;
+}
+
+TPolynom TPolynom::dx() const {
+	TPolynom result;
+	for (auto it = monoms->GetCurrent(); it != nullptr; it = it->pNext) {
+		TMonom monom = it->data;
+		if (monom.Get_degree() == 0) continue;
+		int new_degree = monom.Get_degree() - 100;
+		double new_coeff = monom.Get_coeff() * (monom.Get_degree() / 100);
+		if (new_degree != 0 && monom.Get_coeff() != 0) {
+			TMonom new_monom(new_coeff, new_degree);
+			result.monoms->insert_last(new_monom);
+		}
+	}
+	return result;
+}
+
+TPolynom TPolynom::dy() const {
+	TPolynom result;
+	for (auto it = monoms->GetCurrent(); it != nullptr; it = it->pNext) {
+		TMonom monom = it->data;
+		if (monom.Get_degree() == 0) continue;
+		int new_degree = monom.Get_degree() - 10;
+		double new_coeff = monom.Get_coeff() * (monom.Get_degree() / 10);
+		if (new_degree != 0 && monom.Get_coeff() != 0) {
+			TMonom new_monom(new_coeff, new_degree);
+			result.monoms->insert_last(new_monom);
+		}
+	}
+	return result;
+}
+
+TPolynom TPolynom::dz() const {
+	TPolynom result;
+	for (auto it = monoms->GetCurrent(); it != nullptr; it = it->pNext) {
+		TMonom monom = it->data;
+		if (monom.Get_degree() == 0) continue;
+		int new_degree = monom.Get_degree() - 1;
+		double new_coeff = monom.Get_coeff() * (monom.Get_degree());
+		if (new_degree != 0 && monom.Get_coeff() != 0) {
+			TMonom new_monom(new_coeff, new_degree);
+			result.monoms->insert_last(new_monom);
+		}
+	}
+	return result;
 }

@@ -1,20 +1,8 @@
 #ifndef _LIST_H
 #define _LIST_H
+#include "node.h"
 #include <iostream>
 using namespace std;
-
-template<typename T> 
-class TNode {
-public:
-	T data;
-	TNode* pNext;
-	TNode() :data(), pNext(nullptr) {};
-	TNode(const T& data_) :data(data_), pNext(nullptr) {};
-	TNode( TNode* _pNext): data(), pNext(_pNext) {};
-	TNode(const TNode & Node) : data(TNode_.data), pNext(TNode_.pNext) {};
-	TNode(const T& _data, TNode* _pNext) : data(_data), pNext(_pNext) {};
-	~TNode() {delete pNext;};
-};
 
 template<typename T> class TList {
 private:
@@ -25,7 +13,7 @@ private:
 public:
 	TList();
 	TList(TNode<T>* pFirst_);
-	TList(const TList<T>& list);
+	TList(const TList<T>& obj);
 	~TList();
 	TNode<T>* search(const T& data_);
 	void insert_first(const T& data_);
@@ -61,13 +49,13 @@ TList<T>::TList() {
 template<typename T>
 TList<T>::TList(TNode<T>* pFirst_) {
 	pFirst = pFirst_;
-	pCurr = pFirst;
+	pStop = nullptr;
 	TNode<T>* tmp = pFirst;
-	while (tmp->pNext != nullptr) {
+	while (tmp->pNext != pStop) {
 		tmp = tmp->pNext;
 	}
 	pLast = tmp;
-	pStop = nullptr;
+	pCurr = pFirst;
 }
 
 template<typename T>
@@ -249,17 +237,5 @@ template<typename T>
 bool TList<T>::Is_End() {
 	return (pCurr == nullptr || pCurr == pStop);
 }
-
-template <typename T>
-class THeadRingList : public TList<T> {
-private:
-	TNode<T>* pHead;
-public:
-	THeadRingList();
-	THeadRingList(const TNode<T>* _pFirst);
-	THeadRingList(const TList<T>& obj);
-	THeadRingList(const THeadRingList<T>& obj);
-	virtual ~THeadRingList();
-};
 
 #endif 

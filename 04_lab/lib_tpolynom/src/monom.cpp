@@ -47,3 +47,12 @@ bool TMonom::operator==(const TMonom& data) const {
 bool TMonom::operator!=(const TMonom& data) const {
 	return !(*this == data);
 }
+
+TMonom TMonom::operator*(const TMonom& monom)const {
+	if ((degree + monom.Get_degree()) <= 999 && (degree + monom.Get_degree()) >= 0) {
+		return TMonom(coeff * monom.Get_coeff(), degree + monom.Get_degree());
+	}
+	else {
+		throw "exp";
+	}
+}

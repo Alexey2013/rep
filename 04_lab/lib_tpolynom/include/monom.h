@@ -4,19 +4,25 @@
 #include "list.h"
 using namespace std;
 
- struct TMonom  {
-public:
+ class TMonom  {
+private:
 	double coeff;
 	int degree;
+ public:
 	TMonom();
 	TMonom(const TMonom& monom);
 	TMonom(double _coeff, int _degree);
 	TMonom& operator=(const TMonom& _monom);
+	double Get_coeff(void)const { return coeff; }
+	int Get_degree(void)const { return degree; }
+	void Set_coeff(int _coeff) { coeff = _coeff; }
+	void Set_degree(int _coeff) { degree = _coeff; }
 	bool operator <(const TMonom& data)const;
 	bool operator <=(const TMonom& data)const;
 	bool operator >(const TMonom& data)const;
 	bool operator >=(const TMonom& data)const;
 	bool operator ==(const TMonom& data)const;
 	bool operator !=(const TMonom& data)const;
+	TMonom operator*(const TMonom& monom)const;
 };
 #endif 

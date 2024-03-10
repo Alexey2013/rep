@@ -1,6 +1,5 @@
-#include "list.h"
+#include "node.h"
 #include <gtest.h>
-
 
 TEST(TNode, can_create_node) {
 	ASSERT_NO_THROW(TNode<int>*node = new TNode<int>(1));
