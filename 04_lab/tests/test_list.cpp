@@ -1,9 +1,9 @@
-#include "list.h"
+#include "THeadRingList.h"
 #include <gtest.h>
 
 TEST(TList, can_create_new_list)
 {
-	ASSERT_NO_THROW(TList<int> list);
+	ASSERT_NO_THROW(TList <int> list);
 }
 
 TEST(TList, can_create_copied_list)
@@ -16,4 +16,3 @@ TEST(TList, list_is_empty_check)
 	TList<int> list;
 	ASSERT_TRUE(list.IsEmpty());
 }
-

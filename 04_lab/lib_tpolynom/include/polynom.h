@@ -20,10 +20,8 @@ private:
 	map<string, double> operands;
 	void Parse();
 	void ParseMonoms();
-	void Convert();
 	bool IsConst(const string& st) const;
 	bool IsOperator(char c) const;
-	bool IsPlusOrMinus(char c) const;
 	bool IsParenthesis(char c) const;
 	bool IsDigitOrLetter(char c) const;
 	double Calculate(const map<string, double>& values);
@@ -35,16 +33,16 @@ public:
 	TPolynom(const TList<TMonom>* m);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
-	TPolynom operator +(const TPolynom& p);
-	TPolynom operator -(const TPolynom& p);
-	TPolynom operator *(const TPolynom& p);
+	//TPolynom operator +(const TPolynom& p);
+	//TPolynom operator -(const TPolynom& p);
+	//TPolynom operator *(const TPolynom& p);
 	TPolynom& operator =(const TPolynom& p);
 	double operator ()(double x, double y, double z);
 	TPolynom dx() const;
 	TPolynom dy() const;
 	TPolynom dz() const;
 	string ToPostfix();
-	friend ostream& operator<<(ostream& os, const TPolynom& polynom);
+	void print();
 };
 
 #endif 

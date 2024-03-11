@@ -24,5 +24,9 @@ private:
 	bool operator ==(const TMonom& data)const;
 	bool operator !=(const TMonom& data)const;
 	TMonom operator*(const TMonom& monom)const;
+	friend ostream& operator<<(ostream& os, const TMonom& m) {
+		os << m.coeff << " " << m.degree;
+		return os;
+	}
 };
 #endif 
