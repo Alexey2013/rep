@@ -285,7 +285,19 @@ void TPolynom::print()
 	cout << "Monoms:" << endl;
 	while (monoms->GetCurrent() != nullptr)
 	{
-		cout <<monoms->GetCurrent()->data << endl;
+		int deg=monoms->GetCurrent()->data.Get_degree();
+		int x = deg/100;
+		int y = (deg % 100)/10;
+		int z = deg%10;
+		cout << monoms->GetCurrent()->data.Get_coeff() << " "<< "x^" << x <<" "<< "y^" << y <<" "<< "z^" << z << endl;
 		monoms->next();
 	}
+}
+
+TPolynom TPolynom::operator *(const TPolynom& p) {
+	TPolynom result;
+	for (auto it = monoms->GetCurrent(); it != nullptr; it = it->pNext) {
+	}
+
+	return result;
 }

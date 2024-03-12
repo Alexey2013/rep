@@ -43,13 +43,10 @@ THeadRingList<T>::THeadRingList(const TList<T>& obj) : TList<T>(obj)
 template <typename T>
 THeadRingList<T>::THeadRingList(const THeadRingList<T>& obj)
 {
-	if (obj.pFirst == nullptr)
-		return;
-
+	if (obj.pFirst == nullptr) return;
 	this->pFirst = new TNode<T>(obj.pFirst->data);
 	TNode<T>* tmp = this->pFirst;
 	TNode<T>* tmp2 = this->pFirst;
-
 	while (tmp->pNext != rlist.pStop)
 	{
 		tmp2->pNext = new TNode<T>(tmp->data);
@@ -65,7 +62,7 @@ THeadRingList<T>::THeadRingList(const THeadRingList<T>& obj)
 template <typename T>
 THeadRingList<T>::~THeadRingList()
 {
-	if (pHead)
+	if (pHead) 
 		delete pHead;
 }
 

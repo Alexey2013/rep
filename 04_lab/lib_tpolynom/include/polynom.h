@@ -35,7 +35,7 @@ public:
 	~TPolynom();
 	//TPolynom operator +(const TPolynom& p);
 	//TPolynom operator -(const TPolynom& p);
-	//TPolynom operator *(const TPolynom& p);
+	TPolynom operator *(const TPolynom& p);
 	TPolynom& operator =(const TPolynom& p);
 	double operator ()(double x, double y, double z);
 	TPolynom dx() const;

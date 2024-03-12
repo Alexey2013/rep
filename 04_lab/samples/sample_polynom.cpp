@@ -11,9 +11,6 @@ int main() {
 		cout << example1<<endl;
 		cout << "Result(1, 2, 3):"<<pol1(1, 2, 3) << endl;
 		pol1.print();
-		pol1.dx();
-		cout << endl;
-		pol1.print();
 	}
 	catch (char* exp) {
 		cout << exp << endl;

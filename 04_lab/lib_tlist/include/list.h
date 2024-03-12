@@ -212,7 +212,6 @@ int TList<T>::GetSize()const {
 	return count;
 }
 
-
 template<typename T>
 bool TList<T>::IsEmpty()const {
 	return (pFirst == nullptr);
@@ -220,7 +219,7 @@ bool TList<T>::IsEmpty()const {
 
 template<typename T>
 bool TList<T>::IsFull()const {
-	TNode<T>* tmp = new Node<T>();
+	TNode<T>* tmp = new TNode<T>();
 	if (tmp == nullptr) {
 		throw ("exp");
 	}
