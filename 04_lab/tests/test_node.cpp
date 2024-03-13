@@ -2,6 +2,10 @@
 #include <gtest.h>
 
 TEST(TNode, can_create_node) {
+	ASSERT_NO_THROW(TNode<int>*node = new TNode<int>);
+}
+
+TEST(TNode, can_create_node_with_data) {
 	ASSERT_NO_THROW(TNode<int>*node = new TNode<int>(1));
 }
 

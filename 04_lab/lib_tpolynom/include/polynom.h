@@ -6,7 +6,7 @@
 #include <vector>
 #include "monom.h"
 #include "stack.h"
-#include "list.h"
+#include "THeadRingList.h"
 using namespace std;
 
 class TPolynom {
@@ -23,10 +23,8 @@ private:
 	bool IsConst(const string& st) const;
 	bool IsOperator(char c) const;
 	bool IsParenthesis(char c) const;
-	bool IsDigitOrLetter(char c) const;
 	double Calculate(const map<string, double>& values);
 	void RemoveSpaces(string& str) const;
-	void SetValues(const vector<double>& values);
 public:
 	TPolynom();
 	TPolynom(const string& _name);
@@ -42,6 +40,7 @@ public:
 	TPolynom dy() const;
 	TPolynom dz() const;
 	string ToPostfix();
+	void SetValues(const vector<double>& values);
 	void print();
 };
 
