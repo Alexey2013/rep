@@ -1,9 +1,6 @@
 #include "stack.h"
 #include "arithmetic.h"
 
-#include "stack.h"
-#include "arithmetic.h"
-
 TArithmeticExpression::TArithmeticExpression(const string& _infix) {
     if (_infix.empty()) {
         throw("expression is empty");
@@ -16,6 +13,7 @@ TArithmeticExpression::TArithmeticExpression(const string& _infix) {
 }
 
 map<string, int> TArithmeticExpression::priority = {
+    {"^", 4},
     {"*", 3},
     {"/", 3},
     {"+", 2},
@@ -38,7 +36,7 @@ bool TArithmeticExpression::IsConst(const string& s) const {
 }
 
 bool TArithmeticExpression::IsOperator(char c) const {
-    return (c == '+' || c == '-' || c == '*' || c == '/');
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
 }
 
 bool TArithmeticExpression::IsParenthesis(char c) const {
@@ -140,6 +138,11 @@ double TArithmeticExpression::Calculate(const map<string, double>& values)
     TStack<double> st;
     double leftOperand, rightOperand;
     for (string lexem : postfix) {
+        if (lexem == "^") {
+            rightOperand = st.Top(); st.Pop();
+            leftOperand = st.Top(); st.Pop();
+            st.Push(pow(leftOperand, rightOperand));
+        }
         if (lexem == "+") {
             rightOperand = st.Top(); st.Pop();
             leftOperand = st.Top(); st.Pop();
