@@ -163,7 +163,10 @@ TPolynom TPolynom::operator-(const TPolynom& p)
 			monoms->next();
 		}
 		switch (tmp) {
-		case 1: { list->insert_last(p.monoms->GetCurrent()->data); break; }
+		case 1: {
+			p.monoms->GetCurrent()->data.Set_coeff( ( -1)* (p.monoms->GetCurrent()->data.Get_coeff()));
+			list->insert_last(p.monoms->GetCurrent()->data);
+			break; }
 		case 2: {
 			TMonom search = list->search(monoms->GetCurrent()->data)->data;
 			list->insert_after(m2, search);

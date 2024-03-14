@@ -30,7 +30,8 @@ TEST(TList, can_insert_last_in_the_list)
 	ASSERT_NO_THROW(list.insert_last(1));
 }
 
-TEST(TList, can_insert_element_in_not_empty_list) {
+TEST(TList, can_insert_element_in_not_empty_list) 
+{
 	TList<int> list;
 	list.insert_last(1);
 	ASSERT_NO_THROW(list.insert_last(2));
@@ -64,12 +65,14 @@ TEST(TList, can_clear_list)
 	EXPECT_EQ(0, list.GetSize());
 }
 
-TEST(TList, throw_when_remove_from_empty_list) {
+TEST(TList, throw_when_remove_from_empty_list) 
+{
 	TList<int> list;
 	ASSERT_ANY_THROW(list.remove(5));
 }
 
-TEST(TList, throw_when_remove_non_exist_elem) {
+TEST(TList, throw_when_remove_non_exist_elem) 
+{
 	TList<int> list;
 	list.insert_last(4);
 	ASSERT_ANY_THROW(list.remove(5));
@@ -110,7 +113,8 @@ TEST(TList, next_element)
 	EXPECT_EQ(1, tmp->data);
 }
 
-TEST(TList, reset_test) {
+TEST(TList, reset_test) 
+{
 	TList<int> list;
 	list.insert_last(1);
 	list.insert_last(2);
