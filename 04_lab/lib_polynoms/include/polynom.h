@@ -14,7 +14,9 @@ class TPolynom {
 private:
 	string name;
 	TList<TMonom>* monoms;
+
 	void ParseMonoms();
+    void conversion();
 public:
 	TPolynom();
 	TPolynom(const string& _name);
@@ -31,20 +33,7 @@ public:
 	TPolynom dz() const;
 	bool operator==(const TPolynom&p) const;
 	bool operator!=(const TPolynom& p) const;
-	friend ostream& operator<<(ostream& out, const TPolynom& p)
-	{
-		cout << endl;
-		while (p.monoms->GetCurrent() != nullptr)
-		{
-			int deg = p.monoms->GetCurrent()->data.Get_degree();
-			int x = deg / 100;
-			int y = (deg % 100) / 10;
-			int z = deg % 10;
-			cout << p.monoms->GetCurrent()->data.Get_coeff() << "*" << "x^" << x << "*" << "y^" << y << "*" << "z^" << z << endl;
-			p.monoms->next();
-		}
-		return out;
-}
+	friend ostream& operator<<(ostream& out, const TPolynom& p);
 };
 
 #endif 

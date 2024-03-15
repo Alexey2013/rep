@@ -10,20 +10,21 @@ int main() {
 		cout << "Enter polynom 1:";
 		getline(cin, example1);
 		TPolynom pol1(example1);
-		//cout << pol1;
+		cout << pol1;
 		//cout << pol1.dx();
 		//cout << pol1.dy();
 		//cout << pol1.dz();
-			cout << "Enter polynom 2:";
-		getline(cin, example2);
-		TPolynom pol2(example2);
+		//cout << "Enter polynom 2:";
+		//getline(cin, example2);
+		//TPolynom pol2(example2);
+		//cout << pol2;
 		//pol3 = pol1 + pol2;
-		//cout<<pol3;
-		pol3 = pol1- pol2; 
+		////cout<<pol3;
+		//pol3 = pol1- pol2; 
 		//cout << pol3;
 	/*	pol3 = pol1*pol2;*/
-		cout << pol3;
-		cout << pol1(0.1, 0.2, 0.3);
+		//cout << pol3;
+		//cout << pol1(0.1, 0.2, 0.3);
 	}
 	catch (char* exp) {
 		cout << exp << endl;
