@@ -5,7 +5,7 @@ TPolynom::TPolynom() {
 	name = "";
 }
 
-TPolynom::TPolynom(const string& _name) {
+TPolynom::TPolynom(const string _name) {
 	name = _name;
 	monoms = new TList<TMonom>;
 	ParseMonoms();
@@ -232,15 +232,24 @@ TPolynom TPolynom::dx() const {
 	monoms->reset();
 	while (monoms->GetCurrent() != nullptr) {
 		TMonom m = monoms->GetCurrent()->data;
-		if (m.Get_degree() < 100) { monoms->next(); continue; }
+		if (m.Get_degree() < 100) {
+			monoms->next();
+			continue;
+		}
 		int new_degree = m.Get_degree() - 100;
 		double new_coeff = m.Get_coeff() * (m.Get_degree() / 100);
-		m.Set_degree(new_degree);
-		m.Set_coeff(new_coeff);
-		list->insert_last(m);
+		TMonom new_m = m;
+		new_m.Set_degree(new_degree);
+		new_m.Set_coeff(new_coeff);
+		list->insert_last(new_m);
 		monoms->next();
 	}
+	if (list->GetSize() == 0) {
+		delete list;
+		throw("there are no monomials to derive from");
+	}
 	TList<TMonom>* res = new TList<TMonom>(*list);
+	delete list;
 	TPolynom result;
 	result.monoms = res;
 	return result;
@@ -261,8 +270,13 @@ TPolynom TPolynom::dy() const {
 		list->insert_last(m);
 		monoms->next();
 	}
+	if (list->GetSize() == 0) {
+		delete list;
+		throw("there are no monomials to derive from");
+	}
 	TList<TMonom>* res = new TList<TMonom>(*list);
 	TPolynom result;
+	delete list;
 	result.monoms = res;
 	return result;
 }
@@ -282,8 +296,13 @@ TPolynom TPolynom::dz() const {
 		list->insert_last(m);
 		monoms->next();
 	}
+	if (list->GetSize() == 0) {
+		delete list;
+		throw("there are no monomials to derive from");
+	}
 	TList<TMonom>* res = new TList<TMonom>(*list);
 	TPolynom result;
+	delete list;
 	result.monoms = res;
 	return result;
 }
@@ -309,7 +328,6 @@ bool TPolynom::operator!=(const TPolynom& p) const {
 }
 
  ostream& operator<<(ostream& out, const TPolynom& p){
-	 cout <<"Polynom:";
         while (p.monoms->GetCurrent() != nullptr) {
 			int deg = p.monoms->GetCurrent()->data.Get_degree();
             int coeff = p.monoms->GetCurrent()->data.Get_coeff();

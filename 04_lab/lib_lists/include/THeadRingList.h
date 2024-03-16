@@ -60,10 +60,8 @@ THeadRingList<T>::THeadRingList(const THeadRingList<T>& obj)
 }
 
 template <typename T>
-THeadRingList<T>::~THeadRingList()
-{
-	if (pHead) 
-		delete pHead;
+THeadRingList<T>::~THeadRingList(){
+	if (pHead) delete pHead;
 }
 
 #endif 

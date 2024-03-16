@@ -19,7 +19,7 @@ private:
     void conversion();
 public:
 	TPolynom();
-	TPolynom(const string& _name);
+	TPolynom(const string _name);
 	TPolynom(const TList<TMonom>* m);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
