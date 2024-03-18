@@ -22,7 +22,7 @@ int main() {
 		cout << pol2<< endl;
 		cout << endl;
 		cout << "p1+p2:" << pol1 + pol2 << endl;
-		cout << "p1+p2:" << pol1 - pol2 << endl;
+		cout << "p1-p2:" << pol1 - pol2 << endl;
 		cout << "p1*p2:" << pol1 * pol2 << endl;
 	}
 	catch (char* exp) {
