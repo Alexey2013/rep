@@ -2,8 +2,7 @@
 
 TMonom::TMonom() : coeff(0.0), degree(-1) {};
 
-TMonom::TMonom(const TMonom& monom)
-{
+TMonom::TMonom(const TMonom& monom){
 	coeff = monom.coeff;
 	degree = monom.degree;
 }
@@ -20,13 +19,18 @@ bool TMonom::operator==(const TMonom& data) const {
 	return (coeff == data.coeff) && (degree == data.degree);
 }
 
+bool TMonom::operator<(const TMonom& data) const {
+	return (degree < data.degree);
+}
+
+
 bool TMonom::operator!=(const TMonom& data) const {
 	return !(*this == data);
 }
 
 TMonom TMonom::operator*(const TMonom& monom) const {
-	if ((degree + monom.Get_degree()) <= 999 && (degree + monom.Get_degree()) >= 0) {
-		return TMonom(coeff * monom.Get_coeff(), degree + monom.Get_degree());
+	if ((degree + monom.degree) <= 999 && (degree + monom.degree) >= 0) {
+		return TMonom(coeff * monom.coeff, degree + monom.degree);
 	}
 	else {
 		throw "exp";

@@ -29,7 +29,7 @@ public:
 	TNode<T>* GetCurrent() const;
 	void next();  
 	void reset(); 
-	void print() const;
+	void print() const; // <<
 };
 
 template<typename T>
@@ -53,7 +53,7 @@ TList<T>::TList( TNode<T>* _pFirst){
 
 template <typename T>
 TList<T>::TList(const TList<T>& list){
-	if (list.pFirst == nullptr) return;
+	if (list.pFirst == nullptr) return ;
 	pFirst = new TNode<T>(list.pFirst->data, list.pFirst->pNext);
 	TNode<T>* tmp = pFirst;
 	TNode<T>* tmp2 = pFirst;
@@ -119,7 +119,7 @@ void TList<T>::insert_last(const T& data){
 template <typename T>
 void TList<T>::insert_after(const T& data, const T& beforedata){
 	TNode<T>* pPrev = search(beforedata);
-	if (pPrev == pStop) throw("Element not found!"); 
+	if (pPrev == pStop) throw("Data not found!"); 
 	if (pPrev->pNext == pStop) insert_last(data);
 	else{
 		TNode<T>* pNode = new TNode<T>(data, pPrev->pNext);
@@ -137,7 +137,7 @@ void TList<T>::insert_before(const T& data, const T& nextdata) {
 			pPrev = tmp;
 			tmp = tmp->pNext;
 		}
-		if (tmp == pStop) throw("Element not found!");
+		if (tmp == pStop) throw("Data not found!");
 		TNode<T>* pNode = new TNode<T>(data, tmp);
 		pPrev->pNext = pNode;
 			}
@@ -208,8 +208,5 @@ void TList<T>::print() const {
 	}
 	cout << endl;
 }
-
-
-
 
 #endif 

@@ -13,20 +13,21 @@ using namespace std;
 class TPolynom {
 private:
 	string name;
-	TList<TMonom>* monoms;
+	TList<TMonom>* monoms; // head list
 
 	void ParseMonoms();
     void conversion();
+	void sort_polynoms();
 public:
 	TPolynom();
-	TPolynom(const string _name);
+	TPolynom(const string& _name);
 	TPolynom(const TList<TMonom>* m);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
 	TPolynom operator +(const TPolynom& p);
 	TPolynom operator -(const TPolynom& p);
 	TPolynom operator *(const TPolynom& p);
-	TPolynom& operator =(const TPolynom& p);
+	const TPolynom& operator =(const TPolynom& p);
 	double operator ()(double x, double y, double z);
 	TPolynom dx() const;
 	TPolynom dy() const;

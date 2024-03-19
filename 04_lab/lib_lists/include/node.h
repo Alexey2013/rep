@@ -7,6 +7,7 @@ template <typename T>
 struct TNode {
 	T data;
 	TNode<T>* pNext;
+
 	TNode() : data(), pNext(nullptr) {};
 	TNode(const T& data) : data(data), pNext(nullptr) {};
 	TNode(TNode<T>* _pNext) : data(), pNext(_pNext) {}; 

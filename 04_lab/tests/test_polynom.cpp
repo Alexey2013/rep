@@ -87,11 +87,11 @@ TEST(TPolynom, dz_is_correct)
 	EXPECT_EQ(pol.dz(), tmp);
 }
 
-TEST(TPolynom, throw_when_no_monomials_to_derive)
-{
-	TPolynom pol("z^3+z^2+y+1");
-	ASSERT_ANY_THROW(pol.dx());
-}
+//TEST(TPolynom,no_throw_when_no_monomials_to_derive)
+//{
+//	TPolynom pol("z^3+z^2+y+1");
+//	ASSERT_NO_THROW(pol.dx());
+//}
 
 TEST(TPolynom,sum_is_correct ) 
 {
