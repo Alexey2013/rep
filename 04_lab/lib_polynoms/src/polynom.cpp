@@ -27,16 +27,17 @@ TPolynom::~TPolynom() {
 	delete monoms;
 }
 
-void TPolynom::ParseMonoms() { // sort or insert to sorted list
+void TPolynom::ParseMonoms() {
+	TList<TMonom>* list = new TList<TMonom>();
 	string str = name;
 	while (!str.empty()) {
 		int degree = 0;
 		size_t j = str.find_first_of("+-", 1);
 		string monom = str.substr(0, j);
 		str.erase(0, j);
-		string coefficent = monom.substr(0, monom.find_first_of("xyz"));
+		string coefficient = monom.substr(0, monom.find_first_of("xyz"));
 		TMonom tmp;
-		tmp.coeff=((coefficent == "" || coefficent == "+") ? 1 : (coefficent == "-") ? -1 : stod(coefficent));
+		tmp.coeff = ((coefficient.empty() || coefficient == "+") ? 1 : (coefficient == "-") ? -1 : stod(coefficient));
 		monom.erase(0, monom.find_first_of("xyz"));
 		for (size_t i = 0; i < monom.size(); ++i) {
 			if (isalpha(monom[i])) {
@@ -59,16 +60,27 @@ void TPolynom::ParseMonoms() { // sort or insert to sorted list
 					degree += exp * 1;
 					break;
 				default:
-					throw ("exp");
+					throw ("Invalid monom format");
 					break;
 				}
 			}
 		}
-		tmp.degree=degree;
-		if (tmp.coeff != 0) {
-			monoms->insert_last(tmp);
+		tmp.degree = degree;
+		list->Reset();
+		bool inserted = false;
+		while (list->GetCurrent() != nullptr) {
+		if (list->GetCurrent()->data.degree < tmp.degree) {
+			list->InsertBefore(tmp, list->GetCurrent()->data);
+			inserted = true;
+			break;
 		}
+		list->Next();
+		}
+		if (!inserted) {
+			list->InsertLast(tmp);
+			}
 	}
+	monoms = list;
 }
 
 void TPolynom::conversion() {
@@ -86,23 +98,6 @@ void TPolynom::conversion() {
 		}
 		if (!has_same_degree) {
 			list->insert_last(m);
-		}
-		monoms->next();
-	}
-	TList<TMonom>* res = new TList<TMonom>(*list);
-	monoms = res;
-}
-
-void TPolynom::sort_polynoms() {
-	TList<TMonom>* list = new TList<TMonom>();
-	monoms->reset();
-	while (monoms->GetCurrent() != nullptr) {
-		TMonom m = monoms->GetCurrent()->data;
-		for (auto it = list->GetCurrent(); it != nullptr; it = it->pNext) {
-			if (it->data.degree> m.degree) {
-				list->insert_after(monoms->GetCurrent()->data,m);
-				break;
-			}
 		}
 		monoms->next();
 	}
