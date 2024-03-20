@@ -10,7 +10,6 @@ TPolynom::TPolynom(const string& _name) {
 	monoms = new TList<TMonom>;
 	ParseMonoms();
 	conversion();
-	sort_polynoms();
 }
 
 TPolynom::TPolynom(const TList<TMonom>* m) {
@@ -66,18 +65,18 @@ void TPolynom::ParseMonoms() {
 			}
 		}
 		tmp.degree = degree;
-		list->Reset();
+		list->reset();
 		bool inserted = false;
 		while (list->GetCurrent() != nullptr) {
 		if (list->GetCurrent()->data.degree < tmp.degree) {
-			list->InsertBefore(tmp, list->GetCurrent()->data);
+			list->insert_before(tmp, list->GetCurrent()->data);
 			inserted = true;
 			break;
 		}
-		list->Next();
+		list->next();
 		}
 		if (!inserted) {
-			list->InsertLast(tmp);
+			list->insert_last(tmp);
 			}
 	}
 	monoms = list;
@@ -137,12 +136,12 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 		while (monoms->GetCurrent() != nullptr) {
 			TMonom m1 = monoms->GetCurrent()->data;
 			if (m1.degree == m2.degree) {
-				double coefficient = m1.coeff+ m2.coeff;
+				double coefficient = m1.coeff + m2.coeff;
 				if (coefficient == 0) {
 					list->remove(monoms->GetCurrent()->data);
 				}
 				else {
-					m2.coeff=coefficient;
+					m2.coeff = coefficient;
 					list->insert_after(m2, monoms->GetCurrent()->data);
 					list->remove(monoms->GetCurrent()->data);
 				}
@@ -159,51 +158,19 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 	TList<TMonom>* res = new TList<TMonom>(*list);
 	TPolynom result;
 	result.monoms = res;
+	sort_monoms();
 	return result;
 }
 
 TPolynom TPolynom::operator-(const TPolynom& p) {
-	TList<TMonom>* list = new TList<TMonom>();
-	monoms->reset();
-	p.monoms->reset();
-	while (monoms->GetCurrent() != nullptr) {
-		list->insert_last(monoms->GetCurrent()->data);
-		monoms->next();
+	TPolynom neg_p = p;
+	neg_p.monoms->reset();
+	while (neg_p.monoms->GetCurrent() != nullptr) {
+		neg_p.monoms->GetCurrent()->data.coeff *= -1;
+		neg_p.monoms->next();
 	}
-	while (p.monoms->GetCurrent() != nullptr) {
-		monoms->reset();
-		TMonom m2 = p.monoms->GetCurrent()->data;
-		bool found = false;
-		while (monoms->GetCurrent() != nullptr) {
-			TMonom m1 = monoms->GetCurrent()->data;
-			if (m1.degree == m2.degree) {
-				double coefficient = m1.coeff - m2.coeff;
-				if (coefficient == 0) {
-					list->remove(monoms->GetCurrent()->data);
-				}
-				else {
-					m2.coeff=coefficient;
-					TMonom search = list->search(monoms->GetCurrent()->data)->data;
-					list->insert_after(m2, search);
-					list->remove(monoms->GetCurrent()->data);
-				}
-				found = true;
-				break;
-			}
-			monoms->next();
-		}
-		if (!found) {
-			p.monoms->GetCurrent()->data.coeff=-p.monoms->GetCurrent()->data.coeff;
-			list->insert_last(p.monoms->GetCurrent()->data);
-		}
-		p.monoms->next();
-	}
-	TList<TMonom>* res = new TList<TMonom>(*list);
-	TPolynom result;
-	result.monoms = res;
-	return result;
+	return *this + neg_p;
 }
-
 
 TPolynom TPolynom::operator*(const TPolynom& p){
 	TList<TMonom>* list = new TList<TMonom>();
@@ -228,6 +195,7 @@ TPolynom TPolynom::operator*(const TPolynom& p){
 }
 
 TPolynom TPolynom::dx() const {
+	TPolynom result;
 	TList<TMonom>* list = new TList<TMonom>();
 	monoms->reset();
 	while (monoms->GetCurrent() != nullptr) {
@@ -239,23 +207,23 @@ TPolynom TPolynom::dx() const {
 		int new_degree = m.degree - 100;
 		double new_coeff = m.coeff * (m.degree / 100);
 		TMonom new_m = m;
-		new_m.degree=new_degree;
-		new_m.coeff=new_coeff;
+		new_m.degree = new_degree;
+		new_m.coeff = new_coeff;
 		list->insert_last(new_m);
 		monoms->next();
 	}
 	if (list->GetSize() == 0) {
 		delete list;
-		return 0;
+		return result;
 	}
 	TList<TMonom>* res = new TList<TMonom>(*list);
 	delete list;
-	TPolynom result;
 	result.monoms = res;
 	return result;
 }
 
 TPolynom TPolynom::dy() const {
+	TPolynom result;
 	TList<TMonom>* list = new TList<TMonom>();
 	monoms->reset();
 	while (monoms->GetCurrent() != nullptr) {
@@ -272,16 +240,16 @@ TPolynom TPolynom::dy() const {
 	}
 	if (list->GetSize() == 0) {
 		delete list;
-		return 0;
+		return result;
 	}
 	TList<TMonom>* res = new TList<TMonom>(*list);
-	TPolynom result;
 	delete list;
 	result.monoms = res;
 	return result;
 }
 
 TPolynom TPolynom::dz() const {
+	TPolynom result;
 	TList<TMonom>* list = new TList<TMonom>();
 	monoms->reset();
 	while (monoms->GetCurrent() != nullptr) {
@@ -298,10 +266,9 @@ TPolynom TPolynom::dz() const {
 	}
 	if (list->GetSize() == 0) {
 		delete list;
-		return 0;
+		return result;
 	}
 	TList<TMonom>* res = new TList<TMonom>(*list);
-	TPolynom result;
 	delete list;
 	result.monoms = res;
 	return result;
@@ -335,7 +302,6 @@ bool TPolynom::operator!=(const TPolynom& p) const {
             int y = (deg % 100) / 10;
             int z = deg % 10;
             if (deg == 0) {cout << p.monoms->GetCurrent()->data.coeff << endl;}
-            else {
                 if (coeff < 0) { cout << "(" << p.monoms->GetCurrent()->data.coeff << ")"; }
                 if (coeff != 1 && coeff >0) {cout << p.monoms->GetCurrent()->data.coeff;}
                 if (x == 1) {cout << "x";}
@@ -344,10 +310,33 @@ bool TPolynom::operator!=(const TPolynom& p) const {
                 if (x != 0 && x != 1) { cout << "x^" << x;}
                 if (y != 0 && y!= 1) {cout << "y^" << y;}
                 if (z != 0&&z!=1) {   cout << "z^" << z;}
-                if(p.monoms->GetCurrent()->pNext != nullptr)
+           if(p.monoms->GetCurrent()->pNext != nullptr)
                 cout <<"+";
-            }
             p.monoms->next();
             }
             return out;
         }
+
+ void TPolynom::sort_monoms() {
+	 TList<TMonom>* list = new TList<TMonom>();
+	 monoms->reset();
+	 while (monoms->GetCurrent() != nullptr) {
+		 TMonom m = monoms->GetCurrent()->data;
+		 bool inserted = false;
+		 list->reset();
+		 while (list->GetCurrent() != nullptr) {
+			 if (list->GetCurrent()->data.degree < m.degree) {
+				 list->insert_before(m, list->GetCurrent()->data);
+				 inserted = true;
+				 break;
+			 }
+			 list->next();
+		 }
+		 if (!inserted) {
+			 list->insert_last(m);
+		 }
+		 monoms->next();
+	 }
+	 delete monoms;
+	 monoms = list;
+ }

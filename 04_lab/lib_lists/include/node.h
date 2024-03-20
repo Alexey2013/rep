@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 
+
 template <typename T>
 struct TNode {
 	T data;

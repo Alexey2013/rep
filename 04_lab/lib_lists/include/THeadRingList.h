@@ -5,15 +5,37 @@
 using namespace std;
 
 template <typename T>
-class THeadRingList : public TList<T> {
+class THeadRingList : public TList<T> 
+{
 private:
 	TNode<T>* pHead;
 public:
 	THeadRingList();
-	THeadRingList(const TNode<T>* _pFirst);
-	THeadRingList(const TList<T>& obj);
-	THeadRingList(const THeadRingList<T>& obj);
-	virtual ~THeadRingList();
+	THeadRingList(const THeadRingList& ringL);
+	~THeadRingList();
 };
+
+template <typename T>
+THeadRingList<T>::THeadRingList<T>() : TList<T>() {
+	pHead = nullptr;
+}
+
+template <typename T>
+THeadRingList<T>::THeadRingList<T>(const THeadRingList<T>& ringL) : TList<T>() {
+	pHead = new TNode<T>(ringL.pHead->data);
+	if (ringL.IsEmpty()) {
+		pHead->pNext = pHead;
+	}
+	else {
+		pHead->pNext = pFirst;
+	}
+	pLast->pNext = pHead;
+	pStop = pHead;
+}
+
+template <typename T>
+THeadRingList<T>::~THeadRingList<T>(){
+	delete pHead;
+}
 
 #endif 

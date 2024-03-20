@@ -13,11 +13,11 @@ using namespace std;
 class TPolynom {
 private:
 	string name;
-	TList<TMonom>* monoms; // head list
+	TList<TMonom>* monoms; 
 
 	void ParseMonoms();
     void conversion();
-	void sort_polynoms();
+	void sort_monoms();
 public:
 	TPolynom();
 	TPolynom(const string& _name);
