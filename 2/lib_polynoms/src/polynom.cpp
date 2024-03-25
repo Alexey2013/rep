@@ -1,32 +1,22 @@
 #include "polynom.h"
 
-TPolynom::TPolynom() {
-	monoms = nullptr;
+TPolynom::TPolynom() : monoms() {
 	name = "";
 }
 
 TPolynom::TPolynom(const string& _name) {
-	name = _name;
 	monoms = new THeadRingList<TMonom>;
+	monoms->InsertLast(TMonom(-1, 0));
+	name = _name;
 	ParseMonoms();
 }
 
-TPolynom::TPolynom(const THeadRingList<TMonom>* m) {
-	monoms = new THeadRingList<TMonom>(*m);
+TPolynom::TPolynom(const THeadRingList<TMonom>* l) {
+	monoms = new THeadRingList<TMonom>(*l);
 	name = "";
 }
 
-TPolynom::TPolynom(const TPolynom& p) {
-	name = p.name;
-	monoms = new THeadRingList<TMonom>();
-	if (!p.monoms->IsEmpty()) {
-		TNode<TMonom>* pCurr = p.monoms->pHead;
-		do {
-			monoms->InsertToSort(pCurr->data); 
-			pCurr = pCurr->pNext;
-		} while (pCurr != p.monoms->pHead);
-	}
-}
+TPolynom::TPolynom(const TPolynom& p) : monoms(p.monoms), name(p.name) {}
 
 TPolynom::~TPolynom() {
 	if (monoms != nullptr) {
@@ -133,7 +123,6 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 	return result;
 }
 
-
 TPolynom TPolynom::dx() const {
 	TPolynom result; 
 	monoms->reset();
@@ -190,8 +179,6 @@ TPolynom TPolynom::dz() const {
 
 	return result;
 }
-
-
 
 bool TPolynom::operator==(const TPolynom& p) const {
 	monoms->reset();
