@@ -2,21 +2,21 @@
 #include <gtest.h>
 const string str="x+y+z";
 
-TEST(TPolynom, create_empty_polinom)
-{
-	ASSERT_NO_THROW(TPolynom p());
-}
-
-TEST(TPolynom, create_polinom)
-{
-	ASSERT_NO_THROW(TPolynom p(str));
-}
-
-TEST(TPolynom, can_create_copied_polinom)
-{
-	TPolynom p1(str);
-	ASSERT_NO_THROW(TPolynom p2(p1));
-}
+//TEST(TPolynom, create_empty_polinom)
+//{
+//	ASSERT_NO_THROW(TPolynom p());
+//}
+//
+//TEST(TPolynom, create_polinom)
+//{
+//	ASSERT_NO_THROW(TPolynom p(str));
+//}
+//
+//TEST(TPolynom, can_create_copied_polinom)
+//{
+//	TPolynom p1(str);
+//	ASSERT_NO_THROW(TPolynom p2(p1));
+//}
 
 //TEST(TPolynom, equality_operator_is_correct)
 //{

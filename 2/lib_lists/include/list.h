@@ -31,6 +31,7 @@ public:
 	TNode<T>* GetCurrent() const;
 	void next();
 	void reset();
+	void insert_sort(const T& data);
 };
 
 template<typename T>
@@ -74,19 +75,18 @@ TList<T>::TList(const TList<T>& list) {
 	pStop = nullptr;
 }
 
-
 template <typename T>
 void TList<T>::clear() {
 	if (pFirst == nullptr)
 		return;
 	TNode<T>* curr = pFirst;
 	TNode<T>* next = pFirst->pNext;
-	//while (next != nullptr) {
-	//	delete curr;
-	//	curr = next;
-	//		next = curr->pNext;
-	//}
-	//delete curr;
+	while (next != nullptr) {
+		delete curr;
+		curr = next;
+		next = curr->pNext;
+	}
+	delete curr;
 	pCurr = pStop;
 	pFirst = nullptr;
 	pLast = nullptr;
@@ -130,25 +130,25 @@ void TList<T>::insert_last(const T& data) {
 
 template <typename T>
 void TList<T>::insert_after(const T& data, const T& beforedata) {
-	TNode<T>* pWhere = search(beforedata);
-	if (pWhere == nullptr) {
+	TNode<T>* pPrev = search(beforedata);
+	if (pPrev == nullptr) {
 		throw ("no elements");
 	}
-	if (pWhere == pLast) {
+	if (pPrev == pLast) {
 		insert_last(data);
 		return;
 	}
-	TNode<T>* new_node = new TNode<T>(data, pWhere->pNext);
-	pWhere->pNext = new_node;
+	TNode<T>* new_node = new TNode<T>(data, pPrev->pNext);
+	pPrev->pNext = new_node;
 }
 
 template <typename T>
 void TList<T>::insert_before(const T& data, const T& nextdata) {
-	TNode<T>* pWhere = search(nextdata);
-	if (pWhere == nullptr) {
+	TNode<T>* pPrev = search(nextdata);
+	if (pPrev == nullptr) {
 		throw ("no elements");
 	}
-	if (pWhere == pFirst) {
+	if (pPrev == pFirst) {
 		insert_first(data);
 		return;
 	}
@@ -158,9 +158,9 @@ void TList<T>::insert_before(const T& data, const T& nextdata) {
 		prev = curr;
 		curr = curr->pNext;
 	}
-	//if (curr == pStop) {
-	//	throw ("no elements");
-	//}
+	if (curr == pStop) {
+		throw ("no elements");
+	}
 	TNode<T>* new_node = new TNode<T>(data, curr);
 	prev->pNext = new_node;
 }
@@ -225,6 +225,24 @@ void TList<T>::next() {
 template<typename T>
 void TList<T>::reset() {
 	pCurr = pFirst;
+}
+
+template <typename T>
+void TList<T>::insert_sort(const T& data) {
+   if (IsEmpty() ||  pFirst->data < data) {
+       insert_first(data);
+        return;
+    }
+    TNode<T>* tmp = pFirst;
+    while (tmp->pNext != pStop &&  tmp->pNext->data < data) {
+        tmp = tmp->pNext;
+    }
+    if (tmp->pNext->data == data) {
+        tmp->pNext->data = tmp->pNext->data+ data;
+    }
+    else {
+        insert_before(data, tmp->pNext->data);
+    }
 }
 
 #endif 

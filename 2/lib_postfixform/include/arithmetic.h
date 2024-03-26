@@ -27,7 +27,6 @@ public:
 	TArithmeticExpression(const string& _infix);
 	string ToPostfix();
 	string GetInfix() { return infix; }
-	void SetValues();
 	void SetValues(const vector<double>& values);
 	double Calculate();	
 };

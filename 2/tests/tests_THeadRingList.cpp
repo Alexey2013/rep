@@ -121,9 +121,9 @@ TEST(THeadRingList, can_insert_element_after_current)
 TEST(THeadRingList, can_insert_to_sort)
 {
 	THeadRingList<int> list;
-	list.InsertToSort(5);
-	list.InsertToSort(1);
-	list.InsertToSort(2);
+	list.InsertFirst(5);
+	list.insert_sort(1);
+	list.insert_sort(2);
 	EXPECT_EQ(5, list.pHead->data);
 	EXPECT_EQ(2, list.pHead->pNext->data);
 	EXPECT_EQ(1, list.pHead->pNext->pNext->data);
@@ -132,7 +132,7 @@ TEST(THeadRingList, can_insert_to_sort)
 TEST(THeadRingList, get_next_element_in_ring)
 {
 	THeadRingList<int> list;
-	list.InsertToSort(1);
-	list.InsertToSort(2);
+	list.InsertFirst(1);
+	list.insert_last(2);
 	EXPECT_EQ(1, list.pHead->pNext->pNext->data);
 }

@@ -14,8 +14,7 @@ public:
     THeadRingList(const THeadRingList& ringL);
     ~THeadRingList();
     void InsertFirst(const T& data);
-    void InsertLast(const T& data);
-    void InsertToSort(const T& data);
+    void insert_sort(const T& data);
 };
 
 template <typename T>
@@ -40,15 +39,6 @@ THeadRingList<T>::~THeadRingList() {
 }
 
 template <typename T>
-void THeadRingList<T>::InsertLast(const T& data) {
-    if (IsEmpty()) {
-        InsertFirst(data);
-        return;
-    }
-    insert_last(data);
-}
-
-template <typename T>
 void THeadRingList<T>::InsertFirst(const T& data) {
     if (pHead == nullptr) {
         TNode<T>* new_head = new TNode<T>(data);
@@ -57,24 +47,24 @@ void THeadRingList<T>::InsertFirst(const T& data) {
         pStop = pHead;
         return;
     }
-    TList::insert_first(data);
+    insert_first(data);
     pHead->pNext = pFirst;
     pStop = pHead;
     pLast->pNext = pHead;
 }
 
 template <typename T>
-void THeadRingList<T>::InsertToSort(const T& data) {
-   if (IsEmpty() ||  pFirst->data < data) {
+void THeadRingList<T>::insert_sort(const T& data) {
+    if (IsEmpty() || pFirst->data < data) {
         InsertFirst(data);
         return;
     }
     TNode<T>* tmp = pFirst;
-    while (tmp->pNext != pStop &&  tmp->pNext->data < data) {
+    while (tmp->pNext != pStop && tmp->pNext->data < data) {
         tmp = tmp->pNext;
     }
     if (tmp->pNext->data == data) {
-        tmp->pNext->data = tmp->pNext->data+ data;
+        tmp->pNext->data = tmp->pNext->data + data;
     }
     else {
         insert_before(data, tmp->pNext->data);

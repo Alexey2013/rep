@@ -1,12 +1,12 @@
 #include "polynom.h"
 
-TPolynom::TPolynom() : monoms() {
+TPolynom::TPolynom() {
+	monoms = nullptr;
 	name = "";
 }
 
 TPolynom::TPolynom(const string& _name) {
 	monoms = new THeadRingList<TMonom>;
-	monoms->InsertLast(TMonom(-1, 0));
 	name = _name;
 	ParseMonoms();
 }
@@ -63,12 +63,12 @@ void TPolynom::ParseMonoms() {
 		}
 		tmp.degree = degree;
 		if (tmp.coeff != 0) {
-			monoms->InsertToSort(tmp);
+			monoms->insert_sort(tmp);
 		}
 	}
 }
 
-double TPolynom::operator ()(double x,double y,double z) {
+double TPolynom::operator()(double x,double y,double z) {
 	TArithmeticExpression expression(name);
 	vector<double> xyz ={x,y,z};
 	expression.ToPostfix();
@@ -90,7 +90,7 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 	p.monoms->reset();
 	while (!p.monoms->IsEnded()) {
 		TMonom curr = p.monoms->GetCurrent()->data;
-		result.monoms->InsertToSort(curr);
+		result.monoms->insert_sort(curr);
 		p.monoms->next();
 	}
 	return result;
@@ -115,7 +115,7 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 			TMonom m1 = monoms->GetCurrent()->data;
 			TMonom m2 = p.monoms->GetCurrent()->data;
 			TMonom m3 = m1 * m2;
-			result.monoms->InsertToSort(m3);
+			result.monoms->insert_sort(m3);
 			p.monoms->next();
 		}
 		monoms->next();
@@ -133,11 +133,10 @@ TPolynom TPolynom::dx() const {
 			double new_coeff = m.coeff * (m.degree / 100); 
 			m.degree = new_degree;
 			m.coeff = new_coeff; 
-			result.monoms->InsertToSort(m);
+			result.monoms->insert_sort(m);
 		}
 		monoms->next();
 	}
-
 	return result;
 }
 
@@ -153,7 +152,7 @@ TPolynom TPolynom::dy() const {
 			double new_coeff = m.coeff * (m.degree / 10);
 			m.degree = new_degree;
 			m.coeff = new_coeff;
-			result.monoms->InsertToSort(m);
+			result.monoms->insert_sort(m);
 		}
 		monoms->next();
 	}
@@ -172,7 +171,7 @@ TPolynom TPolynom::dz() const {
 			double new_coeff = m.coeff * m.degree;
 			m.degree = new_degree;
 			m.coeff = new_coeff;
-			result.monoms->InsertToSort(m);
+			result.monoms->insert_sort(m);
 		}
 		monoms->next();
 	}
