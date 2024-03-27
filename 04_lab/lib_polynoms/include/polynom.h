@@ -13,15 +13,13 @@ using namespace std;
 class TPolynom {
 private:
 	string name;
-	TList<TMonom>* monoms; 
+	THeadRingList<TMonom>* monoms;
 
 	void ParseMonoms();
-    void conversion();
-	void sort_monoms();
 public:
 	TPolynom();
 	TPolynom(const string& _name);
-	TPolynom(const TList<TMonom>* m);
+	TPolynom(const THeadRingList<TMonom>* m);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
 	TPolynom operator +(const TPolynom& p);
