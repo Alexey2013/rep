@@ -156,24 +156,26 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 }
 
 TPolynom TPolynom::dx() const {
-	TPolynom result(*this);
+	TPolynom result;
+	THeadRingList<TMonom>* list = new THeadRingList<TMonom>();
 	monoms->reset();
 	while (!monoms->IsEnded()) {
 		TMonom m = monoms->GetCurrent()->data;
 		if (m.degree >= 100) {
 			int new_degree = m.degree - 100;
 			double new_coeff = m.coeff * (m.degree / 100);
-			m.degree = new_degree;
-			m.coeff = new_coeff;
-			result.monoms->insert_sort(m);
+			TMonom new_monom(new_coeff, new_degree);
+			list->insert_sort(new_monom);
 		}
 		monoms->next();
 	}
+	result.monoms = list;
 	return result;
 }
 
 TPolynom TPolynom::dy() const {
 	TPolynom result;
+	THeadRingList<TMonom>* list = new THeadRingList<TMonom>();
 	monoms->reset();
 	while (!monoms->IsEnded()) {
 		TMonom m = monoms->GetCurrent()->data;
@@ -184,15 +186,17 @@ TPolynom TPolynom::dy() const {
 			double new_coeff = m.coeff * (m.degree / 10);
 			m.degree = new_degree;
 			m.coeff = new_coeff;
-			result.monoms->insert_sort(m);
+			list->insert_sort(m);
 		}
 		monoms->next();
 	}
+	result.monoms = list;
 	return result;
 }
 
 TPolynom TPolynom::dz() const {
 	TPolynom result;
+	THeadRingList<TMonom>* list = new THeadRingList<TMonom>();
 	monoms->reset();
 	while (!monoms->IsEnded()) {
 		TMonom m = monoms->GetCurrent()->data;
@@ -203,11 +207,11 @@ TPolynom TPolynom::dz() const {
 			double new_coeff = m.coeff * m.degree;
 			m.degree = new_degree;
 			m.coeff = new_coeff;
-			result.monoms->insert_sort(m);
+			list ->insert_sort(m);
 		}
 		monoms->next();
 	}
-
+	result.monoms = list;
 	return result;
 }
 

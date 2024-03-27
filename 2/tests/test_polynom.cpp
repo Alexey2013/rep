@@ -59,26 +59,26 @@ TEST(TPolynom, calculate_is_correct3)
 	EXPECT_EQ(8, pol(1, 2, 3));
 }
 
-//TEST(TPolynom, dx_is_correct) 
-//{
-//	TPolynom pol("x^3+x^2+y+z+1");
-//	TPolynom tmp("3x^2+2x^1");
-//	EXPECT_EQ(pol.dx(), tmp);
-//}
-//
-//TEST(TPolynom, dy_is_correct) 
-//{
-//	TPolynom pol("y^3+y^2+x+z+1");
-//	TPolynom tmp("3y^2+2y^1");
-//	EXPECT_EQ(pol.dy() , tmp);
-//}
-//
-//TEST(TPolynom, dz_is_correct) 
-//{
-//	TPolynom pol("z^3+z^2+y+x+1");
-//	TPolynom tmp("3z^2+2z^1");
-//	EXPECT_EQ(pol.dz(), tmp);
-//}
+TEST(TPolynom, dx_is_correct) 
+{
+	TPolynom pol("x^3+x^2+y+z+1");
+	TPolynom tmp("3x^2+2x^1");
+	EXPECT_EQ(pol.dx(), tmp);
+}
+
+TEST(TPolynom, dy_is_correct) 
+{
+	TPolynom pol("y^3+y^2+x+z+1");
+	TPolynom tmp("3y^2+2y^1");
+	EXPECT_EQ(pol.dy() , tmp);
+}
+
+TEST(TPolynom, dz_is_correct) 
+{
+	TPolynom pol("z^3+z^2+y+x+1");
+	TPolynom tmp("3z^2+2z^1");
+	EXPECT_EQ(pol.dz(), tmp);
+}
 
 TEST(TPolynom,no_throw_when_no_monomials_to_derive)
 {
@@ -106,6 +106,6 @@ TEST(TPolynom, diff_is_correct)
 //{
 //	TPolynom pol1("x^2+y");
 //	TPolynom pol2("x^3+x");
-//	TPolynom pol3("x^5+x^3+x^3*y^1+x^1*y^1");
+//	TPolynom pol3("x^5+x^3+x^3*y+x*y");
 //	EXPECT_EQ(pol1*pol2, pol3);
 //}
