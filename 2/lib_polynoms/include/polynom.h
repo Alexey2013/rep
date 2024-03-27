@@ -16,6 +16,7 @@ private:
 	THeadRingList<TMonom>* monoms;
 
 	void ParseMonoms();
+	void conversion();
 public:
 	TPolynom();
 	TPolynom(const string& _name);

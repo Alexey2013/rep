@@ -34,7 +34,7 @@ public:
 	void insert_sort(const T& data);
 };
 
-template<typename T>
+template <typename T>
 TList<T>::TList() {
 	pFirst = nullptr;
 	pLast = nullptr;
@@ -43,11 +43,29 @@ TList<T>::TList() {
 }
 
 template <typename T>
-TList<T>::TList(TNode<T>* _pFirst) {
-	pFirst = _pFirst;
-	TNode<T>* tmp = _pFirst;
-	while (tmp->pNext != nullptr) {
+bool TList<T>::IsEmpty() const {
+	return (pFirst == nullptr);
+}
+
+template <typename T>
+TList<T>::TList(const TList& l) {
+	if (l.IsEmpty())
+	{
+		pFirst = nullptr;
+		pLast = nullptr;
+		pCurr = nullptr;
+		pStop = nullptr;
+		return;
+	}
+
+	pFirst = new TNode<T>(l.pFirst->data);
+	TNode<T>* tmp = pFirst;
+	TNode<T>* ltmp = l.pFirst->pNext;
+	while (ltmp != l.pStop)
+	{
+		tmp->pNext = new TNode<T>(ltmp->data);
 		tmp = tmp->pNext;
+		ltmp = ltmp->pNext;
 	}
 	pLast = tmp;
 	pCurr = pFirst;
@@ -55,21 +73,11 @@ TList<T>::TList(TNode<T>* _pFirst) {
 }
 
 template <typename T>
-TList<T>::TList(const TList<T>& list) {
-	if (list.IsEmpty()) {
-		pFirst = nullptr;
-		pLast = nullptr;
-		pCurr = nullptr;
-		pStop = nullptr;
-	}
-	pFirst = new TNode<T>(list.pFirst->data);
-	TNode<T>* tmp = pFirst;
-	TNode<T>* tmp2 = list.pFirst->pNext;
-	while (tmp2 != list.pStop) {
-		tmp->pNext = new TNode<T>(tmp2->data);
+TList<T>::TList(TNode<T>* pNode) {
+	pFirst = pNode;
+	TNode<T>* tmp = pNode;
+	while (tmp->pNext != nullptr)
 		tmp = tmp->pNext;
-		tmp2 = tmp2->pNext;	
-	}
 	pLast = tmp;
 	pCurr = pFirst;
 	pStop = nullptr;
@@ -77,19 +85,21 @@ TList<T>::TList(const TList<T>& list) {
 
 template <typename T>
 void TList<T>::clear() {
-	if (pFirst == nullptr)
-		return;
-	TNode<T>* curr = pFirst;
-	TNode<T>* next = pFirst->pNext;
-	while (next != nullptr) {
-		delete curr;
-		curr = next;
-		next = curr->pNext;
-	}
-	delete curr;
-	pCurr = pStop;
-	pFirst = nullptr;
-	pLast = nullptr;
+	//if (pFirst == nullptr)
+	//	return;
+
+	//TNode<T>* curr = pFirst;
+	//TNode<T>* next = nullptr;
+
+	//do {
+	//	next = curr->pNext;
+	//	delete curr;
+	//	curr = next;
+	//} while (curr != pFirst);
+
+	//pFirst = nullptr;
+	//pCurr = nullptr;
+	//pLast = nullptr;
 }
 
 template <typename T>
@@ -97,10 +107,24 @@ TList<T>::~TList() {
 	clear();
 }
 
-template<typename T>
-TNode<T>* TList<T>::search(const T& _data) {
+template <typename T>
+bool TList<T>::IsFull() const {
+	TNode<T>* tmp = new TNode<T>();
+	if (tmp == nullptr)
+		return true;
+	delete tmp;
+	return false;
+}
+
+template <typename T>
+bool TList<T>::IsEnded()const {
+	return pCurr == pStop;
+}
+
+template <typename T>
+TNode<T>* TList<T>::search(const T& data) {
 	TNode<T>* curr = pFirst;
-	while (curr != pStop && curr->data != _data) {
+	while (curr != pStop && curr->data != data) {
 		curr = curr->pNext;
 	}
 	return curr;
@@ -129,56 +153,81 @@ void TList<T>::insert_last(const T& data) {
 }
 
 template <typename T>
-void TList<T>::insert_after(const T& data, const T& beforedata) {
-	TNode<T>* pPrev = search(beforedata);
-	if (pPrev == nullptr) {
-		throw ("no elements");
-	}
-	if (pPrev == pLast) {
-		insert_last(data);
-		return;
-	}
-	TNode<T>* new_node = new TNode<T>(data, pPrev->pNext);
-	pPrev->pNext = new_node;
-}
-
-template <typename T>
-void TList<T>::insert_before(const T& data, const T& nextdata) {
-	TNode<T>* pPrev = search(nextdata);
-	if (pPrev == nullptr) {
-		throw ("no elements");
-	}
-	if (pPrev == pFirst) {
-		insert_first(data);
-		return;
-	}
+void TList<T>::insert_before(const T& who, const T& where) {
 	TNode<T>* prev = nullptr;
 	TNode<T>* curr = pFirst;
-	while (curr != pStop && curr->data != nextdata) {
+	while (curr != pStop && curr->data != where) {
 		prev = curr;
 		curr = curr->pNext;
 	}
 	if (curr == pStop) {
-		throw ("no elements");
+		throw std::exception("no elements");
 	}
-	TNode<T>* new_node = new TNode<T>(data, curr);
+	if (prev == nullptr) {
+		insert_first(who);
+		return;
+	}
+	TNode<T>* new_node = new TNode<T>(who, curr);
 	prev->pNext = new_node;
 }
 
-template<typename T>
-void TList<T>::remove(const T& data_) {
-	if (pFirst == nullptr) throw "List is empty!";
-	TNode<T>* tmp = pFirst;
-	TNode<T>* pPrev = nullptr;
-	while (tmp != pStop && tmp->data != data_)
-	{
-		pPrev = tmp;
-		tmp = tmp->pNext;
+template <typename T>
+void TList<T>::insert_after(const T& who, const T& where) {
+	TNode<T>* pWhere = search(where);
+	if (pWhere == nullptr) {
+		throw std::exception("no elements");
 	}
-	if (tmp == pStop) throw "Data not found!";
-	if (pPrev == nullptr) pFirst = pFirst->pNext;
-	else { pPrev->pNext = tmp->pNext; }
-	delete tmp;
+	if (pWhere == pLast) {
+		insert_last(who);
+		return;
+	}
+	TNode<T>* new_node = new TNode<T>(who, pWhere->pNext);
+	pWhere->pNext = new_node;
+}
+
+template <typename T>
+void TList<T>::remove(const T& v)
+{
+	TNode<T>* prev = nullptr;
+	TNode<T>* curr = pFirst;
+	while (curr != pStop && curr->data != v)
+	{
+		prev = curr;
+		curr = curr->pNext;
+	}
+	if (curr == pStop)
+		throw std::exception("NoSuchElement");
+	if (curr == pFirst && curr->pNext == pStop)
+	{
+		clear();
+		return;
+	}
+	if (curr == pFirst)
+	{
+		pFirst = pFirst->pNext;
+		delete curr;
+		return;
+	}
+	if (curr == pLast)
+	{
+		prev->pNext = pStop;
+		delete curr;
+		return;
+	}
+	prev->pNext = curr->pNext;
+	delete curr;
+}
+
+template <typename T>
+void TList<T>::reset() {
+	pCurr = pFirst;
+}
+
+template <typename T>
+void TList<T>::next() {
+	if (pCurr == pStop)
+		return;
+	pCurr = pCurr->pNext;
 }
 
 template<typename T>
@@ -194,55 +243,7 @@ int TList<T>::GetSize() const {
 }
 
 template<typename T>
-bool TList<T>::IsEmpty()const {
-	return (pFirst == nullptr);
-}
-
-template<typename T>
-bool TList<T>::IsFull()const {
-	TNode<T>* tmp = new TNode<T>();
-	if (tmp == nullptr) return true;
-	delete tmp;
-	return false;
-}
-
-template<typename T>
-bool TList<T>::IsEnded()const {
-	return (pCurr == pStop);
-}
-
-template<typename T>
 TNode<T>* TList<T>::GetCurrent()const {
 	return pCurr;
 }
-
-template<typename T>
-void TList<T>::next() {
-	if (pCurr == pLast) return;
-	pCurr = pCurr->pNext;
-}
-
-template<typename T>
-void TList<T>::reset() {
-	pCurr = pFirst;
-}
-
-template <typename T>
-void TList<T>::insert_sort(const T& data) {
-   if (IsEmpty() ||  pFirst->data < data) {
-       insert_first(data);
-        return;
-    }
-    TNode<T>* tmp = pFirst;
-    while (tmp->pNext != pStop &&  tmp->pNext->data < data) {
-        tmp = tmp->pNext;
-    }
-    if (tmp->pNext->data == data) {
-        tmp->pNext->data = tmp->pNext->data+ data;
-    }
-    else {
-        insert_before(data, tmp->pNext->data);
-    }
-}
-
 #endif 

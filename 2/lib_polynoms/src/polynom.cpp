@@ -9,6 +9,7 @@ TPolynom::TPolynom(const string& _name) {
 	monoms = new THeadRingList<TMonom>;
 	name = _name;
 	ParseMonoms();
+	conversion();
 }
 
 TPolynom::TPolynom(const THeadRingList<TMonom>* l) {
@@ -16,7 +17,15 @@ TPolynom::TPolynom(const THeadRingList<TMonom>* l) {
 	name = "";
 }
 
-TPolynom::TPolynom(const TPolynom& p) : monoms(p.monoms), name(p.name) {}
+TPolynom::TPolynom(const TPolynom& p) {
+	name = p.name;
+	if (p.monoms != nullptr) {
+		monoms = new THeadRingList<TMonom>(*(p.monoms));
+	}
+	else {
+		monoms = nullptr;
+	}
+}
 
 TPolynom::~TPolynom() {
 	if (monoms != nullptr) {
@@ -66,6 +75,29 @@ void TPolynom::ParseMonoms() {
 			monoms->insert_sort(tmp);
 		}
 	}
+}
+
+void TPolynom::conversion() {
+	THeadRingList<TMonom>* newList = new THeadRingList<TMonom>();
+	monoms->reset();
+	while (!monoms->IsEnded()) {
+		TMonom m = monoms->GetCurrent()->data;
+		bool has_same_degree = false;
+		newList->reset(); 
+		for (auto it = newList->GetCurrent(); it != nullptr; it = it->pNext) {
+			if (it->data.degree == m.degree) { 
+				it->data.coeff = it->data.coeff + m.coeff; 
+				has_same_degree = true;
+				break;
+			}
+		}
+		if (!has_same_degree) {
+			newList->insert_last(m);
+		}
+		monoms->next(); 
+	}
+	delete monoms; 
+	monoms = newList; 
 }
 
 double TPolynom::operator()(double x,double y,double z) {
@@ -124,15 +156,15 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 }
 
 TPolynom TPolynom::dx() const {
-	TPolynom result; 
+	TPolynom result(*this);
 	monoms->reset();
 	while (!monoms->IsEnded()) {
-		TMonom m = monoms->GetCurrent()->data; 
+		TMonom m = monoms->GetCurrent()->data;
 		if (m.degree >= 100) {
-			int new_degree = m.degree - 100; 
-			double new_coeff = m.coeff * (m.degree / 100); 
+			int new_degree = m.degree - 100;
+			double new_coeff = m.coeff * (m.degree / 100);
 			m.degree = new_degree;
-			m.coeff = new_coeff; 
+			m.coeff = new_coeff;
 			result.monoms->insert_sort(m);
 		}
 		monoms->next();
@@ -196,24 +228,32 @@ bool TPolynom::operator!=(const TPolynom& p) const {
 	return !(*this == p);
 }
 
- ostream& operator<<(ostream& out, const TPolynom& p){
-        while (!p.monoms->IsEnded()) {
-			int deg = p.monoms->GetCurrent()->data.degree;
-            int coeff = p.monoms->GetCurrent()->data.coeff;
-            int x = deg / 100;
-            int y = (deg % 100) / 10;
-            int z = deg % 10;
-            if (deg == 0) {cout << p.monoms->GetCurrent()->data.coeff << endl;}
-                if (coeff < 0) { cout << "(" << p.monoms->GetCurrent()->data.coeff << ")"; }
-                if (coeff != 1 && coeff >0) {cout << p.monoms->GetCurrent()->data.coeff;}
-                if (x == 1) {cout << "x";}
-                if (y == 1) {cout << "y"; }
-                if (z == 1) {  cout << "z"; }
-                if (x != 0 && x != 1) { cout << "x^" << x;}
-                if (y != 0 && y!= 1) {cout << "y^" << y;}
-                if (z != 0&&z!=1) {   cout << "z^" << z;}
-           if(p.monoms->GetCurrent()->pNext != nullptr)   cout <<"+";
-            p.monoms->next();
-            }
-            return out;
-        }
+ostream& operator<<(ostream& out, const TPolynom& p) {
+	THeadRingList<TMonom>* monoms = p.monoms;
+	bool firstTerm = true; 
+	monoms->reset();
+	while (!monoms->IsEnded()) {
+		int deg = monoms->GetCurrent()->data.degree;
+		int coeff = monoms->GetCurrent()->data.coeff;
+		int x = deg / 100;
+		int y = (deg % 100) / 10;
+		int z = deg % 10;
+		if (coeff != 0) {
+			if (!firstTerm) { 
+				out << ((coeff > 0) ? " + " : " - ");
+			}
+			else {
+				firstTerm = false;
+			}
+			if (abs(coeff) != 1 || deg == 0) { 
+				out << abs(coeff);
+			}
+			if (x != 0) out << "x" << ((x != 1) ? "^" + to_string(x) : "");
+			if (y != 0) out << "y" << ((y != 1) ? "^" + to_string(y) : "");
+			if (z != 0) out << "z" << ((z != 1) ? "^" + to_string(z) : "");
+		}
+		monoms->next(); 
+	}
+	if (firstTerm) out << "0"; 
+	return out;
+}

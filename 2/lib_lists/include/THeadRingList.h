@@ -14,22 +14,21 @@ public:
     THeadRingList(const THeadRingList& ringL);
     ~THeadRingList();
     void InsertFirst(const T& data);
+    void InsertLast(const T& data);
     void insert_sort(const T& data);
 };
 
 template <typename T>
-THeadRingList<T>::THeadRingList() : TList<T>(), pHead(nullptr) {}
+THeadRingList<T>::THeadRingList() : TList<T>() {
+    pHead = new TNode<T>();
+    pStop = pHead;
+}
 
 template <typename T>
-THeadRingList<T>::THeadRingList<T>(const THeadRingList& ringL) : TList(ringL) {
-    pHead = new TNode<T>(ringL.pHead->data);
-    if (ringL.IsEmpty()) {
-        pHead->pNext = pHead;
-    }
-    else {
-        pHead->pNext = pFirst;
-    }
-    pLast->pNext = pHead;
+THeadRingList<T>::THeadRingList(const THeadRingList<T>& ringL) : TList<T>(ringL) {
+    pHead = new TNode<T>(ringL.pHead->data, pFirst);
+    if (!ringL.IsEmpty())
+        pLast->pNext = pHead;
     pStop = pHead;
 }
 
@@ -40,35 +39,36 @@ THeadRingList<T>::~THeadRingList() {
 
 template <typename T>
 void THeadRingList<T>::InsertFirst(const T& data) {
-    if (pHead == nullptr) {
-        TNode<T>* new_head = new TNode<T>(data);
-        pHead = new_head;
-        pHead->pNext = pHead;
-        pStop = pHead;
-        return;
-    }
-    insert_first(data);
+    TList<T>::insert_first(data);
     pHead->pNext = pFirst;
     pStop = pHead;
     pLast->pNext = pHead;
 }
 
 template <typename T>
+void THeadRingList<T>::InsertLast(const T& data) {
+    if (IsEmpty()) {
+        THeadRingList<T>::InsertFirst(data);
+        return;
+    }
+    TList<T>::InsertLast(data);
+}
+
+template <typename T>
 void THeadRingList<T>::insert_sort(const T& data) {
-    if (IsEmpty() || pFirst->data < data) {
+    if (IsEmpty() || data < pFirst->data) {
         InsertFirst(data);
         return;
     }
     TNode<T>* tmp = pFirst;
-    while (tmp->pNext != pStop && tmp->pNext->data < data) {
+    while (tmp->pNext != pStop && tmp->pNext->data <= data) {
         tmp = tmp->pNext;
     }
-    if (tmp->pNext->data == data) {
-        tmp->pNext->data = tmp->pNext->data + data;
+    if (tmp->data == data) {
+        tmp->data = tmp->data + data;
+        return;
     }
-    else {
-        insert_before(data, tmp->pNext->data);
-    }
+    insert_after(data, tmp->data);
 }
 
 #endif 

@@ -21,6 +21,10 @@ bool TMonom::operator<(const TMonom& data) const {
 	return (degree < data.degree);
 }
 
+bool TMonom::operator>(const TMonom& data) const {
+	return (degree>data.degree);
+}
+
 bool TMonom::operator<=(const TMonom& data) const {
 	return (degree <= data.degree);
 }
