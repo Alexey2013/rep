@@ -67,7 +67,6 @@ TEST(THeadRingList, can_remove_last_element)
 	EXPECT_EQ(1, list.GetCurrent()->data);
 }
 
-
 //TEST(THeadRingList, can_clear_list)
 //{
 //	THeadRingList<int> list;
@@ -78,26 +77,26 @@ TEST(THeadRingList, can_remove_last_element)
 //	EXPECT_EQ(nullptr, list.GetCurrent());
 //}
 
-//TEST(THeadRingList, can_insert_element_before_current)
-//{
-//	THeadRingList<int> list;
-//	list.insert_last(1);
-//	list.next();
-//	list.insert_last(3);
-//	list.next();
-//	list.insert_before(2, list.GetCurrent()->data);
-//	EXPECT_EQ(2, list.GetCurrent()->data);
-//}
-//
-//TEST(THeadRingList, can_insert_element_after_current)
-//{
-//	THeadRingList<int> list;
-//	list.insert_last(1);
-//	list.insert_last(3);
-//	list.insert_after(2, list.GetCurrent()->data);
-//	list.next();
-//	EXPECT_EQ(2, list.GetCurrent()->data);
-//}
+TEST(THeadRingList, can_insert_element_before_current)
+{
+	THeadRingList<int> list;
+	list.insert_last(1);
+	list.insert_last(3);
+	list.insert_before(2, list.GetCurrent()->data);
+	list.reset();
+	list.next();
+	EXPECT_EQ(2, list.GetCurrent()->data);
+}
+
+TEST(THeadRingList, can_insert_element_after_current)
+{
+	THeadRingList<int> list;
+	list.insert_last(1);
+	list.next();
+	list.insert_last(3);
+	list.insert_after(2, list.GetCurrent()->data);
+	EXPECT_EQ(2, list.GetCurrent()->data);
+}
 
 TEST(THeadRingList, get_next_element_in_ring)
 {

@@ -14,14 +14,15 @@ int main() {
 		getline(cin, example2);
 		TPolynom pol2(example2);
 		cout << pol2 << endl;
-	//	cout << "p1+p2:" << pol1 + pol2 << endl;
-	//	cout << "p1-p2:" << pol1 - pol2 << endl;
+
+		cout << "p1+p2:" << pol1 + pol2 << endl;
+		cout << "p1-p2:" << pol1 - pol2 << endl;
 		cout << "p1*p2:" << pol1 * pol2 << endl;
 
-		//cout << "1:dx:" << pol1.dx() << endl;
-		//cout << "1:dy:" << pol1.dy() << endl;
-		//cout << "1:dz:" << pol1.dz() << endl;
-	//	cout << "p1(0.1, 0.2, 0.3):" << pol1(0.1, 0.2, 0.3) << endl;
+		cout << "1:dx:" << pol1.dx() << endl;
+		cout << "1:dy:" << pol1.dy() << endl;
+		cout << "1:dz:" << pol1.dz() << endl;
+		cout << "p1(0.1, 0.2, 0.3):" << pol1(0.1, 0.2, 0.3) << endl;
 	}
 	catch (char* exp) {
 		cout << exp << endl;

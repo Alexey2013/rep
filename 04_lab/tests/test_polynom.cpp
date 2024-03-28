@@ -32,7 +32,12 @@ TEST(TPolynom, copied_polinom_is_correct)
 	EXPECT_EQ(p1, p2);
 }
 
-TEST(TPolynom, conversation_tese) {
+TEST(TPolynom, no_throw_when_polynom_will_be_empty) 
+{
+   ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
+}
+
+TEST(TPolynom, conversation_test) {
 	TPolynom p1("x+x-x+x+y+y+z+z+z");
 	TPolynom p2("2x+2y+3z");
 	EXPECT_EQ(p1, p2);

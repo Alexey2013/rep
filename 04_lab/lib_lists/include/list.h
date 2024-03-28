@@ -31,7 +31,6 @@ public:
 	TNode<T>* GetCurrent() const;
 	void next();
 	void reset();
-	void insert_sort(const T& data);
 };
 
 template <typename T>
@@ -154,28 +153,35 @@ void TList<T>::insert_last(const T& data) {
 
 template <typename T>
 void TList<T>::insert_before(const T& who, const T& where) {
-	TNode<T>* prev = nullptr;
-	TNode<T>* curr = pFirst;
-	while (curr != pStop && curr->data != where) {
-		prev = curr;
-		curr = curr->pNext;
-	}
-	if (curr == pStop) {
-		throw std::exception("no elements");
-	}
-	if (prev == nullptr) {
+	TNode<T>* pPrev = nullptr;
+
+	if (pFirst != pStop && pFirst->data == where) {
 		insert_first(who);
-		return;
 	}
-	TNode<T>* new_node = new TNode<T>(who, curr);
-	prev->pNext = new_node;
+	else {
+		TNode<T>* tmp = pFirst;
+		while (tmp != pStop && tmp->data != where) {
+			pPrev = tmp;
+			tmp = tmp->pNext;
+		}
+		if (tmp == pStop) {
+			throw ("Data not found!");
+		}
+		TNode<T>* pNode = new TNode<T>(who, tmp);
+		if (pPrev != nullptr) {
+			pPrev->pNext = pNode;
+		}
+		else {
+			pFirst = pNode;
+		}
+	}
 }
 
 template <typename T>
 void TList<T>::insert_after(const T& who, const T& where) {
 	TNode<T>* pWhere = search(where);
 	if (pWhere == nullptr) {
-		throw std::exception("no elements");
+		throw ("no elements");
 	}
 	if (pWhere == pLast) {
 		insert_last(who);
@@ -186,36 +192,20 @@ void TList<T>::insert_after(const T& who, const T& where) {
 }
 
 template <typename T>
-void TList<T>::remove(const T& v)
+void TList<T>::remove(const T& data_)
 {
-	TNode<T>* prev = nullptr;
-	TNode<T>* curr = pFirst;
-	while (curr != pStop && curr->data != v)
+	if (pFirst == nullptr) throw "List is empty!";
+	TNode<T>* tmp = pFirst;
+	TNode<T>* pPrev = nullptr;
+	while (tmp != pStop && tmp->data != data_)
 	{
-		prev = curr;
-		curr = curr->pNext;
+		pPrev = tmp;
+		tmp = tmp->pNext;
 	}
-	if (curr == pStop)
-		throw std::exception("NoSuchElement");
-	if (curr == pFirst && curr->pNext == pStop)
-	{
-		clear();
-		return;
-	}
-	if (curr == pFirst)
-	{
-		pFirst = pFirst->pNext;
-		delete curr;
-		return;
-	}
-	if (curr == pLast)
-	{
-		prev->pNext = pStop;
-		delete curr;
-		return;
-	}
-	prev->pNext = curr->pNext;
-	delete curr;
+	if (tmp == pStop)throw "Data not found!";
+	if (pPrev == nullptr) pFirst = pFirst->pNext;
+	else { pPrev->pNext = tmp->pNext; }
+	delete tmp;
 }
 
 template <typename T>
@@ -225,8 +215,7 @@ void TList<T>::reset() {
 
 template <typename T>
 void TList<T>::next() {
-	if (pCurr == pStop)
-		return;
+	if (pCurr == pStop) return;
 	pCurr = pCurr->pNext;
 }
 
@@ -246,4 +235,5 @@ template<typename T>
 TNode<T>* TList<T>::GetCurrent()const {
 	return pCurr;
 }
+
 #endif 
