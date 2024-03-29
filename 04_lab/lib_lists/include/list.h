@@ -84,22 +84,19 @@ TList<T>::TList(TNode<T>* pNode) {
 
 template <typename T>
 void TList<T>::clear() {
-	//if (pFirst == nullptr)
-	//	return;
-
-	//TNode<T>* curr = pFirst;
-	//TNode<T>* next = nullptr;
-
-	//do {
-	//	next = curr->pNext;
-	//	delete curr;
-	//	curr = next;
-	//} while (curr != pFirst);
-
-	//pFirst = nullptr;
-	//pCurr = nullptr;
-	//pLast = nullptr;
+	if (pFirst == nullptr) return; // Проверка на пустой список
+	TNode<T>* curr = pFirst;
+	TNode<T>* next = pFirst->pNext;
+	while (next != nullptr) { // Исправление: было next != pStop
+		delete curr;
+		curr = next;
+		next = curr->pNext;
+	}
+	delete curr;
+	pFirst = nullptr;
+	pLast = nullptr;
 }
+
 
 template <typename T>
 TList<T>::~TList() {

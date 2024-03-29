@@ -7,15 +7,15 @@ using namespace std;
 
 template <typename T>
 class THeadRingList : public TList<T> {
-public:
+private:
     TNode<T>* pHead;
-
+public:
     THeadRingList();
     THeadRingList(const THeadRingList& ringL);
     ~THeadRingList();
     void InsertFirst(const T& data);
-    void InsertLast(const T& data);
     void insert_sort(const T& data);
+    void Clear();
 };
 
 template <typename T>
@@ -27,13 +27,15 @@ THeadRingList<T>::THeadRingList() : TList<T>() {
 template <typename T>
 THeadRingList<T>::THeadRingList(const THeadRingList<T>& ringL) : TList<T>(ringL) {
     pHead = new TNode<T>(ringL.pHead->data, pFirst);
-    if (!ringL.IsEmpty())
+    if (!ringL.IsEmpty()) {
         pLast->pNext = pHead;
+    }
     pStop = pHead;
 }
 
 template <typename T>
 THeadRingList<T>::~THeadRingList() {
+    Clear();
     delete pHead;
 }
 
@@ -43,15 +45,6 @@ void THeadRingList<T>::InsertFirst(const T& data) {
     pHead->pNext = pFirst;
     pStop = pHead;
     pLast->pNext = pHead;
-}
-
-template <typename T>
-void THeadRingList<T>::InsertLast(const T& data) {
-    if (IsEmpty()) {
-        THeadRingList<T>::InsertFirst(data);
-        return;
-    }
-    TList<T>::InsertLast(data);
 }
 
 template <typename T>
@@ -69,6 +62,20 @@ void THeadRingList<T>::insert_sort(const T& data) {
         return;
     }
     insert_after(data, tmp->data);
+}
+
+template <typename T>
+void THeadRingList<T>::Clear() {
+    if (pHead == nullptr) return; 
+    TNode<T>* curr = pHead->pNext;
+    while (curr != pHead && curr != nullptr) { 
+        TNode<T>* next = curr->pNext;
+        delete curr;
+        curr = next;
+    }
+    pHead = nullptr;
+    pFirst = nullptr;
+    pLast = nullptr;
 }
 
 #endif 
