@@ -8,6 +8,7 @@ TPolynom::TPolynom() {
 TPolynom::TPolynom(const string& _name) {
 	monoms = new THeadRingList<TMonom>;
 	name = _name;
+	RemoveSpaces(name);
 	ParseMonoms();
 }
 
@@ -30,6 +31,10 @@ TPolynom::~TPolynom() {
 	if (monoms != nullptr) {
 		delete monoms;
 	}
+}
+
+void TPolynom::RemoveSpaces(string& str) const {
+	str.erase(remove(str.begin(), str.end(), ' '), str.end());
 }
 
 void TPolynom::ParseMonoms() {

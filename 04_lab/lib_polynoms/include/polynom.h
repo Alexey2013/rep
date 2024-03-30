@@ -16,6 +16,7 @@ private:
 	THeadRingList<TMonom>* monoms;
 
 	void ParseMonoms();
+	void RemoveSpaces(string& str) const;
 public:
 	TPolynom();
 	TPolynom(const string& _name);

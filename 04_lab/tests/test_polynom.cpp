@@ -43,6 +43,18 @@ TEST(TPolynom, conversation_test) {
 	EXPECT_EQ(p1, p2);
 }
 
+TEST(TPolynom, can_create_polynom_in_different_order)
+{
+	TPolynom p("x+y+z");
+	TPolynom p_reordered("z+y+x");
+	EXPECT_EQ(p, p_reordered);
+}
+
+TEST(TPolynom, can_create_polynom_with_negative_coefficient)
+{
+	ASSERT_NO_THROW(TPolynom p("-2x^2"));
+}
+
 TEST(TPolynom, calculate_is_correct1) 
 {
 	TPolynom pol(str);
@@ -58,6 +70,12 @@ TEST(TPolynom, calculate_is_correct2)
 }
 
 TEST(TPolynom, calculate_is_correct3)
+{
+	TPolynom p("5");
+	EXPECT_EQ(p(0, 0, 0), 5);
+}
+
+TEST(TPolynom, calculate_is_correct4)
 {
 	TPolynom pol("x^3+x^2+y+z+1");
 	double res = pol(1, 2, 3);
@@ -99,6 +117,8 @@ TEST(TPolynom,sum_is_correct )
 	EXPECT_EQ(pol1+pol2, pol3);
 }
 
+
+
 TEST(TPolynom, diff_is_correct) 
 {
 	TPolynom pol1("2x^3+y^2+y+x");
@@ -107,10 +127,34 @@ TEST(TPolynom, diff_is_correct)
 	EXPECT_EQ(pol1-pol2, pol3);
 }
 
-TEST(TPolynom, mult_is_correct) 
+TEST(TPolynom, diff_is_with_negative_coefficients)
+{
+	TPolynom p1("-3x^2-2y+5");
+	TPolynom p2("-x^2-4y-3");
+	TPolynom p3("2x^2+2y+8");
+	EXPECT_EQ(p1 - p2, p3);
+}
+
+TEST(TPolynom, mult_is_correct1) 
 {
 	TPolynom pol1("x^2+y");
 	TPolynom pol2("x^3+x");
 	TPolynom pol3("x^5+x^3+x^3*y+x*y");
 	EXPECT_EQ(pol1*pol2, pol3);
+}
+
+TEST(TPolynom, mult_is_correct2)
+{
+	TPolynom p1("x^2+y");
+	TPolynom p2("x^1/2");
+	TPolynom p_mult("x^3/2+yx^1/2");
+	EXPECT_EQ(p1 * p2, p_mult);
+}
+
+TEST(TPolynom, mult_is_correct_with_1)
+{
+	TPolynom p1("x+1");
+	TPolynom p2("y+1");
+	TPolynom p_mult("x*y+x+y+1");
+	EXPECT_EQ(p1 * p2, p_mult);
 }
