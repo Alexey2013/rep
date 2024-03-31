@@ -112,7 +112,7 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 TPolynom TPolynom::operator-(const TPolynom& p) {
 	TPolynom neg_p = p;
 	neg_p.monoms->reset();
-	while (neg_p.monoms->IsEnded()) {
+	while (!neg_p.monoms->IsEnded()) {
 		neg_p.monoms->GetCurrent()->data.coeff *= -1;
 		neg_p.monoms->next();
 	}
@@ -217,6 +217,10 @@ bool TPolynom::operator!=(const TPolynom& p) const {
 
 ostream& operator<<(ostream& out, const TPolynom& p) {
 	THeadRingList<TMonom>* monoms = p.monoms;
+	if (monoms->IsEmpty()) {
+		out << "0";
+		return out;
+	}
 	bool firstTerm = true;
 	monoms->reset();
 	while (!monoms->IsEnded()) {
@@ -227,7 +231,7 @@ ostream& operator<<(ostream& out, const TPolynom& p) {
 		int z = deg % 10;
 		if (coeff != 0) {
 			if (!firstTerm) {
-				out << ((coeff > 0) ? " + " : " - ");
+				out << ((coeff > 0) ? "+" : "-");
 			}
 			else {
 				firstTerm = false;
@@ -241,6 +245,5 @@ ostream& operator<<(ostream& out, const TPolynom& p) {
 		}
 		monoms->next();
 	}
-	if (firstTerm) out << "0";
 	return out;
 }

@@ -42,11 +42,6 @@ TList<T>::TList() {
 }
 
 template <typename T>
-bool TList<T>::IsEmpty() const {
-	return (pFirst == nullptr);
-}
-
-template <typename T>
 TList<T>::TList(const TList& l) {
 	if (l.IsEmpty())
 	{
@@ -84,10 +79,10 @@ TList<T>::TList(TNode<T>* pNode) {
 
 template <typename T>
 void TList<T>::clear() {
-	if (pFirst == nullptr) return; // Проверка на пустой список
+	if (pFirst == nullptr) return;
 	TNode<T>* curr = pFirst;
 	TNode<T>* next = pFirst->pNext;
-	while (next != nullptr) { // Исправление: было next != pStop
+	while (next != nullptr) { 
 		delete curr;
 		curr = next;
 		next = curr->pNext;
@@ -96,7 +91,6 @@ void TList<T>::clear() {
 	pFirst = nullptr;
 	pLast = nullptr;
 }
-
 
 template <typename T>
 TList<T>::~TList() {
@@ -110,6 +104,11 @@ bool TList<T>::IsFull() const {
 		return true;
 	delete tmp;
 	return false;
+}
+
+template <typename T>
+bool TList<T>::IsEmpty() const {
+	return (pFirst == nullptr);
 }
 
 template <typename T>
@@ -189,8 +188,7 @@ void TList<T>::insert_after(const T& who, const T& where) {
 }
 
 template <typename T>
-void TList<T>::remove(const T& data_)
-{
+void TList<T>::remove(const T& data_){
 	if (pFirst == nullptr) throw "List is empty!";
 	TNode<T>* tmp = pFirst;
 	TNode<T>* pPrev = nullptr;
