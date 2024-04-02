@@ -8,13 +8,13 @@ TPolynom::TPolynom() {
 TPolynom::TPolynom(const string& _name) {
 	monoms = new THeadRingList<TMonom>();
 	name = _name;
-	RemoveSpaces(name);
+	conversion(name);
 	ParseMonoms();
 }
 
 TPolynom::TPolynom(const THeadRingList<TMonom>* l) {
 	monoms = new THeadRingList<TMonom>(*l);
-	name = to_string(l);
+	name = ToString();
 }
 
 TPolynom::TPolynom(const TPolynom& p) {
@@ -28,9 +28,9 @@ TPolynom::~TPolynom() {
 	}
 }
 
-void TPolynom::RemoveSpaces(string& str) const {
+void TPolynom::conversion(string& str) const {
 	str.erase(remove(str.begin(), str.end(), ' '), str.end());
-	//
+	transform(str.begin(), str.end(), str.begin(), ::tolower);
 }
 
 void TPolynom::ParseMonoms() {
@@ -85,7 +85,7 @@ double TPolynom::operator()(double x,double y,double z) {
 	return (expression.Calculate());
 }
 
-const TPolynom& TPolynom::operator=(const TPolynom& p) {
+const TPolynom& TPolynom::operator=(const TPolynom& p)  {
 	if (this != &p) {
 		name = p.name;
 		delete monoms;
@@ -106,13 +106,13 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 }
 
 TPolynom TPolynom::operator-(const TPolynom& p) {
-	return (*this-p);
+	return (*this) + (-p);
 }
 
-TPolynom TPolynom::operator-() {
+TPolynom TPolynom::operator-() const {
 	TPolynom result(*this);
-	result.monoms->reset(); 
-	while (result.monoms->IsEnded()) {
+	result.monoms->reset();
+	while (!result.monoms->IsEnded()) {
 		result.monoms->GetCurrent()->data.coeff *= -1;
 		result.monoms->next();
 	}
@@ -207,39 +207,39 @@ bool TPolynom::operator!=(const TPolynom& p) const {
 	return !(*this == p);
 }
 
-ostream& operator<<(ostream& out, const TPolynom& p) {
-	cout << to_string(p.monoms);
-	return out;
-}
-
-string TPolynom::to_string(const THeadRingList<TMonom>* l) {
+string TPolynom::ToString() const {
 	string str;
-	if (l->IsEmpty()) {
+	if (monoms->IsEmpty()) {
 		return "0";
 	}
 	bool firstTerm = true;
-	l->reset();
-	while (!l->IsEnded()) {
-				int deg = l->GetCurrent()->data.degree;
-				int coeff = l->GetCurrent()->data.coeff;
-				int x = deg / 100;
-				int y = (deg % 100) / 10;
-				int z = deg % 10;
-				if (coeff != 0) {
-					if (!firstTerm) {
-						str+=((coeff > 0) ? "+" : "-");
-					}
-					else {
-						firstTerm = false;
-					}
-					if (abs(coeff) != 1 || deg == 0) {
-						str+= abs(coeff);
-					}
-					if (x != 0) str +="x"+((x != 1) ? "^" + to_string(x) : "");
-					if (y != 0) str +="y"+((y != 1) ? "^" + to_string(y) : "");
-					if (z != 0) str +="z"+((z != 1) ? "^" + to_string(z) : "");
-				}
-				l->next();
+	monoms->reset();
+	while (!monoms->IsEnded()) {
+		int deg = monoms->GetCurrent()->data.degree;
+		int coeff = monoms->GetCurrent()->data.coeff;
+		int x = deg / 100;
+		int y = (deg % 100) / 10;
+		int z = deg % 10;
+		if (coeff != 0) {
+			if (!firstTerm) {
+				str += ((coeff > 0) ? "+" : "-");
 			}
+			else {
+				firstTerm = false;
+			}
+			if (abs(coeff) != 1 || deg == 0) {
+				str += to_string(abs(coeff));
+			}
+			if (x != 0) str += "x" + ((x != 1) ? "^" + to_string(x) : "");
+			if (y != 0) str += "y" + ((y != 1) ? "^" + to_string(y) : "");
+			if (z != 0) str += "z" + ((z != 1) ? "^" + to_string(z) : "");
+		}
+		monoms->next();
+	}
 	return str;
+}
+
+ostream& operator<<(ostream& out, const TPolynom& p) {
+	cout << p.ToString();
+	return out;
 }

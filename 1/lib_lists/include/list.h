@@ -15,15 +15,14 @@ public:
 	TList();
 	TList(TNode<T>* _pFirst);
 	TList(const TList<T>& list);
-	~TList();
-
+	virtual ~TList();
 	TNode<T>* search(const T& data);
 	TNode<T>* GetCurrent() const;
-	void insert_first(const T& data); // virtual
-	void insert_last(const T& data);
-	void insert_after(const T& data, const T& beforedata);
-	void insert_before(const T& data, const T& nextdata);
-	void remove(const T& data);
+	virtual void insert_first(const T& data); // virtual
+	virtual void insert_last(const T& data);
+	virtual void insert_after(const T& data, const T& beforedata);
+	virtual void insert_before(const T& data, const T& nextdata);
+	virtual void remove(const T& data);
 	void clear();
 	int GetSize() const;
 	bool IsEmpty() const;
@@ -148,29 +147,21 @@ void TList<T>::insert_last(const T& data) {
 }
 
 template <typename T>
-void TList<T>::insert_before(const T& who, const T& where) { // virtual
-	TNode<T>* pPrev = nullptr;
-
-	if (pFirst != pStop && pFirst->data == where) {
+void TList<T>::insert_before(const T& who, const T& where) {
+	TNode<T>* pWhere = search(where);
+	if (pWhere == nullptr) {
+		throw ("Data not found!");
+	}
+	if (pWhere == pFirst) {
 		insert_first(who);
+		return;
 	}
-	else {
-		TNode<T>* tmp = pFirst;
-		while (tmp != pStop && tmp->data != where) {
-			pPrev = tmp;
-			tmp = tmp->pNext;
-		}
-		if (tmp == pStop) {
-			throw ("Data not found!");
-		}
-		TNode<T>* pNode = new TNode<T>(who, tmp);
-		if (pPrev != nullptr) {
-			pPrev->pNext = pNode;
-		}
-		else {
-			pFirst = pNode;
-		}
+	TNode<T>* pPrev = pFirst;
+	while (pPrev->pNext != pWhere) {
+		pPrev = pPrev->pNext;
 	}
+	TNode<T>* new_node = new TNode<T>(who, pWhere);
+	pPrev->pNext = new_node;
 }
 
 template <typename T>
@@ -234,7 +225,7 @@ TNode<T>* TList<T>::GetCurrent()const {
 template <typename T>
 void TList<T>::insert_sort(const T& data) {
 	if (IsEmpty() || data < pFirst->data) {
-		InsertFirst(data);
+		Insert_First(data);
 		return;
 	}
 	TNode<T>* tmp = pFirst;

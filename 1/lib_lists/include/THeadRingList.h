@@ -13,6 +13,7 @@ public:
     THeadRingList(const THeadRingList& ringL);
     ~THeadRingList();
     void InsertFirst(const T& data);
+    void insert_sort(const T& data);
     void Clear();
 };
 
@@ -43,6 +44,23 @@ void THeadRingList<T>::InsertFirst(const T& data) {
     pHead->pNext = pFirst;
     pStop = pHead;
     pLast->pNext = pHead;
+}
+
+template <typename T>
+void THeadRingList<T>::insert_sort(const T& data) {
+    if (IsEmpty() || data < pFirst->data) {
+        InsertFirst(data);
+        return;
+    }
+    TNode<T>* tmp = pFirst;
+    while (tmp->pNext != pStop && tmp->pNext->data <= data) {
+        tmp = tmp->pNext;
+    }
+    if (tmp->data == data) {
+        tmp->data = tmp->data + data;
+        return;
+    }
+    insert_after(data, tmp->data);
 }
 
 template <typename T>
