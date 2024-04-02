@@ -54,8 +54,7 @@ TStack<T>::~TStack() {
 }
 
 template <class T>
-void TStack<T>::Realloc(int step)
-{
+void TStack<T>::Realloc(int step){
 	if (step <= 0) { throw "Step must be greater than 0"; }
 	T* tmp = new T[step + maxSize];
 	for (int i = 0; i < maxSize; i++) {
@@ -93,6 +92,5 @@ T TStack<T>::Pop() {
 	if (IsEmpty()) {throw "Stack is empty!";}
 	return elems[top--];
 }
-
 
 #endif 
