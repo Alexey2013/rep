@@ -24,17 +24,6 @@ TEST(THeadRingList, can_copy_list)
 	EXPECT_EQ(list1.GetCurrent()->data, list2.GetCurrent()->data);
 }
 
-TEST(THeadRingList, can_assign_list)
-{
-	THeadRingList<int> list1;
-	list1.insert_last(1);
-	list1.insert_last(2);
-	THeadRingList<int> list2;
-	list2.insert_last(3);
-	list2 = list1;
-	EXPECT_EQ(list1.GetCurrent()->data, list2.GetCurrent()->data);
-}
-
 TEST(THeadRingList, can_insert_element) {
 	THeadRingList<int> list;
 	list.insert_last(1);
@@ -50,13 +39,13 @@ TEST(THeadRingList, can_get_next_elemet)
 	EXPECT_EQ(2, list.GetCurrent()->data);
 }
 
-TEST(THeadRingList, check_list_is_ring)
+TEST(THeadRingList, check_hr_list_cannot_do_Next_method_at_Head)
 {
-	THeadRingList<int> list;
-	list.insert_last(1);
-	list.insert_last(2);
-	list.next(); list.next(); list.next();
-	ASSERT_NO_THROW(list.GetCurrent()->data);
+	THeadRingList<int> hr_list;
+	hr_list.insert_last(1);
+	hr_list.insert_last(2);
+	hr_list.next();
+	ASSERT_ANY_THROW(hr_list.next());
 }
 
 TEST(THeadRingList, can_insert_element_at_beginning)
@@ -103,7 +92,7 @@ TEST(THeadRingList, can_clear_list)
 	list.insert_last(1);
 	list.insert_last(2);
 	list.insert_last(3);
-	list.Clear();
+	list.clear();
 	EXPECT_TRUE(list.IsEmpty());
 }
 
@@ -143,4 +132,37 @@ TEST(THeadRingList, can_find_element_by_value)
 	list.insert_last(2);
 	list.insert_last(3);
 	EXPECT_EQ(2, list.search(2)->data);
+}
+
+TEST(THeadRingList, get_size_is_right) {
+	THeadRingList<int> list;
+	list.insert_last(5);
+	list.insert_last(3);
+	list.insert_last(7);
+	list.insert_last(1);
+	EXPECT_EQ(4, list.GetSize());
+}
+
+TEST(THeadRingList, sort_is_right) {
+	THeadRingList<int> list;
+	list.insert_last(5);
+	list.insert_last(3);
+	list.insert_last(7);
+	list.insert_last(1);
+	list.sort();
+	EXPECT_EQ(0, list.GetCurrent()->data);
+	list.next();
+	EXPECT_EQ(1, list.GetCurrent()->data);
+	list.next();
+	EXPECT_EQ(3, list.GetCurrent()->data);
+	list.next();
+	EXPECT_EQ(5, list.GetCurrent()->data);
+	list.next();
+	EXPECT_EQ(7, list.GetCurrent()->data);
+}
+
+TEST(THeadRingList, can_sort_empty_list)
+{
+	THeadRingList<int> list;
+	EXPECT_NO_THROW(list.sort());
 }

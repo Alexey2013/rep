@@ -16,13 +16,13 @@ public:
 	TList(TNode<T>* _pFirst);
 	TList(const TList<T>& list);
 	virtual ~TList();
+	virtual void insert_first(const T& data);
+	virtual void insert_last(const T& data);
+	virtual void remove(const T& data);
+	void insert_after(const T& data, const T& beforedata);
+	void insert_before(const T& data, const T& nextdata);
 	TNode<T>* search(const T& data);
 	TNode<T>* GetCurrent() const;
-	virtual void insert_first(const T& data); // virtual
-	virtual void insert_last(const T& data);
-	virtual void insert_after(const T& data, const T& beforedata);
-	virtual void insert_before(const T& data, const T& nextdata);
-	virtual void remove(const T& data);
 	void clear();
 	int GetSize() const;
 	bool IsEmpty() const;
@@ -125,7 +125,7 @@ TNode<T>* TList<T>::search(const T& data) {
 }
 
 template <typename T>
-void TList<T>::insert_first(const T& data) { // virtual
+void TList<T>::insert_first(const T& data) { 
 	TNode<T>* new_first = new TNode<T>(data, pFirst);
 	pFirst = new_first;
 	if (pLast == nullptr) {
@@ -179,7 +179,7 @@ void TList<T>::insert_after(const T& who, const T& where) {
 }
 
 template <typename T>
-void TList<T>::remove(const T& data_){ // virtual
+void TList<T>::remove(const T& data_) { // virtual
 	if (pFirst == nullptr) throw "List is empty!";
 	TNode<T>* tmp = pFirst;
 	TNode<T>* pPrev = nullptr;
@@ -201,7 +201,7 @@ void TList<T>::reset() {
 
 template <typename T>
 void TList<T>::next() {
-	if (pCurr == pStop) return;
+	if (pCurr == pStop) throw("Lis is ended");
 	pCurr = pCurr->pNext;
 }
 
@@ -225,7 +225,7 @@ TNode<T>* TList<T>::GetCurrent()const {
 template <typename T>
 void TList<T>::insert_sort(const T& data) {
 	if (IsEmpty() || data < pFirst->data) {
-		Insert_First(data);
+		insert_first(data);
 		return;
 	}
 	TNode<T>* tmp = pFirst;
@@ -240,8 +240,29 @@ void TList<T>::insert_sort(const T& data) {
 }
 
 template <typename T>
-void TList<T>::sort(){
-
+void TList<T>::sort() {
+	if (IsEmpty() || GetSize() == 1) {
+		return;
+	}
+	TNode<T>* current = pFirst;
+	do {
+		bool swapped = false;
+		TNode<T>* prev = nullptr;
+		TNode<T>* next = current->pNext;
+		while (next != nullptr && next != pFirst) {
+			if (current->data > next->data) {
+				std::swap(current->data, next->data);
+				swapped = true;
+			}
+			prev = current;
+			current = next;
+			next = next->pNext;
+		}
+		if (!swapped) {
+			break;
+		}
+		current = pFirst;
+	} while (true);
+pCurr = pFirst;
 }
-
 #endif 
