@@ -1,10 +1,8 @@
 #ifndef _POLYNOM_H
 #define _POLYNOM_H
-#include <iostream>
 #include <string>
-#include < algorithm >
+#include <algorithm>
 #include "monom.h"
-#include "stack.h"
 #include "arithmetic.h"
 #include "THeadRingList.h"
 using namespace std;

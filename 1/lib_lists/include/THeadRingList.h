@@ -1,6 +1,5 @@
 #ifndef _THEADRINGLIST_H
 #define _THEADRINGLIST_H
-#include <iostream>
 #include "list.h"
 using namespace std;
 
@@ -13,7 +12,8 @@ public:
     THeadRingList(const THeadRingList& ringL);
     ~THeadRingList();
     void insert_first(const T& data);
-    void insert_last(const T& data);
+    void remove(const T& data);
+    void insert_before(const T& who, const T& where);
 };
 
 template <typename T>
@@ -45,12 +45,42 @@ void THeadRingList<T>::insert_first(const T& data) {
 }
 
 template <typename T>
-void THeadRingList<T>::insert_last(const T& data) {
-    if (IsEmpty()) {
-        THeadRingList<T>::insert_first(data);
+void THeadRingList<T>::insert_before(const T& who, const T& where) {
+    TNode<T>* pWhere = search(where);
+    if (pWhere == pFirst) {
+        insert_first(who);
         return;
     }
-    TList<T>::insert_last(data);
+    TNode<T>* pPrev = pFirst;
+    while (pPrev->pNext != pWhere) {
+        pPrev = pPrev->pNext;
+    }
+    TNode<T>* new_node = new TNode<T>(who, pWhere);
+    pPrev->pNext = new_node;
 }
 
+template <typename T>
+void THeadRingList<T>::remove(const T& data) {
+    if (this->IsEmpty()) { throw ("List is empty!");}
+    TNode<T>* prev = nullptr;
+    TNode<T>* curr = this->pFirst;
+    do {
+        if (curr->data == data) {
+            if (prev == nullptr) { 
+                this->pFirst = curr->pNext;
+                delete curr;
+                return;
+            }
+            else {
+                prev->pNext = curr->pNext;
+                delete curr;
+                return;
+            }
+        }
+        prev = curr;
+        curr = curr->pNext;
+    } while (curr != this->pFirst);
+
+    throw ("Element not found!");
+}
 #endif 

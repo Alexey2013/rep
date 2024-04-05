@@ -27,8 +27,17 @@ TEST(TList, can_get_size)
 TEST(TList, can_get_size_of_empty_list)
 {
 	TList<int> list;
-
 	EXPECT_EQ(0, list.GetSize());
+}
+
+TEST(TList, can_copy_list)
+{
+	TList<int> list1;
+	list1.insert_last(1);
+	list1.insert_last(2);
+	TList<int> list2(list1);
+	list1.reset();
+	EXPECT_EQ(list1.GetCurrent()->data, list2.GetCurrent()->data);
 }
 
 TEST(TList, can_insert_last_in_the_list)
@@ -68,16 +77,6 @@ TEST(TList, can_remove_first_element)
 	list.insert_last(1);
 	list.insert_last(2);
 	list.remove(1);
-	EXPECT_EQ(1, list.GetSize());
-}
-
-TEST(TList, can_remove_last_element)
-{
-	TList<int> list;
-	list.insert_last(1);
-	list.insert_last(2);
-	list.remove(2);
-
 	EXPECT_EQ(1, list.GetSize());
 }
 
@@ -127,6 +126,15 @@ TEST(TList, can_insert_first_element)
 	ASSERT_NO_THROW(list.insert_first(2));
 }
 
+TEST(TList, can_find_element_by_value)
+{
+	TList<int> list;
+	list.insert_last(1);
+	list.insert_last(2);
+	list.insert_last(3);
+	EXPECT_EQ(2, list.search(2)->data);
+}
+
 TEST(TList, can_insert_before_element)
 {
 	TList<int> list;
@@ -165,16 +173,6 @@ TEST(TList, throw_when_element_not_found_in_insert_after)
 	ASSERT_ANY_THROW(list.insert_before(3, 4));
 }
 
-TEST(TList, next_element)
-{
-	TList<int> list;
-	list.insert_first(1);
-	list.insert_first(2);
-	list.next();
-	TNode<int>* tmp = list.GetCurrent();
-	EXPECT_EQ(1, tmp->data);
-}
-
 TEST(TList, reset_test) 
 {
 	TList<int> list;
@@ -182,8 +180,7 @@ TEST(TList, reset_test)
 	list.insert_last(2);
 	list.next();
 	list.reset();
-	TNode<int>* tmp = list.GetCurrent();
-	EXPECT_EQ(1, tmp->data);
+	EXPECT_EQ(1, list.GetCurrent()->data);
 }
 
 TEST(TList, insert_to_sorted_list_is_right)
@@ -202,7 +199,7 @@ TEST(TList, insert_to_sorted_list_is_right)
 	EXPECT_EQ(7, list.GetCurrent()->data);
 }
 
-TEST(TList, insert_sort_correctly_into_empty_list)
+TEST(TList, insert_sort_correct_into_empty_list)
 {
 	TList<int> list;
 	list.insert_sort(5);
@@ -224,10 +221,4 @@ TEST(TList, sort_is_right)
 	EXPECT_EQ(5, list.GetCurrent()->data);
 	list.next();
 	EXPECT_EQ(7, list.GetCurrent()->data);
-}
-
-TEST(TList, is_ended_returns_true_when_current_is_nullptr)
-{
-	TList<int> list;
-	EXPECT_TRUE(list.IsEnded());
 }

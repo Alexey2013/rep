@@ -1,7 +1,6 @@
 #ifndef _LIST_H
 #define _LIST_H
 #include "node.h"
-#include <iostream>
 using namespace std;
 
 template <typename T>
@@ -19,8 +18,8 @@ public:
 	virtual void insert_first(const T& data);
 	virtual void insert_last(const T& data);
 	virtual void remove(const T& data);
+	virtual void insert_before(const T& data, const T& nextdata);
 	void insert_after(const T& data, const T& beforedata);
-	void insert_before(const T& data, const T& nextdata);
 	TNode<T>* search(const T& data);
 	TNode<T>* GetCurrent() const;
 	void clear();
@@ -121,6 +120,9 @@ TNode<T>* TList<T>::search(const T& data) {
 	while (curr != pStop && curr->data != data) {
 		curr = curr->pNext;
 	}
+	if (curr == pStop) {
+		throw ("Element not found!");
+	}
 	return curr;
 }
 
@@ -149,9 +151,6 @@ void TList<T>::insert_last(const T& data) {
 template <typename T>
 void TList<T>::insert_before(const T& who, const T& where) {
 	TNode<T>* pWhere = search(where);
-	if (pWhere == nullptr) {
-		throw ("Data not found!");
-	}
 	if (pWhere == pFirst) {
 		insert_first(who);
 		return;
@@ -167,9 +166,6 @@ void TList<T>::insert_before(const T& who, const T& where) {
 template <typename T>
 void TList<T>::insert_after(const T& who, const T& where) {
 	TNode<T>* pWhere = search(where);
-	if (pWhere == nullptr) {
-		throw ("no elements");
-	}
 	if (pWhere == pLast) {
 		insert_last(who);
 		return;
@@ -263,6 +259,6 @@ void TList<T>::sort() {
 		}
 		current = pFirst;
 	} while (true);
-pCurr = pFirst;
+	pCurr = pFirst;
 }
 #endif 
