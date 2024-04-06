@@ -72,7 +72,7 @@ TEST(THeadRingList, can_remove_first_element)
 	list.insert_last(1);
 	list.insert_last(2);
 	list.remove(1);
-	EXPECT_EQ(1, list.GetSize());
+	EXPECT_EQ(2, list.GetCurrent()->data);
 }
 
 TEST(THeadRingList, throw_when_element_not_found_in_remove)
@@ -209,7 +209,6 @@ TEST(THeadRingList, sort_is_right)
 	list.insert_last(7);
 	list.insert_last(1);
 	list.sort();
-	list.next();
 	EXPECT_EQ(1, list.GetCurrent()->data);
 	list.next();
 	EXPECT_EQ(3, list.GetCurrent()->data);

@@ -16,9 +16,9 @@ public:
 	TList(const TList<T>& list);
 	virtual ~TList();
 	virtual void insert_first(const T& data);
-	virtual void insert_last(const T& data);
 	virtual void remove(const T& data);
 	virtual void insert_before(const T& data, const T& nextdata);
+	void insert_last(const T& data);
 	void insert_after(const T& data, const T& beforedata);
 	TNode<T>* search(const T& data);
 	TNode<T>* GetCurrent() const;
@@ -175,7 +175,7 @@ void TList<T>::insert_after(const T& who, const T& where) {
 }
 
 template <typename T>
-void TList<T>::remove(const T& data_) { // virtual
+void TList<T>::remove(const T& data_) { 
 	if (pFirst == nullptr) throw "List is empty!";
 	TNode<T>* tmp = pFirst;
 	TNode<T>* pPrev = nullptr;
@@ -183,6 +183,11 @@ void TList<T>::remove(const T& data_) { // virtual
 	{
 		pPrev = tmp;
 		tmp = tmp->pNext;
+	}
+	if (tmp == pFirst){
+		pFirst = pFirst->pNext;
+		delete tmp;
+		return;
 	}
 	if (tmp == pStop)throw "Data not found!";
 	if (pPrev == nullptr) pFirst = pFirst->pNext;
@@ -245,20 +250,20 @@ void TList<T>::sort() {
 		bool swapped = false;
 		TNode<T>* prev = nullptr;
 		TNode<T>* next = current->pNext;
-		while (next != nullptr && next != pFirst) {
+		while (next != nullptr && next != pStop) {
 			if (current->data > next->data) {
-				std::swap(current->data, next->data);
+				swap(current->data, next->data);
 				swapped = true;
 			}
 			prev = current;
 			current = next;
 			next = next->pNext;
 		}
-		if (!swapped) {
-			break;
-		}
+		if (!swapped) {break;}
 		current = pFirst;
+
 	} while (true);
+
 	pCurr = pFirst;
 }
 #endif 

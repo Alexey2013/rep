@@ -61,13 +61,15 @@ void THeadRingList<T>::insert_before(const T& who, const T& where) {
 
 template <typename T>
 void THeadRingList<T>::remove(const T& data) {
-    if (this->IsEmpty()) { throw ("List is empty!");}
+    if (IsEmpty()) { 
+        throw ("List is empty!");
+    }
     TNode<T>* prev = nullptr;
-    TNode<T>* curr = this->pFirst;
+    TNode<T>* curr =pFirst;
     do {
         if (curr->data == data) {
-            if (prev == nullptr) { 
-                this->pFirst = curr->pNext;
+            if (prev == nullptr) {
+               pFirst = curr->pNext;
                 delete curr;
                 return;
             }
@@ -79,8 +81,9 @@ void THeadRingList<T>::remove(const T& data) {
         }
         prev = curr;
         curr = curr->pNext;
-    } while (curr != this->pFirst);
-
+    } while (curr != pFirst);
     throw ("Element not found!");
 }
+
+
 #endif 
