@@ -31,8 +31,8 @@ TEST(TArithmeticExpression, no_throw_when_one_elemet_in_brackets) {
 	ASSERT_NO_THROW(TArithmeticExpression expression("a+(a)"));
 }
 
-
-TEST(TArithmeticExpression, can_correctly_count_when_brackets_inside_brackets) {
+TEST(TArithmeticExpression, can_correctly_count_when_brackets_inside_brackets) 
+{
 	TArithmeticExpression expression("((c*a)+b)");
 	vector<double> example = { 1,2,3 };
 	expression.ToPostfix();
@@ -40,19 +40,22 @@ TEST(TArithmeticExpression, can_correctly_count_when_brackets_inside_brackets) {
 	EXPECT_EQ(5, expression.Calculate());
 }
 
-TEST(TArithmeticExpression, cannot_count_if_there_are_no_values) {
+TEST(TArithmeticExpression, cannot_count_if_there_are_no_values) 
+{
 	TArithmeticExpression expression("a+b");
 	expression.ToPostfix();
 	EXPECT_EQ(0, expression.Calculate());
 }
 
-TEST(TArithmeticExpression, can_copy_expression) {
+TEST(TArithmeticExpression, can_copy_expression) 
+{
 	string str = "A+B";
 	TArithmeticExpression expression1(str);
 	ASSERT_NO_THROW(TArithmeticExpression expression2(expression1));
 }
 
-TEST(TArithmeticExpression, throw_when_expression_is_operator) {
+TEST(TArithmeticExpression, throw_when_expression_is_operator) 
+{
 	TArithmeticExpression expression("+");
 	expression.ToPostfix();
 	ASSERT_ANY_THROW(expression.Calculate());

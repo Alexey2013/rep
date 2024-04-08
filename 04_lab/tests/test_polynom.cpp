@@ -32,6 +32,13 @@ TEST(TPolynom, copied_polinom_is_correct)
 	EXPECT_EQ(p1, p2);
 }
 
+TEST(TPolynom, to_string_is_correct)
+{
+	TPolynom p1("x ^ 3 + x ^ 2 + y + z + 1");
+	string str = "1+z+y+x^2+x^3";
+	EXPECT_EQ(p1.ToString(), str);
+}
+
 TEST(TPolynom, no_throw_when_polynom_will_be_empty) 
 {
    ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
@@ -116,8 +123,6 @@ TEST(TPolynom,sum_is_correct )
 	TPolynom pol3("2x^3+y^2+2y+x+2+z");
 	EXPECT_EQ(pol1+pol2, pol3);
 }
-
-
 
 TEST(TPolynom, diff_is_correct) 
 {
