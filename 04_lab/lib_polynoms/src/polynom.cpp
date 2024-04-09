@@ -42,7 +42,7 @@ string TPolynom::ToString() const {
 	monoms->reset();
 	while (!monoms->IsEnded()) {
 		int deg = monoms->GetCurrent()->data.degree;
-		int coeff = monoms->GetCurrent()->data.coeff;
+		double coeff = monoms->GetCurrent()->data.coeff;
 		int x = deg / 100;
 		int y = (deg % 100) / 10;
 		int z = deg % 10;
@@ -51,6 +51,9 @@ string TPolynom::ToString() const {
 				str += ((coeff > 0) ? "+" : "-");
 			}
 			else {
+				if (coeff < 0) {
+					str += "-";
+				}
 				firstTerm = false;
 			}
 			if (abs(coeff) != 1 || deg == 0) {
@@ -138,7 +141,10 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 }
 
 TPolynom TPolynom::operator-(const TPolynom& p) {
-	return (*this) + (-p);
+	TPolynom result(*this);
+	result = result+(-p);
+	result.name = ToString();
+	return result;
 }
 
 TPolynom TPolynom::operator-() const {
@@ -148,6 +154,7 @@ TPolynom TPolynom::operator-() const {
 		result.monoms->GetCurrent()->data.coeff *= -1;
 		result.monoms->next();
 	}
+	result.name = ToString();
 	return result;
 }
 
@@ -165,6 +172,7 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 		}
 		monoms->next();
 	}
+	result.name = ToString();
 	return result;
 }
 
@@ -181,6 +189,7 @@ TPolynom TPolynom::dx() const {
 		}
 		monoms->next();
 	}
+	result.name = ToString();
 	return result;
 }
 
@@ -200,6 +209,7 @@ TPolynom TPolynom::dy() const {
 		}
 		monoms->next();
 	}
+	result.name = ToString();
 	return result;
 }
 
@@ -219,6 +229,7 @@ TPolynom TPolynom::dz() const {
 		}
 		monoms->next();
 	}
+	result.name = ToString();
 	return result;
 }
 

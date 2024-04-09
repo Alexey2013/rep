@@ -10,6 +10,7 @@ int main() {
 		getline(cin, example1);
 		TPolynom pol1(example1);
 		cout << pol1 << endl;
+
 		cout << "Enter polynom 2:";
 		getline(cin, example2);
 		TPolynom pol2(example2);
@@ -29,4 +30,7 @@ int main() {
 	}
 	return 0;
 }
-
+//
+//Enter polynom 1:1 + 2x ^ 2 + x ^ 2y
+//1.000000 + 2.000000x ^ 2 + x ^ 2y
+//Enter polynom 2 : y - z

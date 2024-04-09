@@ -189,8 +189,7 @@ void TList<T>::remove(const T& data_) {
 		return;
 	}
 	if (tmp == pStop)throw "Data not found!";
-	if (pPrev == nullptr) pFirst = pFirst->pNext;
-	else { pPrev->pNext = tmp->pNext; }
+	pPrev->pNext = tmp->pNext;
 	delete tmp;
 }
 

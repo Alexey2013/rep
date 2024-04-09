@@ -163,3 +163,5 @@ TEST(TPolynom, mult_is_correct_with_1)
 	TPolynom p_mult("x*y+x+y+1");
 	EXPECT_EQ(p1 * p2, p_mult);
 }
+
+//добавить тесты с 0 и подобными

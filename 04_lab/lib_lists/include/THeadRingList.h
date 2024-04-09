@@ -11,7 +11,6 @@ public:
     THeadRingList(const THeadRingList& ringL);
     virtual ~THeadRingList();
     void insert_first(const T& data);
-    void remove(const T& data);
     void insert_before(const T& who, const T& where);
 };
 
@@ -56,32 +55,6 @@ void THeadRingList<T>::insert_before(const T& who, const T& where) {
     }
     TNode<T>* new_node = new TNode<T>(who, pWhere);
     pPrev->pNext = new_node;
-}
-
-template <typename T>
-void THeadRingList<T>::remove(const T& data) {
-    if (IsEmpty()) { 
-        throw ("List is empty!");
-    }
-    TNode<T>* prev = nullptr;
-    TNode<T>* curr =pFirst;
-    do {
-        if (curr->data == data) {
-            if (prev == nullptr) {
-               pFirst = curr->pNext;
-                delete curr;
-                return;
-            }
-            else {
-                prev->pNext = curr->pNext;
-                delete curr;
-                return;
-            }
-        }
-        prev = curr;
-        curr = curr->pNext;
-    } while (curr != pFirst);
-    throw ("Element not found!");
 }
 
 #endif 
