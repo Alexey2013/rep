@@ -1,0 +1,20 @@
+C:\Users\alexe\source\repos\filter\filter\bin\Debug\filter.exe.config
+C:\Users\alexe\source\repos\filter\filter\bin\Debug\filter.exe
+C:\Users\alexe\source\repos\filter\filter\bin\Debug\filter.pdb
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.csproj.AssemblyReference.cache
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.Form1.resources
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.Properties.Resources.resources
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.csproj.GenerateResource.cache
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.csproj.CoreCompileInputs.cache
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.exe
+C:\Users\alexe\source\repos\filter\filter\obj\Debug\filter.pdb
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\bin\Debug\filter.exe.config
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\bin\Debug\filter.exe
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\bin\Debug\filter.pdb
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.csproj.AssemblyReference.cache
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.Form1.resources
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.Properties.Resources.resources
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.csproj.GenerateResource.cache
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.csproj.CoreCompileInputs.cache
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.exe
+C:\Users\alexe\source\repos\filter\Computer Graphic\filter\obj\Debug\filter.pdb
