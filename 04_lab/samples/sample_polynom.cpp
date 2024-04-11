@@ -30,7 +30,3 @@ int main() {
 	}
 	return 0;
 }
-//
-//Enter polynom 1:1 + 2x ^ 2 + x ^ 2y
-//1.000000 + 2.000000x ^ 2 + x ^ 2y
-//Enter polynom 2 : y - z
