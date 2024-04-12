@@ -109,9 +109,9 @@ void TPolynom::ParseMonoms() {
 			}
 		}
 		tmp.degree = degree;
-		/*if (tmp.coeff != 0) {*/
+		if ((tmp.coeff != 0)||(name == "0")) {
 			monoms->insert_sort(tmp);
-		/*}*/
+		}
 	}
 }
 
@@ -160,7 +160,6 @@ TPolynom TPolynom::operator-() const {
 	result.name = result.ToString();
 	return result;
 }
-
 
 TPolynom TPolynom::operator*(const TPolynom& p) {
 	TPolynom result;

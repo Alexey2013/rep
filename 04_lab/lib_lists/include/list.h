@@ -260,8 +260,9 @@ void TList<T>::sort() {
 		if (!swapped) {break;}
 		current = pFirst;
 
-	} while (true);
+	} while (1);
 
 	pCurr = pFirst;
 }
+
 #endif 
