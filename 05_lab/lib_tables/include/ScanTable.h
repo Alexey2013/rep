@@ -3,12 +3,12 @@
 #include <table.h>
 
 template <typename TKey, typename TData>
-class ScanTable : public Table<TKey, TData> {
+class ScanTable: public Table<TKey, TData> {
 protected:
     TabRecord<TKey, TData>** recs;
 public:
     ScanTable(int maxSize);
-    ScanTable(const ScanTable& t);
+    ScanTable(const ScanTable<TKey, TData>& t);
     ~ScanTable();
     TabRecord<TKey, TData>* Find(TKey key);
     void Insert(TKey key, TData* data);
@@ -18,6 +18,19 @@ public:
 template <typename TKey, typename TData>
 ScanTable<TKey, TData>::ScanTable(int maxSize) : Table<TKey, TData>(maxSize) {
     recs = new TabRecord<TKey, TData>* [maxSize];
+}
+
+template <typename TKey, typename TData>
+ScanTable<TKey, TData>::ScanTable(const ScanTable& t) : Table<TKey, TData>(t.size) {
+    recs = new TabRecord<TKey, TData>* [size];
+    for (int i = 0; i < this->size; ++i) {
+        if (t.recs[i]) {
+           recs[i] = new TabRecord<TKey, TData>(*t.recs[i]); 
+        }
+        else {
+            recs[i] = nullptr;
+        }
+    }
 }
 
 template <typename TKey, typename TData>
@@ -54,6 +67,7 @@ void ScanTable<TKey, TData>::Remove(TKey key) {
     if (recordToRemove == nullptr)
         throw std::exception("Key not found");
     delete recordToRemove;
-    recs[this->currPos] = recs[--this->count];
+    recs[currPos] = recs[--count];
 }
+
 #endif 

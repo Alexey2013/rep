@@ -5,9 +5,9 @@ using namespace std;
 
 template <class TKey, class TData>
 class TabRecord {
+protected:
 	TKey key;
 	TData* data;
-
 public:
 	TabRecord(const TKey& _key, TData* _data);
 	TabRecord(const TabRecord<TKey, TData>& tr);

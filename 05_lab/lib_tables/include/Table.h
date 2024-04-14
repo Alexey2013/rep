@@ -10,7 +10,7 @@ private:
     int currPos;
 public:
     Table(int maxSize);
-    virtual TData* Find(TKey key) = 0;
+    virtual TabRecord<TKey, TData>* Find(TKey key) = 0;
     virtual void Insert(TKey key, TData* data) = 0;
     virtual void Remove(TKey key) = 0;
     bool IsFull() const;

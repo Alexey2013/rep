@@ -44,7 +44,6 @@ TEST(TPolynom, no_throw_when_polynom_will_be_empty)
    ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
 }
 
-//добавить тесты с 0 и подобными
 TEST(TPolynom, conversation_test) {
 	TPolynom p1("x+x-x+x+y+y+z+z+z");
 	TPolynom p2("2x+2y+3z");
@@ -144,6 +143,14 @@ TEST(TPolynom,sum_is_correct)
 	TPolynom pol2("x^3+y+z+1");
 	TPolynom pol3("2x^3+y^2+2y+x+2+z");
 	EXPECT_EQ(pol1+pol2, pol3);
+}
+
+TEST(TPolynom, sum_is_correct_with_opposite_polynom)
+{
+	TPolynom pol1("x^3+y^2+y+x+1");
+	TPolynom pol2("-x^3-y^2-y-x-1");
+	TPolynom pol3("");
+	EXPECT_EQ((pol1 + pol2).ToString(), pol3.ToString());
 }
 
 TEST(TPolynom, sum_with_zero_is_correct)

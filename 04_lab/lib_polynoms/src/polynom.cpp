@@ -38,7 +38,7 @@ string TPolynom::ToString() const {
 	string str;
 	char tmp[5];
 	if (p.monoms->IsEmpty()) {
-		return "0";
+		return "";
 	}
 	bool firstTerm = true;
 	p.monoms->reset();
@@ -140,6 +140,7 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 		result.monoms->insert_sort(curr);
 		p.monoms->next();
 	}
+	result.name = result.ToString();
 	return result;
 }
 
