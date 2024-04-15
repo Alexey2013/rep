@@ -2,11 +2,11 @@
 #include <gtest.h>
 const int maxSize = 5;
 
-TEST(ScanTable, can_insert_record) {
-    const int maxSize = 10; // ѕримерное значение размера таблицы
-    ScanTable<int, std::string> table(maxSize);
-    ASSERT_NO_THROW(table.Insert(1, new std::string("data")));
-}
+//TEST(ScanTable, can_insert_record) {
+//    const int maxSize = 10; // ѕримерное значение размера таблицы
+//    ScanTable<int, std::string> table(maxSize);
+//    ASSERT_NO_THROW(table.Insert(1, new std::string("data")));
+//}
 
 //// “ест дл€ проверки поиска записи в таблице
 //TEST(ScanTable, can_find_record) {

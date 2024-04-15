@@ -33,12 +33,32 @@ void TPolynom::conversion(string& str) const {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
 }
 
+void TPolynom::RemoveZero() {
+	if (monoms == nullptr) return;
+	bool flag = false;
+	monoms->reset();
+	while (!monoms->IsEnded()) {
+		TNode<TMonom>* current = monoms->GetCurrent();
+		if (current->data.coeff != 0) { 
+			monoms->next();
+			flag = true;
+			continue; 
+		}
+		TNode<TMonom>* monomToRemove = current;
+		monoms->next();
+		monoms->remove(monomToRemove->data);
+	}
+	if (flag == false) {
+		monoms->clear();
+	}
+}
+
 string TPolynom::ToString() const {
 	TPolynom p(*this);
 	string str;
 	char tmp[5];
 	if (p.monoms->IsEmpty()) {
-		return "";
+		return "0";
 	}
 	bool firstTerm = true;
 	p.monoms->reset();
@@ -68,6 +88,7 @@ string TPolynom::ToString() const {
 		}
 		p.monoms->next();
 	}
+	p.name = str;
 	return str;
 }
 
@@ -140,14 +161,15 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 		result.monoms->insert_sort(curr);
 		p.monoms->next();
 	}
-	result.name = result.ToString();
+	result.RemoveZero();
+	result.ToString();
 	return result;
 }
 
 TPolynom TPolynom::operator-(const TPolynom& p) {
 	TPolynom result(*this);
 	result = result+(-p);
-	result.name = result.ToString();
+	result.ToString();
 	return result;
 }
 
@@ -158,7 +180,7 @@ TPolynom TPolynom::operator-() const {
 		result.monoms->GetCurrent()->data.coeff *= -1;
 		result.monoms->next();
 	}
-	result.name = result.ToString();
+	result.ToString();
 	return result;
 }
 
@@ -178,7 +200,7 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 		}
 		monoms->next();
 	}
-	result.name = result.ToString();
+	result.ToString();
 	return result;
 }
 
@@ -195,7 +217,7 @@ TPolynom TPolynom::dx() const {
 		}
 		monoms->next();
 	}
-	result.name = result.ToString();
+	result.ToString();
 	return result;
 }
 
@@ -214,7 +236,7 @@ TPolynom TPolynom::dy() const {
 		}
 		monoms->next();
 	}
-	result.name = result.ToString();
+	result.ToString();
 	return result;
 }
 
@@ -233,7 +255,7 @@ TPolynom TPolynom::dz() const {
 		}
 		monoms->next();
 	}
-	result.name = result.ToString();
+	result.ToString();
 	return result;
 }
 

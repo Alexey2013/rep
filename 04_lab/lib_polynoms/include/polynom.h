@@ -13,6 +13,7 @@ private:
 	THeadRingList<TMonom>* monoms;
 
 	void ParseMonoms();
+	void RemoveZero();
 	void conversion(string& str) const;
 public:
 	TPolynom();

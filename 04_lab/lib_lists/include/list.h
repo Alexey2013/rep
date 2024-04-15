@@ -30,6 +30,7 @@ public:
 	void reset();
 	void insert_sort(const T& data);
 	void sort();
+	TList<T>& operator=(const TList<T>& other);
 };
 
 template <typename T>
@@ -174,7 +175,7 @@ void TList<T>::insert_after(const T& who, const T& where) {
 }
 
 template <typename T>
-void TList<T>::remove(const T& data_) { 
+void TList<T>::remove(const T& data_) {
 	if (pFirst == nullptr) throw "List is empty!";
 	TNode<T>* tmp = pFirst;
 	TNode<T>* pPrev = nullptr;
@@ -183,7 +184,7 @@ void TList<T>::remove(const T& data_) {
 		pPrev = tmp;
 		tmp = tmp->pNext;
 	}
-	if (tmp == pFirst){
+	if (tmp == pFirst) {
 		pFirst = pFirst->pNext;
 		delete tmp;
 		return;
@@ -232,8 +233,9 @@ void TList<T>::insert_sort(const T& data) {
 		tmp = tmp->pNext;
 	}
 	if (tmp->data == data) {
-		tmp->data = tmp->data + data;
-		return;
+			tmp->data = tmp->data + data;
+			return;
+		
 	}
 	insert_after(data, tmp->data);
 }

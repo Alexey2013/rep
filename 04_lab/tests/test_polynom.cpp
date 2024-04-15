@@ -145,19 +145,19 @@ TEST(TPolynom,sum_is_correct)
 	EXPECT_EQ(pol1+pol2, pol3);
 }
 
-TEST(TPolynom, sum_is_correct_with_opposite_polynom)
-{
-	TPolynom pol1("x^3+y^2+y+x+1");
-	TPolynom pol2("-x^3-y^2-y-x-1");
-	TPolynom pol3("");
-	EXPECT_EQ((pol1 + pol2).ToString(), pol3.ToString());
-}
-
 TEST(TPolynom, sum_with_zero_is_correct)
 {
 	TPolynom pol1("x^3+y^2+y+x+1");
 	TPolynom pol2("0");
 	EXPECT_EQ(pol1 + pol2, pol1);
+}
+
+TEST(TPolynom, sum_with_inverse_polynomial)
+{
+	TPolynom pol1("x^3+y^2+y+x+1");
+	TPolynom pol2("-x^3-y^2-y-x-1");
+	TPolynom pol3("");
+	EXPECT_EQ(pol1 + pol2, pol3);
 }
 
 TEST(TPolynom, diff_is_correct) 
