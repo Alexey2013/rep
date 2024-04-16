@@ -16,7 +16,7 @@ public:
 	virtual ~TList();
 	virtual void insert_first(const T& data);
 	virtual void remove(const T& data);
-	virtual void insert_before(const T& data, const T& nextdata);
+    void insert_before(const T& data, const T& nextdata);
 	void insert_last(const T& data);
 	void insert_after(const T& data, const T& beforedata);
 	TNode<T>* search(const T& data);
@@ -30,7 +30,7 @@ public:
 	void reset();
 	void insert_sort(const T& data);
 	void sort();
-	TList<T>& operator=(const TList<T>& other);
+	const TList<T>& operator=(const TList<T>& other);
 };
 
 template <typename T>
@@ -233,9 +233,8 @@ void TList<T>::insert_sort(const T& data) {
 		tmp = tmp->pNext;
 	}
 	if (tmp->data == data) {
-			tmp->data = tmp->data + data;
-			return;
-		
+		tmp->data = tmp->data + data;
+		return;
 	}
 	insert_after(data, tmp->data);
 }
@@ -251,7 +250,7 @@ void TList<T>::sort() {
 		TNode<T>* prev = nullptr;
 		TNode<T>* next = current->pNext;
 		while (next != nullptr && next != pStop) {
-			if (current->data > next->data) {
+			if (next->data < current->data ) {
 				swap(current->data, next->data);
 				swapped = true;
 			}
@@ -265,6 +264,17 @@ void TList<T>::sort() {
 	} while (1);
 
 	pCurr = pFirst;
+}
+
+template <typename T>
+const TList<T>& TList<T>::operator=(const TList<T>& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+	// TODO
+	return *this;
 }
 
 #endif 

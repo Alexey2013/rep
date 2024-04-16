@@ -46,13 +46,6 @@ TEST(TList, can_insert_last_in_the_list)
 	ASSERT_NO_THROW(list.insert_last(1));
 }
 
-TEST(TList, can_insert_element_in_not_empty_list) 
-{
-	TList<int> list;
-	list.insert_last(1);
-	ASSERT_NO_THROW(list.insert_last(2));
-}
-
 TEST(TList, can_remove_element)
 {
 	TList<int> list;

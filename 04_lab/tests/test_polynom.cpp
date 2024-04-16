@@ -156,7 +156,7 @@ TEST(TPolynom, sum_with_inverse_polynomial)
 {
 	TPolynom pol1("x^3+y^2+y+x+1");
 	TPolynom pol2("-x^3-y^2-y-x-1");
-	TPolynom pol3("");
+	TPolynom pol3("0");
 	EXPECT_EQ(pol1 + pol2, pol3);
 }
 
