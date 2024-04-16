@@ -60,6 +60,7 @@ void TPolynom::RemoveZero() {
 	if (flag == false) {
 		monoms->clear();
 	}
+	if()///
 }
 
 string TPolynom::ToString() const {
