@@ -43,9 +43,25 @@ void THeadRingList<T>::insert_first(const T& data) {
 }
 
 template <typename T>
-void THeadRingList<T>::remove(const T& data)
-{
-    // TODO
+void THeadRingList<T>::remove(const T& data_) {
+    if (pFirst == nullptr) throw "List is empty!";
+    TNode<T>* tmp = pFirst;
+    TNode<T>* pPrev = nullptr;
+    while (tmp != pStop && tmp->data != data_)
+    {
+        pPrev = tmp;
+        tmp = tmp->pNext;
+    }
+    if (tmp == pFirst) {
+        pFirst = pFirst->pNext;
+        pHead->pNext = pFirst;
+        delete tmp;
+        pCurr = pFirst;
+        return;
+    }
+    if (tmp == pStop)throw "Data not found!";
+    pPrev->pNext = tmp->pNext;
+    delete tmp;
 }
 
 #endif 

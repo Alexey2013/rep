@@ -29,7 +29,6 @@ public:
 	void next();
 	void reset();
 	void insert_sort(const T& data);
-	void sort();
 	const TList<T>& operator=(const TList<T>& other);
 };
 
@@ -240,40 +239,19 @@ void TList<T>::insert_sort(const T& data) {
 }
 
 template <typename T>
-void TList<T>::sort() {
-	if (IsEmpty() || GetSize() == 1) {
-		return;
-	}
-	TNode<T>* current = pFirst;
-	do {
-		bool swapped = false;
-		TNode<T>* prev = nullptr;
-		TNode<T>* next = current->pNext;
-		while (next != nullptr && next != pStop) {
-			if (next->data < current->data ) {
-				swap(current->data, next->data);
-				swapped = true;
-			}
-			prev = current;
-			current = next;
-			next = next->pNext;
-		}
-		if (!swapped) {break;}
-		current = pFirst;
-
-	} while (1);
-
-	pCurr = pFirst;
-}
-
-template <typename T>
 const TList<T>& TList<T>::operator=(const TList<T>& other)
 {
 	if (this == &other)
 	{
-		return *this;
+		return *this; 
 	}
-	// TODO
+	clear();
+	TNode<T>* otherCurr = other.pFirst;
+	while (otherCurr != nullptr)
+	{
+		insert_last(otherCurr->data);
+		otherCurr = otherCurr->pNext;
+	}
 	return *this;
 }
 

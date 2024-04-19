@@ -40,6 +40,15 @@ TEST(TList, can_copy_list)
 	EXPECT_EQ(list1.GetCurrent()->data, list2.GetCurrent()->data);
 }
 
+TEST(TList, can_assign_list)
+{
+	TList<int> list1;
+	list1.insert_last(1);
+	TList<int> list2;
+	list2 = list1;
+	EXPECT_EQ(list1.GetCurrent()->data, list2.GetCurrent()->data);
+}
+
 TEST(TList, can_insert_last_in_the_list)
 {
 	TList<int> list;
@@ -199,19 +208,3 @@ TEST(TList, insert_sort_correct_into_empty_list)
 	EXPECT_EQ(5, list.GetCurrent()->data);
 }
 
-TEST(TList, sort_is_right)
-{
-	TList<int> list;
-	list.insert_last(5);
-	list.insert_last(3);
-	list.insert_last(7);
-	list.insert_last(1);
-	list.sort();
-	EXPECT_EQ(1, list.GetCurrent()->data);
-	list.next();
-	EXPECT_EQ(3, list.GetCurrent()->data);
-	list.next();
-	EXPECT_EQ(5, list.GetCurrent()->data);
-	list.next();
-	EXPECT_EQ(7, list.GetCurrent()->data);
-}
