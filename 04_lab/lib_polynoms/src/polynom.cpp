@@ -171,6 +171,7 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 		p.monoms->next();
 	}
 	result.RemoveZero();
+	result.name = result.ToString();
 	return result;
 }
 
