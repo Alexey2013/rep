@@ -17,16 +17,16 @@ bool TMonom::operator==(const TMonom& data) const {
 	return  (degree == data.degree);
 }
 
+bool TMonom::operator!=(const TMonom& data) const {
+	return !(*this == data);
+}
+
 bool TMonom::operator<(const TMonom& data) const {
 	return (degree < data.degree);
 }
 
 bool TMonom::operator<=(const TMonom& data) const {
 	return (degree <= data.degree);
-}
-
-bool TMonom::operator!=(const TMonom& data) const {
-	return !(*this == data);
 }
 
 TMonom TMonom::operator*(const TMonom& monom) const {

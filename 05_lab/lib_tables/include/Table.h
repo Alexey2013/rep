@@ -18,8 +18,8 @@ public:
     virtual void Reset();
     virtual void Next();
     virtual bool IsEnded() const;
-    virtual TKey GetKey() = 0;
-    virtual TData* GetData() = 0;
+    virtual TKey GetKey() const = 0; 
+    virtual TData* GetData() const = 0;
 };
 
 template <typename TKey, typename TData>

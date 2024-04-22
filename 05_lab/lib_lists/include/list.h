@@ -16,7 +16,7 @@ public:
 	virtual ~TList();
 	virtual void insert_first(const T& data);
 	virtual void remove(const T& data);
-	virtual void insert_before(const T& data, const T& nextdata);
+    void insert_before(const T& data, const T& nextdata);
 	void insert_last(const T& data);
 	void insert_after(const T& data, const T& beforedata);
 	TNode<T>* search(const T& data);
@@ -29,7 +29,7 @@ public:
 	void next();
 	void reset();
 	void insert_sort(const T& data);
-	void sort();
+	const TList<T>& operator=(const TList<T>& other);
 };
 
 template <typename T>
@@ -174,7 +174,7 @@ void TList<T>::insert_after(const T& who, const T& where) {
 }
 
 template <typename T>
-void TList<T>::remove(const T& data_) { 
+void TList<T>::remove(const T& data_) {
 	if (pFirst == nullptr) throw "List is empty!";
 	TNode<T>* tmp = pFirst;
 	TNode<T>* pPrev = nullptr;
@@ -183,7 +183,7 @@ void TList<T>::remove(const T& data_) {
 		pPrev = tmp;
 		tmp = tmp->pNext;
 	}
-	if (tmp == pFirst){
+	if (tmp == pFirst) {
 		pFirst = pFirst->pNext;
 		delete tmp;
 		return;
@@ -239,30 +239,20 @@ void TList<T>::insert_sort(const T& data) {
 }
 
 template <typename T>
-void TList<T>::sort() {
-	if (IsEmpty() || GetSize() == 1) {
-		return;
+const TList<T>& TList<T>::operator=(const TList<T>& other)
+{
+	if (this == &other)
+	{
+		return *this; 
 	}
-	TNode<T>* current = pFirst;
-	do {
-		bool swapped = false;
-		TNode<T>* prev = nullptr;
-		TNode<T>* next = current->pNext;
-		while (next != nullptr && next != pStop) {
-			if (current->data > next->data) {
-				swap(current->data, next->data);
-				swapped = true;
-			}
-			prev = current;
-			current = next;
-			next = next->pNext;
-		}
-		if (!swapped) {break;}
-		current = pFirst;
-
-	} while (1);
-
-	pCurr = pFirst;
+	clear();
+	TNode<T>* otherCurr = other.pFirst;
+	while (otherCurr != nullptr)
+	{
+		insert_last(otherCurr->data);
+		otherCurr = otherCurr->pNext;
+	}
+	return *this;
 }
 
 #endif 

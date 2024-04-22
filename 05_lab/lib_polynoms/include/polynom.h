@@ -12,16 +12,16 @@ private:
 	THeadRingList<TMonom>* monoms;
 
 	void ParseMonoms();
-	void conversion(string& str) const;
+	void convert_string(string& str) const;
 public:
 	TPolynom();
 	TPolynom(const string& _name);
-	TPolynom(const THeadRingList<TMonom>* m);
+	TPolynom(const THeadRingList<TMonom>* l);
 	TPolynom(const TPolynom& p);
 	~TPolynom();
 	TPolynom operator +(const TPolynom& p);
 	TPolynom operator -(const TPolynom& p);
-	TPolynom operator-() const;
+	TPolynom operator -() const;
 	TPolynom operator *(const TPolynom& p);
 	const TPolynom& operator =(const TPolynom& p);
 	TPolynom dx() const;
@@ -30,7 +30,7 @@ public:
 	string ToString()const;
 	bool operator==(const TPolynom&p) const;
 	bool operator!=(const TPolynom& p) const;
-	friend ostream& operator<<(ostream& out, const TPolynom& p);
+	friend ostream& operator<<(ostream& os, const TPolynom& p);
 };
 
 #endif 

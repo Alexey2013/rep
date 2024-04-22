@@ -27,6 +27,21 @@ TEST(TPolynom, can_create_polinom_with_list) {
 	ASSERT_NO_THROW(TPolynom p(&list));
 }
 
+TEST(TPolynom, polinom_with_list_is_right) {
+	THeadRingList<TMonom> list;
+	TMonom m1(1, 100);
+	TMonom m2(1, 10);
+	TMonom m3(1, 1);
+	TMonom m4(0, 1);
+	list.insert_sort(m1);
+	list.insert_sort(m2);
+	list.insert_sort(m3);
+	list.insert_sort(m4);
+	TPolynom p1(&list);
+	TPolynom p2("x+y+z");
+	EXPECT_EQ(p1,p2);
+}
+
 TEST(TPolynom, equality_operator_is_correct)
 {
 	TPolynom p1(str);

@@ -3,7 +3,7 @@
 #include <table.h>
 
 template <typename TKey, typename TData>
-class ScanTable: public Table<TKey, TData> {
+class ScanTable : public Table<TKey, TData> {
 protected:
     TabRecord<TKey, TData>** recs;
 public:
@@ -21,11 +21,11 @@ ScanTable<TKey, TData>::ScanTable(int maxSize) : Table<TKey, TData>(maxSize) {
 }
 
 template <typename TKey, typename TData>
-ScanTable<TKey, TData>::ScanTable(const ScanTable& t) : Table<TKey, TData>(t.size) {
-    recs = new TabRecord<TKey, TData>* [size];
-    for (int i = 0; i < this->size; ++i) {
+ScanTable<TKey, TData>::ScanTable(const ScanTable& t) : Table<TKey, TData>(t.maxSize) {
+    recs = new TabRecord<TKey, TData>* [maxSize];
+    for (int i = 0; i < maxSize; ++i) {
         if (t.recs[i]) {
-           recs[i] = new TabRecord<TKey, TData>(*t.recs[i]); 
+            recs[i] = new TabRecord<TKey, TData>(*t.recs[i]);
         }
         else {
             recs[i] = nullptr;
@@ -35,7 +35,7 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable& t) : Table<TKey, TData>(t.siz
 
 template <typename TKey, typename TData>
 ScanTable<TKey, TData>::~ScanTable() {
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < this->count; ++i) {
         delete recs[i];
     }
     delete[] recs;
@@ -43,9 +43,9 @@ ScanTable<TKey, TData>::~ScanTable() {
 
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(TKey key) {
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < this->count; i++) {
         if (recs[i]->GetKey() == key) {
-            currPos = i;
+            this->currPos = i;
             return recs[i];
         }
     }
@@ -54,20 +54,19 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(TKey key) {
 
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Insert(TKey key, TData* data) {
-    if (IsFull())
-        throw std::exception("Table is full");
-    recs[count++] = new TabRecord<TKey, TData>(key, data);
+    if (this->IsFull()) throw ("Table is full");
+    if (Find(key) != nullptr) throw ("Key already exists");
+    recs[this->count++] = new TabRecord<TKey, TData>(key, data);
 }
 
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Remove(TKey key) {
-    if (this->IsEmpty())
-        throw std::exception("Table is empty");
+    if (this->IsEmpty()) throw ("Table is empty");
     TabRecord<TKey, TData>* recordToRemove = Find(key);
-    if (recordToRemove == nullptr)
-        throw std::exception("Key not found");
+    if (recordToRemove == nullptr) throw ("Key not found");
     delete recordToRemove;
-    recs[currPos] = recs[--count];
+    recs[this->currPos] = recs[--this->count];
+    this->currPos--;
 }
 
 #endif 

@@ -2,11 +2,6 @@
 #include <gtest.h>
 const int key = 0;
 
-//TEST(TabRecord, can_create_TabRecord) {
-//	string* data = new string("test");
-//	ASSERT_NO_THROW(TabRecord<int, string> tr(key, data));
-//}
-
 TEST(TabRecord, can_get_key) {
 	string* data = new string("test");
 	TabRecord<int, string> tr(key, data);

@@ -18,6 +18,30 @@ TEST(TPolynom, can_create_copied_polinom)
 	ASSERT_NO_THROW(TPolynom p2(p1));
 }
 
+TEST(TPolynom, can_create_polinom_with_list) {
+	THeadRingList<TMonom> list;
+	TMonom m1(1, 1);
+	TMonom m2(0, 1);
+	list.insert_sort(m1);
+	list.insert_sort(m2);
+	ASSERT_NO_THROW(TPolynom p(&list));
+}
+
+TEST(TPolynom, polinom_with_list_is_right) {
+	THeadRingList<TMonom> list;
+	TMonom m1(1, 100);
+	TMonom m2(1, 10);
+	TMonom m3(1, 1);
+	TMonom m4(0, 1);
+	list.insert_sort(m1);
+	list.insert_sort(m2);
+	list.insert_sort(m3);
+	list.insert_sort(m4);
+	TPolynom p1(&list);
+	TPolynom p2("x+y+z");
+	EXPECT_EQ(p1,p2);
+}
+
 TEST(TPolynom, equality_operator_is_correct)
 {
 	TPolynom p1(str);
@@ -44,7 +68,6 @@ TEST(TPolynom, no_throw_when_polynom_will_be_empty)
    ASSERT_NO_THROW(TPolynom p("x-x+y-y+z-z"));
 }
 
-
 TEST(TPolynom, conversation_test) {
 	TPolynom p1("x+x-x+x+y+y+z+z+z");
 	TPolynom p2("2x+2y+3z");
@@ -62,6 +85,7 @@ TEST(TPolynom, can_create_polynom_with_negative_coefficient)
 {
 	ASSERT_NO_THROW(TPolynom p("-2x^2"));
 }
+
 
 TEST(TPolynom, dx_is_correct) 
 {
@@ -111,6 +135,13 @@ TEST(TPolynom,no_throw_when_no_monomials_to_derive)
 	ASSERT_NO_THROW(pol.dx());
 }
 
+TEST(TPolynom, zero_when_there_are_no_derivative_arguments)
+{
+	TPolynom pol1("z^3+z^2+y+1");
+	TPolynom pol2("0");
+	EXPECT_EQ(pol1.dx(), pol2);
+}
+
 TEST(TPolynom,sum_is_correct) 
 {
 	TPolynom pol1("x^3+y^2+y+x+1");
@@ -119,11 +150,27 @@ TEST(TPolynom,sum_is_correct)
 	EXPECT_EQ(pol1+pol2, pol3);
 }
 
+TEST(TPolynom, remove_zeroes_is_correct)
+{
+	TPolynom pol1("x^3+y^2+y+x+1");
+	TPolynom pol2("-x^3-y^2+y-x-1");
+	TPolynom pol3("2y");
+	EXPECT_EQ(pol1 + pol2, pol3);
+}
+
 TEST(TPolynom, sum_with_zero_is_correct)
 {
 	TPolynom pol1("x^3+y^2+y+x+1");
 	TPolynom pol2("0");
-	EXPECT_EQ(pol1 + pol2, pol1);
+	EXPECT_EQ(pol1+pol2, pol1);
+}
+
+TEST(TPolynom, sum_with_inverse_polynomial)
+{
+	TPolynom pol1("x^3+y^2+y+x+1");
+	TPolynom pol2("-x^3-y^2-y-x-1");
+	TPolynom pol3("0");
+	EXPECT_EQ(pol1 + pol2, pol3);
 }
 
 TEST(TPolynom, diff_is_correct) 
@@ -170,8 +217,7 @@ TEST(TPolynom, mult_with_0_results_in_0)
 {
 	TPolynom p1("x+1");
 	TPolynom p2("0");
-	TPolynom p3("");
-	EXPECT_EQ(p3, p2*p1);
+	EXPECT_EQ(p1 * p2,p2);
 }
 
 TEST(TPolynom, conversion_mult_test1)

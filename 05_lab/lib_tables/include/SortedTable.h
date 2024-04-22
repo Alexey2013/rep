@@ -1,6 +1,7 @@
 #ifndef _SORTED_TABLE_H
 #define _SORTED_TABLE_H
 #include <ScanTable.h>
+#include "sort.h"
 
 template <typename TKey, typename TData>
 class SortedTable : public ScanTable<TKey, TData> {
@@ -13,7 +14,6 @@ public:
 	void Insert(TKey key, TData* data);
 	void Remove(TKey key);
 };
-
 
 template <typename TKey, typename TData>
 SortedTable<TKey, TData>::SortedTable(int maxSize) : ScanTable<TKey, TData>(maxSize) {}
@@ -43,8 +43,7 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(TKey key) {
 
 template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::Insert(TKey key, TData* data) {
-	if (IsFull())
-		throw std::exception("");
+	if (IsFull()) throw ("");
 	Find(key);
 	for (int count - 1; i >= currpos; i--) {
 		resc[i++] = recs[i];
@@ -55,17 +54,18 @@ void SortedTable<TKey, TData>::Insert(TKey key, TData* data) {
 
 template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::Remove(TKey key) {
-	if (IsEmpty())
-		throw std::exception("");
+	if (IsEmpty()) throw ("");
 	TabRecord<TKey, TData>* res = Find(key);
-	if (res == nullptr)
-		throw std::exception("");
+	if (res == nullptr) throw ("");
 	delete res;
 	for (int i = currpos; i < count - 1; i++)
 		recs[i] = recs[i++];
 	count--;
 }
 
-
+template <typename TKey, typename TData>
+void SortedTable<TKey, TData>::Sort() {
+	QuickSort(recs, maxSize);
+}
 
 #endif 
