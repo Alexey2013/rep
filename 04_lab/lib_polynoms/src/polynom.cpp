@@ -46,7 +46,7 @@ string TPolynom::ToString() const {
 	TPolynom p(*this);
 	string str;
 	char tmp[5];
-	if (p.monoms->IsEmpty()) {return "";}
+	if (p.monoms->IsEmpty()) {return "0";}
 	bool firstTerm = true;
 	p.monoms->reset();
 	while (!p.monoms->IsEnded()) {
@@ -55,6 +55,7 @@ string TPolynom::ToString() const {
 		int x = deg / 100;
 		int y = (deg % 100) / 10;
 		int z = deg % 10;
+		if (coeff != 0) {
 			if (!firstTerm) {
 				str += ((coeff > 0) ? "+" : "-");
 			}
@@ -71,7 +72,7 @@ string TPolynom::ToString() const {
 			if (x != 0) str += "x" + ((x != 1) ? "^" + to_string(x) : "");
 			if (y != 0) str += "y" + ((y != 1) ? "^" + to_string(y) : "");
 			if (z != 0) str += "z" + ((z != 1) ? "^" + to_string(z) : "");
-
+		}
 		p.monoms->next();
 	}
 	p.name = str;
@@ -119,6 +120,7 @@ void TPolynom::ParseMonoms(const string& _name) {
 		tmp.degree = degree;
 		if ((tmp.coeff != 0)||(_name == "0")) {
 			monoms->insert_sort(tmp);
+			///
 		}
 	}
 	name = ToString();
