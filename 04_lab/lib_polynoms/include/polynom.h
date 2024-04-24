@@ -14,6 +14,7 @@ private:
 
 	void ParseMonoms(const string& _name);
 	void convert_string(string& str) const;
+	void similar();
 public:
 	TPolynom();
 	TPolynom(const string& _name);

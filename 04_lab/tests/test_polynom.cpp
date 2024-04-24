@@ -39,7 +39,7 @@ TEST(TPolynom, polinom_with_list_is_right) {
 	list.insert_sort(m4);
 	TPolynom p1(&list);
 	TPolynom p2("x+y+z");
-	EXPECT_EQ(p1,p2);
+	EXPECT_EQ(p1, p2);
 }
 
 TEST(TPolynom, equality_operator_is_correct)
@@ -170,9 +170,9 @@ TEST(TPolynom, zero_when_there_are_no_derivative_arguments)
 
 TEST(TPolynom,sum_is_correct) 
 {
-	TPolynom pol1("x^3+y^2+y+x+1");
+	TPolynom pol1("x^3+y^2+x+1");
 	TPolynom pol2("x^3+y+z+1");
-	TPolynom pol3("2x^3+y^2+2y+x+2+z");
+	TPolynom pol3("2x^3+y^2+y+x+2+z");
 	EXPECT_EQ(pol1+pol2, pol3);
 }
 

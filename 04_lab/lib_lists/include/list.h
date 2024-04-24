@@ -85,6 +85,7 @@ void TList<T>::clear() {
 		delete curr;
 		curr = next;
 	}
+	pCurr = nullptr;
 	pFirst = nullptr;
 	pLast = nullptr;
 }
@@ -231,20 +232,13 @@ void TList<T>::insert_sort(const T& data) {
 	while (tmp->pNext != pStop && tmp->pNext->data <= data) {
 		tmp = tmp->pNext;
 	}
-	if (tmp->data == data) {
-		tmp->data = tmp->data + data;
-		return;
-	}
 	insert_after(data, tmp->data);
 }
 
 template <typename T>
 const TList<T>& TList<T>::operator=(const TList<T>& other)
 {
-	if (this == &other)
-	{
-		return *this; 
-	}
+	if (this == &other){return *this;}
 	clear();
 	TNode<T>* otherCurr = other.pFirst;
 	while (otherCurr != nullptr)
