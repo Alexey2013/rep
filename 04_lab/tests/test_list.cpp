@@ -137,7 +137,7 @@ TEST(TList, can_find_element_by_value)
 	EXPECT_EQ(2, list.search(2)->data);
 }
 
-TEST(TList, can_insert_before_element)
+TEST(TList, can_insert_before_element1)
 {
 	TList<int> list;
 	list.insert_last(1);

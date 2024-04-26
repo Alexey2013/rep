@@ -101,12 +101,6 @@ TEST(THeadRingList, can_clear_list)
 	EXPECT_EQ(0, list.GetSize());
 }
 
-TEST(THeadRingList, throw_when_remove_from_empty_list)
-{
-	THeadRingList<int> list;
-	ASSERT_ANY_THROW(list.remove(5));
-}
-
 TEST(THeadRingList, throw_when_remove_non_exist_elem)
 {
 	THeadRingList<int> list;

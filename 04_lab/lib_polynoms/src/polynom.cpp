@@ -13,16 +13,14 @@ TPolynom::TPolynom(const string& _name) {
 TPolynom::TPolynom(const THeadRingList<TMonom>* list) {
 	monoms = new THeadRingList<TMonom>();
 	TNode<TMonom>* current = list->GetCurrent();
-	bool not_null = false;
 	for (int i = 0; i < list->GetSize(); i++) {
 		TMonom curr = current->data;
 		if (curr.coeff != 0) {
-			monoms->insert_sort(curr);
-			not_null = true;
+		monoms->insert_sort(curr);
 		}
 		current = current->pNext;
 	}
-	if (!not_null) { monoms->insert_first(TMonom(0, 0)); }
+	similar();
 	name = ToString();
 }
 
@@ -77,21 +75,16 @@ string TPolynom::ToString() const {
 	return str;
 }
 
-
-
-
 void TPolynom::similar() {
-	if (!monoms || monoms->IsEmpty()) return;
-
 	monoms->reset();
-
-	while (!monoms->IsEnded()) {
+	while (!monoms->IsEnded() && !monoms->IsEmpty()) {
 		TNode<TMonom>* current = monoms->GetCurrent();
-		TNode<TMonom>* next = current->pNext;
+		TNode<TMonom>* next = monoms->GetCurrent()->pNext;
 
 		if (current->data == next->data) {
 			next->data.coeff += current->data.coeff;
-			if (next->data.coeff == 0) {
+			if (next->data.coeff == 0) 
+			{
 				monoms->next();
 				monoms->remove(current->data);
 				monoms->next();
@@ -106,6 +99,7 @@ void TPolynom::similar() {
 			monoms->next();
 		}
 	}
+	if (monoms->IsEmpty()) { monoms->insert_first(TMonom(0, 0)); }
 }
 
 void TPolynom::ParseMonoms(const string& _name) {

@@ -228,11 +228,21 @@ void TList<T>::insert_sort(const T& data) {
 		insert_first(data);
 		return;
 	}
-	TNode<T>* tmp = pFirst;
-	while (tmp->pNext != pStop && tmp->pNext->data <= data) {
-		tmp = tmp->pNext;
+
+	TNode<T>* prev = pFirst;
+	TNode<T>* current = pFirst->pNext;
+
+	while (current != pStop && current->data <= data) {
+		prev = current;
+		current = current->pNext;
 	}
-	insert_after(data, tmp->data);
+
+	if (current == pStop) {insert_last(data); }
+	else {
+		TNode<T>* newNode = new TNode<T>(data);
+		prev->pNext = newNode;
+		newNode->pNext = current;
+	}
 }
 
 template <typename T>
