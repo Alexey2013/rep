@@ -201,7 +201,7 @@ void TList<T>::reset() {
 
 template <typename T>
 void TList<T>::next() {
-	if (pCurr == pStop) throw("Lis is ended");
+	if (pCurr == pStop) throw("List is ended");
 	pCurr = pCurr->pNext;
 }
 

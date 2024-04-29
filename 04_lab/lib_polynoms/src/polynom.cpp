@@ -13,7 +13,8 @@ TPolynom::TPolynom(const string& _name) {
 TPolynom::TPolynom(const THeadRingList<TMonom>* list) {
 	monoms = new THeadRingList<TMonom>();
 	TNode<TMonom>* current = list->GetCurrent();
-	for (int i = 0; i < list->GetSize(); i++) {
+	int n= list->GetSize();
+	for (int i = 0; i < n; i++) {
 		TMonom curr = current->data;
 		if (curr.coeff != 0) {
 		monoms->insert_sort(curr);
@@ -44,7 +45,7 @@ string TPolynom::ToString() const {
 	TPolynom p(*this);
 	string str;
 	char tmp[5];
-	if (p.monoms->IsEmpty()) {return "0";}
+	if (p.monoms->IsEmpty()) {return " ";}
 	bool firstTerm = true;
 	p.monoms->reset();
 	while (!p.monoms->IsEnded()) {
@@ -57,9 +58,7 @@ string TPolynom::ToString() const {
 				str += ((coeff > 0) ? "+" : "-");
 			}
 			else {
-				if (coeff < 0) {
-					str += "-";
-				}
+				if (coeff < 0) str += '-';
 				firstTerm = false;
 			}
 			if (abs(coeff) != 1 || deg == 0) {

@@ -62,6 +62,4 @@ void THeadRingList<T>::remove(const T& data) {
     TList<T>::remove(data);
 }
 
-
-
 #endif 
