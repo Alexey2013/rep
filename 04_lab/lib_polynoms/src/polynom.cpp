@@ -17,7 +17,7 @@ TPolynom::TPolynom(const THeadRingList<TMonom>* list) {
 	for (int i = 0; i < n; i++) {
 		TMonom curr = current->data;
 		if (curr.coeff != 0) {
-		monoms->insert_sort(curr);
+			monoms->insert_sort(curr);
 		}
 		current = current->pNext;
 	}
@@ -42,12 +42,14 @@ void TPolynom::convert_string(string& str) const {
 }
 
 string TPolynom::ToString() const {
-	TPolynom p(*this);
 	string str;
-	char tmp[5];
-	if (p.monoms->IsEmpty()) {return " ";}
+	TPolynom p(*this);
+	if (p.monoms->IsEmpty()) {return "";}
 	bool firstTerm = true;
 	p.monoms->reset();
+	if (p.monoms->GetCurrent()->data.coeff == 0&&p.monoms->GetCurrent()->data.degree == 0) {
+		return "0";
+	}
 	while (!p.monoms->IsEnded()) {
 		int deg = p.monoms->GetCurrent()->data.degree;
 		double coeff = p.monoms->GetCurrent()->data.coeff;
@@ -62,17 +64,27 @@ string TPolynom::ToString() const {
 				firstTerm = false;
 			}
 			if (abs(coeff) != 1 || deg == 0) {
+				char tmp[10];
 				sprintf(tmp, "%.2f", abs(coeff));
 				str += string(tmp);
 			}
-			if (x != 0) str += "x" + ((x != 1) ? "^" + to_string(x) : "");
-			if (y != 0) str += "y" + ((y != 1) ? "^" + to_string(y) : "");
-			if (z != 0) str += "z" + ((z != 1) ? "^" + to_string(z) : "");
+			string mul_symbol = ((abs(coeff) == 1) ? "" : "*");
+			if (x != 0) {
+				str += (mul_symbol + "x") + ((x != 1) ? "^" + std::to_string(x) : "");
+			}
+			if (y != 0) {
+				mul_symbol = (x == 0) ? mul_symbol : "*";
+				str += (mul_symbol + "y") + ((y != 1) ? "^" + std::to_string(y) : "");
+			}
+			if (z != 0) {
+				mul_symbol = (x == 0 && y == 0) ? mul_symbol : "*";
+				str += (mul_symbol + "z") + ((z != 1) ? "^" + std::to_string(z) : "");
+			}
 		p.monoms->next();
 	}
-	p.name = str;
 	return str;
 }
+
 
 void TPolynom::similar() {
 	monoms->reset();
@@ -115,7 +127,8 @@ void TPolynom::ParseMonoms(const string& _name) {
 		string monom = str.substr(0, j);
 		str.erase(0, j);
 		string coefficient = monom.substr(0, monom.find_first_of("xyz"));
-		tmp.coeff = ((coefficient.empty() || coefficient == "+") ? 1 : (coefficient == "-") ? -1 : stod(coefficient));
+		tmp.coeff = ((coefficient.empty() || coefficient == "+") ? 1 : 
+			(coefficient == "-") ? -1 : stod(coefficient));
 		monom.erase(0, monom.find_first_of("xyz"));
 		for (size_t i = 0; i < monom.size(); ++i) {
 			if (isalpha(monom[i])) {
@@ -152,7 +165,7 @@ void TPolynom::ParseMonoms(const string& _name) {
 	name = ToString();
 }
 
-double TPolynom::operator()(double x,double y,double z) {
+double TPolynom::operator()(double x,double y,double z) const {
 	TArithmeticExpression expression(name);
 	vector<double> xyz ={x,y,z};
 	expression.ToPostfix();
@@ -244,6 +257,7 @@ TPolynom TPolynom::operator*(const TPolynom& p) {
 		monoms->next();
 	}
 	if (!not_null) {result.monoms->insert_first(TMonom(0, 0));}
+	result.similar();
 	result.name = result.ToString();
 	return result;
 }

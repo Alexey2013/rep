@@ -19,7 +19,7 @@ public:
     void insert_before(const T& data, const T& nextdata);
 	void insert_last(const T& data);
 	void insert_after(const T& data, const T& beforedata);
-	TNode<T>* search(const T& data);
+	TNode<T>* search(const T& data) const;
 	TNode<T>* GetCurrent() const;
 	void clear();
 	int GetSize() const;
@@ -115,7 +115,7 @@ bool TList<T>::IsEnded()const {
 }
 
 template <typename T>
-TNode<T>* TList<T>::search(const T& data) {
+TNode<T>* TList<T>::search(const T& data) const {
 	TNode<T>* curr = pFirst;
 	while (curr != pStop && curr->data != data) {
 		curr = curr->pNext;
