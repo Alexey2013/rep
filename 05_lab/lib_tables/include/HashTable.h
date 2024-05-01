@@ -7,7 +7,7 @@ class HashTable : public Table<TKey, TData> {
 protected:
     virtual int hashFunc(const TKey key) = 0;
 public:
-    HashTable(int n) : Table<TKey, TData>(n) {}
+    HashTable(int n) : Table(n) {}
 };
 
 #endif 

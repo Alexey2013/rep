@@ -61,7 +61,7 @@ bool TabRecord<TKey, TData>::operator!=(const TabRecord<TKey, TData>& record) co
 
 template<typename TKey, typename TData>
 TabRecord<TKey, TData>::~TabRecord() {
-	delete data;
+	if (data) delete data;
 }
 
 #endif 

@@ -4,22 +4,23 @@
 
 template <typename TKey, typename TData>
 class Table {
-private:
+protected:
     int count;
     int maxSize;
     int currPos;
 public:
     Table(int maxSize);
+    virtual ~Table() {}
+
     virtual TabRecord<TKey, TData>* Find(TKey key) = 0;
     virtual void Insert(TKey key, TData* data) = 0;
     virtual void Remove(TKey key) = 0;
-    bool IsFull() const;
-    bool IsEmpty() const;
+    virtual TabRecord<TKey, TData>* GetCurrent() const = 0;
+    virtual bool IsFull() const;
+    virtual bool IsEmpty() const;
     virtual void Reset();
     virtual void Next();
     virtual bool IsEnded() const;
-    virtual TKey GetKey() const = 0; 
-    virtual TData* GetData() const = 0;
 };
 
 template <typename TKey, typename TData>

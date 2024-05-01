@@ -5,11 +5,10 @@
 template <class TKey, class TData>
 class ArrayHashTable : public HashTable<TKey, TData> {
 private:
-    TabRecord<TKey, TData>** records;
     TabRecord<TKey, TData>* pMark;
     int freePos;
     int hashStep;
-    int GetNextPos(int h_val);
+    int GetNextPos(int h_val) { return (h_val + hashStep) % maxSize; }
 public:
     ArrayHashTable(int n, int step);
     ArrayHashTable(const ArrayHashTable& ahtable);
@@ -19,8 +18,19 @@ public:
     void Remove(TKey key);
     void Reset();
     void Next();
-    bool IsEnded() const;
 };
+
+template <typename TKey, typename TData>
+ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step)
+{
+    maxSize = n;
+    hashStep = step;
+    records = new TabRecord<TKey, TData>* [n];
+    pMark = new TabRecord();
+    freePos = -1;
+    count = 0;
+    currPos = 0;
+}
 
 template <class TKey, class TData>
 ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) {
@@ -29,7 +39,7 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) {
     records = new TabRecord<TKey, TData>* [maxSize];
     pMark = new TabRecord<TKey, TData>(*ahtable.pMark);
     freePos = ahtable.freePos;
-    // Copy the records
+
     for (int i = 0; i < maxSize; ++i) {
         if (ahtable.records[i] == nullptr)
             records[i] = nullptr;
@@ -41,43 +51,27 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) {
 }
 
 template <class TKey, class TData>
-ArrayHashTable<TKey, TData>::~ArrayHashTable() {
-    delete pMark;
-    for (int i = 0; i < maxSize; ++i) {
-        if (records[i] != nullptr && records[i] != pMark)
-            delete records[i];
-    }
-    delete[] records;
-}
-
-template <class TKey, class TData>
 void ArrayHashTable<TKey, TData>::Insert(TKey key, TData* data) {
-    if (Search(key) != nullptr) {
-        // Key already exists, update the data
-        Search(key)->SetData(data);
-        return;
-    }
-    int pos = hashFunc(key);
-    while (records[pos] != nullptr && records[pos] != pMark)
-        pos = GetNextPos(pos);
-    if (records[pos] == nullptr || records[pos] == pMark) {
-        if (records[pos] == nullptr)
-            freePos = pos;
-        records[pos] = new TabRecord<TKey, TData>(key, data);
-    }
+    if (IsFull()) throw ("Table is full");
+
+    TabRecord<TKey, TData>* res = Search(key);
+    if (freePos == -1 || res != nullptr)
+        throw ("there are no places or there is already such an element\n");
+    currPos = freePos;
+    records[currPos] new TabRecord<TKey, TData>(k, d);
+    this->count++;
 }
 
 template <class TKey, class TData>
 void ArrayHashTable<TKey, TData>::Remove(TKey key) {
-    int pos = hashFunc(key);
-    while (records[pos] != nullptr) {
-        if (records[pos] != pMark && records[pos]->GetKey() == key) {
-            delete records[pos];
-            records[pos] = pMark;
-            return;
-        }
-        pos = GetNextPos(pos);
-    }
+    if (IsEmpty()) throw ("Table is empty");
+
+    TabRecord<TKey, TData>* res = Search(key);
+    if (res == = nullptr) throw ("No such element");
+
+    delete records[cueePos];
+    records[cueePos] = pMark;
+    this->count--;
 }
 
 template <class TKey, class TData>
@@ -90,39 +84,41 @@ void ArrayHashTable<TKey, TData>::Next() {
     currPos++;
 }
 
-template <class TKey, class TData>
-bool ArrayHashTable<TKey, TData>::IsEnded() const {
-    return currPos >= maxSize;
-}
 
-template <class TKey, class TData>
-ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) {
-    maxSize = n;
-    hashStep = step;
-    records = new TabRecord<TKey, TData>* [n];
-    pMark = new TabRecord<TKey, TData>();
-    freePos = -1;
-}
-
-template <class TKey, class TData>
-ArrayHashTable<TKey, TData>* ArrayHashTable<TKey, TData>::Search(const TKey key) {
+template <typename TKey, typename TData>
+ArrayHashTable<TKey, TData>* ArrayHashTable<TKey, TData>::Search(const TKey key)
+{
     TabRecord<TKey, TData>* res = nullptr;
-    currPos = hashFunc(key);
+    int hash_value = hashFunc(key);
+    currPos = hash_value;
     freePos = -1;
-    for (int i = 0; i < maxSize; i++) {
-        if (records[currPos] == nullptr)
+    for (int i = 0; i < maxSize; i++)
+    {
+        if (records[hash_value] == nullptr)
             break;
-        else if (records[currPos] == pMark) {
+        else if (records[hash_value] == pMark)
+        {
             if (freePos == -1)
-                freePos = currPos;
+                freePos = hash_value;
         }
-        else if (records[currPos]->GetKey() == key) {
-            res = records[currPos];
+        else if (records[hash_value]->key == key)
+        {
+            res = records[hash_value];
             break;
         }
-        currPos = GetNextPos(currPos);
+
+        hash_value = GetNextPos(hash_value);
+        currPos = hash_value;
     }
-    // Do something with res here
-    return nullptr;
+
+    return res;
 }
+
+template <typename TKey, typename TData>
+ArrayHashTable<TKey, TData>::~ArrayHashTable()
+{
+    delete pMark;
+    delete[] recs;
+}
+
 #endif 
