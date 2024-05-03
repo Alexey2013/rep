@@ -11,7 +11,6 @@ protected:
 public:
     Table(int maxSize);
     virtual ~Table() {}
-
     virtual TabRecord<TKey, TData>* Find(TKey key) = 0;
     virtual void Insert(TKey key, TData* data) = 0;
     virtual void Remove(TKey key) = 0;
@@ -24,7 +23,7 @@ public:
 };
 
 template <typename TKey, typename TData>
-Table<TKey, TData>::Table(int maxSize) : count(0), maxSize(maxSize), currPos(0) {}
+Table<TKey, TData>::Table(int maxSize) : count(0), maxSize(maxSize), currPos(-1) {}
 
 template <typename TKey, typename TData>
 bool Table<TKey, TData>::IsFull() const {

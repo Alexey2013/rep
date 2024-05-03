@@ -7,7 +7,7 @@ TPolynom::TPolynom() {
 
 TPolynom::TPolynom(const string& _name) {
 	monoms = new THeadRingList<TMonom>();
-	ParseMonoms(_name);
+	parse_monoms(_name);
 }
 
 TPolynom::TPolynom(const THeadRingList<TMonom>* list) {
@@ -113,7 +113,7 @@ void TPolynom::similar() {
 	if (monoms->IsEmpty()) { monoms->insert_first(TMonom(0, 0)); }
 }
 
-void TPolynom::ParseMonoms(const string& _name) {
+void TPolynom::parse_monoms(const string& _name) {
 	string str = _name;
 	convert_string(str);
 	if (_name == "0") { 
@@ -339,3 +339,12 @@ ostream& operator<<(ostream& out, const TPolynom& p) {
 	out << p.ToString() << endl;
 	return out;
 }
+
+istream& operator>>(istream& in, TPolynom& p) {
+	string input;
+	cout << "Enter polynom:";
+	getline(in, input);  
+	p = TPolynom(input);  
+	return in;
+}
+

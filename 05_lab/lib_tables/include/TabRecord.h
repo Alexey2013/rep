@@ -3,12 +3,13 @@
 #include <iostream>
 using namespace std;
 
-template <class TKey, class TData>
+template <typename TKey, typename TData>
 class TabRecord {
-protected:
+private:
 	TKey key;
 	TData* data;
 public:
+	TabRecord() : key(), data(nullptr) {}
 	TabRecord(const TKey& _key, TData* _data);
 	TabRecord(const TabRecord<TKey, TData>& record);
 	~TabRecord();
@@ -17,24 +18,34 @@ public:
 	const TabRecord<TKey, TData>& operator=(const TabRecord<TKey, TData>& record);
 	bool operator==(const TabRecord<TKey, TData>& record) const;
 	bool operator!=(const TabRecord<TKey, TData>& record) const;
+	friend ostream& operator<<(std::ostream& out, const TabRecord < TKey, TData>& record)
+	{
+		out << record.GetKey() <<"  "<< *record.GetData() << endl;
+		return out;
+	}
 };
 
-template <class TKey, class TData>
+template <typename TKey, typename TData>
 TabRecord<TKey, TData>::TabRecord(const TKey& _key, TData* _data) : key(_key) {
 	data = new TData(*_data);
 }
 
-template <class TKey, class TData>
+template <typename TKey, typename TData>
 TabRecord<TKey, TData>::TabRecord(const TabRecord<TKey, TData>& record) : key(record.key) {
 	data = new TData(*record.data);
 }
 
-template <class TKey, class TData>
+template<typename TKey, typename TData>
+TabRecord<TKey, TData>::~TabRecord() {
+	delete data;
+}
+
+template <typename TKey, typename TData>
 TKey TabRecord<TKey, TData>::GetKey() const {
 	return key;
 }
 
-template <class TKey, class TData>
+template <typename TKey, typename TData>
 TData* TabRecord<TKey, TData>::GetData() const {
 	return data;
 }
@@ -59,9 +70,5 @@ bool TabRecord<TKey, TData>::operator!=(const TabRecord<TKey, TData>& record) co
 	return !(*this == record);
 }
 
-template<typename TKey, typename TData>
-TabRecord<TKey, TData>::~TabRecord() {
-	if (data) delete data;
-}
 
 #endif 

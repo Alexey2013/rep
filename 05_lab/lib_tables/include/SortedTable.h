@@ -36,7 +36,7 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(TKey key) {
         if (this->recs[middle]->GetKey() == key) {
             return this->recs[middle];
         }
-        else if (this->recs[middle]->GetKey() > key) {
+        else if (this->recs[middle]->GetKey()> key) {
             right = middle - 1;
         }
         else {

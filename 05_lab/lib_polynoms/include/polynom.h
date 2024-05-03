@@ -11,7 +11,7 @@ private:
 	string name;
 	THeadRingList<TMonom>* monoms;
 
-	void ParseMonoms(const string& _name);
+	void parse_monoms(const string& _name);
 	void convert_string(string& str) const;
 	void similar();
 public:
@@ -29,9 +29,10 @@ public:
 	TPolynom dy() const;
 	TPolynom dz() const;
 	string ToString()const;
-	bool operator==(const TPolynom&p) const;
-	bool operator!=(const TPolynom& p) const;
+	bool operator ==(const TPolynom&p) const;
+	bool operator !=(const TPolynom& p) const;
 	friend ostream& operator<<(ostream& os, const TPolynom& p);
+	friend istream& operator>>(istream& in, TPolynom& p);
 };
 
 #endif 
