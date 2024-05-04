@@ -5,7 +5,7 @@
 template <typename TKey, typename TData>
 class SortedTable : public ScanTable<TKey, TData> {
 private:
-    void QuickSort(TabRecord<TKey, TData>** rec_arr, int left, int right);
+    void QuickSort(TabRecord<TKey, TData>** arr, int left, int right);
 public:
     SortedTable(int maxSize);
     SortedTable(const ScanTable<TKey, TData>& table);
@@ -21,22 +21,22 @@ SortedTable<TKey, TData>::SortedTable(int maxSize) : ScanTable<TKey, TData>(maxS
 
 template <typename TKey, typename TData>
 SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>& table) : ScanTable<TKey, TData>(table) {
-    if (!this->IsEmpty()) {
-        QuickSort(this->recs, 0, this->count - 1);
+    if (!IsEmpty()) {
+        QuickSort(recs, 0, count - 1);
     }
 }
 
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(TKey key) {
     int left = 0;
-    int right = this->count - 1;
+    int right = count - 1;
 
     while (left <= right) {
         int middle = (left + right) / 2;
-        if (this->recs[middle]->GetKey() == key) {
-            return this->recs[middle];
+        if (recs[middle]->GetKey() == key) {
+            return recs[middle];
         }
-        else if (this->recs[middle]->GetKey()> key) {
+        else if (recs[middle]->GetKey()> key) {
             right = middle - 1;
         }
         else {
@@ -49,13 +49,13 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(TKey key) {
 
 template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::Insert(TKey key, TData* data) {
-    if (this->IsEmpty()) {
-        this->recs[0] = new TabRecord<TKey, TData>(key, data);
-        this->count++;
+    if (IsEmpty()) {
+        recs[0] = new TabRecord<TKey, TData>(key, data);
+        count++;
         return;
     }
 
-    if (this->IsFull()) {
+    if (IsFull()) {
         throw "Table is full";
     }
 
@@ -64,62 +64,61 @@ void SortedTable<TKey, TData>::Insert(TKey key, TData* data) {
         throw "Key already exists";
     }
 
-    int pos = this->count - 1;
-    while (pos >= 0 && this->recs[pos]->GetKey() > key) {
-        this->recs[pos + 1] = this->recs[pos];
+    int pos = count - 1;
+    while (pos >= 0 && recs[pos]->GetKey() > key) {
+        recs[pos + 1] = recs[pos];
         pos--;
     }
-    this->recs[pos + 1] = new TabRecord<TKey, TData>(key, data);
-    this->count++;
+    recs[pos + 1] = new TabRecord<TKey, TData>(key, data);
+    count++;
 }
 
 template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::Remove(TKey key) {
-    if (this->IsEmpty()) {
+    if (IsEmpty()) {
         throw "Table is empty";
     }
-
     TabRecord<TKey, TData>* recordToRemove = Find(key);
+
     if (recordToRemove == nullptr) {
         throw "No such element";
     }
-
     delete recordToRemove;
     int pos = 0;
-    while (pos < this->count && this->recs[pos]->GetKey() != key) {
+    while (pos < count && recs[pos]->GetKey() != key) {
         pos++;
     }
-    for (int i = pos; i < this->count - 1; i++) {
-        this->recs[i] = this->recs[i + 1];
+    for (int i = pos; i < count - 1; i++) {
+        recs[i] = recs[i + 1];
     }
-    this->count--;
+    count--;
 }
 
 template <typename TKey, typename TData>
-void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** rec_arr, int left, int right) {
+void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** arr, int left, int right) {
     if (left >= right)  return;
 
     int i = left;
     int j = right;
 
-    TabRecord<TKey, TData>* middle = rec_arr[(left + right) / 2];
+    TabRecord<TKey, TData>* middle = arr[(left + right) / 2];
 
     while (i <= j) {
-        while (rec_arr[i]->GetKey() < middle->GetKey())
+        while (arr[i]->GetKey() < middle->GetKey())
             i++;
-        while (rec_arr[j]->GetKey() > middle->GetKey())
+        while (arr[j]->GetKey() > middle->GetKey())
             j--;
         if (i <= j) {
-            TabRecord<TKey, TData>* temp = rec_arr[i];
-            rec_arr[i] = rec_arr[j];
-            rec_arr[j] = temp;
+            TabRecord<TKey, TData>* temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
             i++;
             j--;
         }
     }
 
-    QuickSort(rec_arr, left, j);
-    QuickSort(rec_arr, i, right);
+    QuickSort(arr, left, j);
+    QuickSort(arr, i, right);
 }
 
 

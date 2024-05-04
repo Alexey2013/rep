@@ -9,13 +9,11 @@ class Tables {
 private:
     ScanTable<TPolynom, string > scanTable;
     SortedTable<TPolynom, string> sortedTable;
-   /* ArrayHashTable<int, TPolynom> arrayHashTable;*/
+    ArrayHashTable<int, TPolynom> arrayHashTable;
 
 
     void Remove();
     void Remove_one();
-    void OneTable();
-    void AllTable();
     void poly_ops();
     int choose_table();
     void add();
@@ -23,12 +21,11 @@ private:
 public:
     Tables()
         : scanTable(10),
-        sortedTable(10)/*,
-        arrayHashTable(10,2)*/ {
+        sortedTable(10),
+        arrayHashTable(10,1) {
     }
   void menu();
 };
-
 
 int Tables::choose_table() {
     int choice;
@@ -39,7 +36,6 @@ int Tables::choose_table() {
     cin >> choice;
     return choice;
 }
-
 
 void Tables::add_one() {
     TPolynom polynom;
@@ -56,7 +52,6 @@ void Tables::add_one() {
         break;
     }
     case 3: {
-       /* arrayHashTable.Insert(polynom, new std::string(polynom.ToString()));*/
         break;
     }
     }
@@ -76,7 +71,6 @@ void Tables::add() {
     case 2: { 
         scanTable.Insert(polynom, new std::string(polynom.ToString()));
         sortedTable.Insert(polynom, new std::string(polynom.ToString()));
-        /* arrayHashTable.Insert(polynom, new std::string(polynom.ToString()));*/
         break; 
     }
     default:
@@ -97,9 +91,6 @@ void Tables::Remove() {
     case 0:return;
     case 1: { Remove_one(); break; }
     case 2: {
-        scanTable.Insert(polynom, new std::string(polynom.ToString()));
-        sortedTable.Insert(polynom, new std::string(polynom.ToString()));
-        /* arrayHashTable.Insert(polynom, new std::string(polynom.ToString()));*/
         break;
     }
     default:
@@ -107,9 +98,6 @@ void Tables::Remove() {
         break;
     }
 }
-
-
-
 
 void Tables::menu() {
 	int choice;
@@ -126,16 +114,36 @@ do {
     case 0: break;
     case 1: { add(); break; }
     case 2: { Remove(); break; }
-    case 3: { OneTable(); break; }
-    case 4: { AllTable(); break; }
+    case 3: {
+        switch (choose_table()) {
+        case 0:return;
+        case 1: {
+            cout << scanTable;
+            break;
+        }
+        case 2: {
+            cout << sortedTable;
+            break;
+        }
+        case 3: {
+            cout << arrayHashTable;
+            break;
+        }
+        }
+        break;
+    }
+    case 4: { 
+        cout << scanTable;
+        cout << sortedTable;
+        cout << arrayHashTable;
+        break;
+    }
     case 5: { poly_ops(); break; }
     default:
         cout << "Invalid choice. Please try again." << endl;
         break;
     }
-} while (choice != 0);
-    
-
+} while (choice != 0);    
 }
 
 #endif 

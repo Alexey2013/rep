@@ -15,6 +15,16 @@ TEST(ScanTable, can_create_copied_table) {
     EXPECT_EQ(table2.GetCurrent()->GetKey(), 1);
 }
 
+TEST(ScanTable, get_current_on_empty_table) {
+    ScanTable<int, string> table(5);
+    ASSERT_ANY_THROW(table.GetCurrent());
+}
+
+TEST(ScanTable, next_on_empty_table) {
+    ScanTable<int, string> table(5);
+    ASSERT_ANY_THROW(table.Next());
+}
+
 TEST(ScanTable, can_insert_record) {
     ScanTable<int, string> table(10);
 
@@ -54,7 +64,7 @@ TEST(ScanTable, can_get_next_element) {
     table.Insert(key2, new std::string(data2));
 
     table.Next();
-    EXPECT_TRUE(table.GetCurrent()->GetKey(),2);
+    EXPECT_EQ(table.GetCurrent()->GetKey(),2);
 }
 
 TEST(ScanTable,when_the_key_is_already_exists) {

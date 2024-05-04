@@ -5,7 +5,7 @@ using namespace std;
 
 template <typename TKey, typename TData>
 class TabRecord {
-private:
+protected:
 	TKey key;
 	TData* data;
 public:
@@ -69,6 +69,5 @@ template<typename TKey, typename TData>
 bool TabRecord<TKey, TData>::operator!=(const TabRecord<TKey, TData>& record) const{
 	return !(*this == record);
 }
-
 
 #endif 

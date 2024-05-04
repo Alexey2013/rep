@@ -5,17 +5,20 @@
 template <typename TKey, typename TData>
 class HashTable : public Table<TKey, TData> {
 protected:
-    string hashFunc(const std::string& key) const {
-        string hashValue = 0;
+    size_t hashFunc(const std::string& key) const {
+        size_t hashValue;
         for (char ch : key) {
-            hashValue = hashValue * 31 + ch;
+            hashValue = hashValue * 31 + static_cast<size_t>(ch); 
         }
         return hashValue;
     }
 
-    int hashFunc(int key) const {return key % maxSize;}
+    size_t hashFunc(int key) const {
+        return static_cast<size_t>(key) % maxSize;
+    }
+
 public:
-    HashTable(int n) : Table<TKey, TData>(n) {} 
+    HashTable(int n) : Table<TKey, TData>(n) {}
 };
 
 

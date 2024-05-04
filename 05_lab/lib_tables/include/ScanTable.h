@@ -15,19 +15,8 @@ public:
     virtual void Insert(TKey key, TData* data) override;
     virtual void Remove(TKey key) override;
     TabRecord<TKey, TData>* GetCurrent() const override;
-    bool IsEnded() const { return currPos >= count;}
-    friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t)
-    {
-        ScanTable<TKey, TData> tmp(t);
-
-        while (!tmp.IsEnded())
-        {
-            out << *tmp.GetCurrent();
-            tmp.Next();
-        }
-        return out;
-    }
-
+    bool IsEnded() const;
+    friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t);   
 };
 
 template <typename TKey, typename TData>
@@ -54,9 +43,12 @@ ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& table) : Table<T
     currPos = 0;
     recs = new TabRecord<TKey, TData>* [maxSize];
 
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < maxSize; ++i)
     {
-        recs[i] = new TabRecord<TKey, TData>(table.recs[i]->GetKey(), table.recs[i]->GetData());
+        if (table.recs[i])
+        {
+            recs[i] = new TabRecord<TKey, TData>(*table.recs[i]);
+        }
     }
 }
 
@@ -72,9 +64,9 @@ ScanTable<TKey, TData>::~ScanTable() {
 
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(TKey key) {
-    for (int i = 0; i < this->count; ++i) {
+    for (int i = 0; i < count; ++i) {
         if (recs[i]->GetKey() == key) {
-            this->currPos = i;
+            currPos = i;
             return recs[i];
         }
     }
@@ -83,35 +75,56 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::Find(TKey key) {
 
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Insert(TKey key, TData* data) {
-    if (this->IsFull()) {
+    if (IsFull()) {
         throw "Table is full";
     }
     if (Find(key) != nullptr) {
         throw("key is already exist");
     }
 
-    recs[this->count++] = new TabRecord<TKey, TData>(key, data);
+    recs[count++] = new TabRecord<TKey, TData>(key, data);
 }
 
 template <typename TKey, typename TData>
 void ScanTable<TKey, TData>::Remove(TKey key) {
-    if (this->IsEmpty()) {
+    if (IsEmpty()) {
         throw "Table is empty";
     }
 
     TabRecord<TKey, TData>* recordToRemove = Find(key);
-    if (recordToRemove) {
-        delete recordToRemove;
-        for (int i = this->currPos; i < this->count - 1; ++i) {
-            recs[i] = recs[i + 1];
-        }
-        --this->count;
+    if (recordToRemove == nullptr) {
+        throw"No record";
     }
+    delete recordToRemove;
+    for (int i = currPos; i < count - 1; ++i) {
+        recs[i] = recs[i + 1];
+    }
+    --count;
 }
 
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::GetCurrent() const {
-    return recs[this->currPos];
+    if (currPos >= 0 && currPos < count) {
+        return recs[currPos];
+    }
+    throw("Out of range");
+}
+
+
+template <typename TKey, typename TData>
+bool ScanTable<TKey, TData>::IsEnded() const {
+    return currPos >= count;
+}
+
+template <typename TKey, typename TData>
+ostream& operator<<(ostream& out, const ScanTable<TKey, TData>& t) {
+    ScanTable<TKey, TData> tmp(t);
+
+    while (!tmp.IsEnded()) {
+        out << *tmp.GetCurrent();
+        tmp.Next();
+    }
+    return out;
 }
 
 #endif 
