@@ -11,12 +11,22 @@ public:
     ScanTable(int _maxSize);
     ScanTable(const ScanTable<TKey, TData>& table);
     virtual ~ScanTable();
+
     virtual TabRecord<TKey, TData>* Find(TKey key) override;
     virtual void Insert(TKey key, TData* data) override;
     virtual void Remove(TKey key) override;
     TabRecord<TKey, TData>* GetCurrent() const override;
     bool IsEnded() const;
-    friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t);   
+    friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t) {
+        for (int i = 0; i < t.maxSize; ++i)
+        {
+            if (t.recs[i] != nullptr)
+            {
+                out << *(t.recs[i]);
+            }
+        }
+        return out;
+    }
 };
 
 template <typename TKey, typename TData>
@@ -114,17 +124,6 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::GetCurrent() const {
 template <typename TKey, typename TData>
 bool ScanTable<TKey, TData>::IsEnded() const {
     return currPos >= count;
-}
-
-template <typename TKey, typename TData>
-ostream& operator<<(ostream& out, const ScanTable<TKey, TData>& t) {
-    ScanTable<TKey, TData> tmp(t);
-
-    while (!tmp.IsEnded()) {
-        out << *tmp.GetCurrent();
-        tmp.Next();
-    }
-    return out;
 }
 
 #endif 

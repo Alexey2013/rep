@@ -42,19 +42,6 @@ TEST(ArrayHashTable, is_full_check) {
     EXPECT_TRUE(table.IsFull());
 }
 
-TEST(ArrayHashTable, can_get_next_element) {
-    ArrayHashTable<int, string> table(10,0);
-
-    int key1 = 1;
-    string data1 = "Data1";
-    table.Insert(key1, new std::string(data1));
-
-    int key2 = 2;
-    string data2 = "Data2";
-    table.Insert(key2, new std::string(data2));
-    table.Next();
-    EXPECT_TRUE(table.GetCurrent()->GetKey(), 2);
-}
 
 TEST(ArrayHashTable, when_the_key_is_already_exists) {
     ArrayHashTable<int, string> table(10, 0);
@@ -78,7 +65,6 @@ TEST(ArrayHashTable, can_find_record) {
     string data2 = "Data2";
     table.Insert(key2, new std::string(data2));
 
-    table.Next();
     EXPECT_TRUE(table.GetCurrent()->GetData(), table.Find(1)->GetData());
 }
 
@@ -123,22 +109,3 @@ TEST(ArrayHashTableTest, insert_and_remove_test) {
     ASSERT_NE(record, nullptr);
     EXPECT_EQ(*(record->GetData()), "Four");
 }
-
-//TEST(ArrayHashTableTest, iteration_test) {
-//    ArrayHashTable<int, std::string> hashTable(10,0);
-//
-//    hashTable.Insert(1, new std::string("One"));
-//    hashTable.Insert(2, new std::string("Two"));
-//    hashTable.Insert(3, new std::string("Three"));
-//
-//    hashTable.Reset();
-//
-//    EXPECT_EQ(hashTable.GetCurrent()->GetKey(), 1);
-//
-//    hashTable.Next();
-//    EXPECT_EQ(hashTable.GetCurrent()->GetKey(), 2);
-//
-//    hashTable.Next();
-//    EXPECT_EQ(hashTable.GetCurrent()->GetKey(), 3);
-//
-//}

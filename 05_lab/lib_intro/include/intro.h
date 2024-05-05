@@ -11,19 +11,18 @@ private:
     SortedTable<TPolynom, string> sortedTable;
     ArrayHashTable<int, TPolynom> arrayHashTable;
 
-
-    void Remove();
-    void Remove_one();
+    void remove();
+    void remove_one();
     void poly_ops();
     int choose_table();
     void add();
     void add_one();
 public:
     Tables()
-        : scanTable(10),
+       :scanTable(10),
         sortedTable(10),
-        arrayHashTable(10,1) {
-    }
+        arrayHashTable(10,1) {}
+
   void menu();
 };
 
@@ -79,7 +78,27 @@ void Tables::add() {
     }
 }
 
-void Tables::Remove() {
+void Tables::remove_one() {
+    TPolynom polynom;
+    cout << "Enter polynom:" << endl;
+    cin >> polynom;
+    switch (choose_table()) {
+    case 0:return;
+    case 1: {
+        scanTable.Remove(polynom);
+        break;
+    }
+    case 2: {
+        sortedTable.Remove(polynom);
+        break;
+    }
+    case 3: {
+        break;
+    }
+    }
+}
+
+void Tables::remove() {
     int choice;
     TPolynom polynom;
     cin >> polynom;
@@ -89,8 +108,10 @@ void Tables::Remove() {
     cin >> choice;
     switch (choice) {
     case 0:return;
-    case 1: { Remove_one(); break; }
+    case 1: { remove_one(); break; }
     case 2: {
+        scanTable.Remove(polynom);
+        sortedTable.Remove(polynom);
         break;
     }
     default:
@@ -99,6 +120,34 @@ void Tables::Remove() {
     }
 }
 
+void Tables::poly_ops() {
+    int choice;
+    TPolynom polynom;
+    cin >> polynom;
+    cout << "1)+" << endl;
+    cout << "2)-" << endl;
+    cout << "3)*" << endl;
+    cin >> choice;
+    if (choice == 0) { return; }
+    cout << "Enter name of polynoms from table" << endl;
+    switch (choice) {
+    case 1: { 
+    
+        break;
+    }
+    case 2: {
+
+        break;
+    }
+    case 3: {
+
+        break;
+    }
+    default:
+        cout << "Invalid choice. Please try again." << endl;
+        break;
+    }
+}
 void Tables::menu() {
 	int choice;
 do {
@@ -113,7 +162,7 @@ do {
     switch (choice) {
     case 0: break;
     case 1: { add(); break; }
-    case 2: { Remove(); break; }
+    case 2: { remove(); break; }
     case 3: {
         switch (choose_table()) {
         case 0:return;

@@ -14,7 +14,8 @@ protected:
     }
 
     size_t hashFunc(int key) const {
-        return static_cast<size_t>(key) % maxSize;
+        hash<int> hash_fn;
+        return hash_fn(key) % maxSize;
     }
 
 public:

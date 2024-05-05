@@ -9,24 +9,20 @@ private:
     TabRecord<TKey, TData>** recs;
     int freePos;
     int hashStep;
-    int GetNextPos(int pos) { return (pos + hashStep) % maxSize; }
 public:
     ArrayHashTable(int n, int step);
     ArrayHashTable(const ArrayHashTable& ahtable);
     ~ArrayHashTable();
+
     TabRecord <TKey, TData>* Find(const TKey key);
     void Insert(TKey key, TData* data);
     void Remove(TKey key);
-    void Next();
+    void GetNextPos(int pos);
     TabRecord<TKey, TData>* GetCurrent() const;
-    friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable<TKey, TData>& t)
-    {
-        for (int i = 0; i < t.maxSize; ++i)
-        {
-            if (t.recs[i] != nullptr)
-            {
-                out << *(t.recs[i]); 
-            }
+    friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable<TKey, TData>& t){
+        for (int i = 0; i < t.maxSize; ++i){
+            if (t.recs[i] != nullptr)         
+                out << *(t.recs[i]);  
         }
         return out;
     }
@@ -37,12 +33,13 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) : HashTable<TKey, T
     maxSize = n;
     hashStep = step;
     recs = new TabRecord<TKey, TData>* [n];
+    pMark = new TabRecord<TKey, TData>();
 
     for (int i = 0; i < n; ++i) {
         recs[i] = nullptr; 
     }
 
-    pMark = new TabRecord<TKey, TData>();
+
     freePos = -1;
     count = 0;
     currPos =0;
@@ -78,9 +75,10 @@ void ArrayHashTable<TKey, TData>::Insert(TKey key, TData* data) {
 
     TabRecord<TKey, TData>* res = Find(key);
     if (freePos == -1 || res != nullptr)
-        throw ("there are no places or there is already such an element");
+        throw ("No space available or duplicate key found");
+
     currPos = freePos;
-    recs[currPos] =new TabRecord<TKey, TData>(key, data);
+    recs[currPos] = new TabRecord<TKey, TData>(key, data);
     count++;
 }
 
@@ -99,32 +97,30 @@ void ArrayHashTable<TKey, TData>::Remove(TKey key) {
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey key) {
     int hash_value = hashFunc(key);
-    currPos = hash_value; 
-    freePos = -1; 
+    currPos = hash_value;
+    freePos = -1;
 
-    TabRecord<TKey, TData>* res = nullptr; 
+    TabRecord<TKey, TData>* res = nullptr;
 
     for (int i = 0; i < maxSize; i++) {
         if (recs[currPos] == nullptr) {
             if (freePos == -1) {
-                freePos = currPos; 
+                freePos = currPos;
             }
-            break; 
+            break;  
         }
         else if (recs[currPos] == pMark) {
-            if (freePos == -1) {
-                freePos = currPos; 
-            }
+            
         }
         else if (recs[currPos]->GetKey() == key) {
-            res = recs[currPos]; 
-            break;
+            res = recs[currPos];
+            break;  
         }
-        else
-        currPos = GetNextPos(currPos);
+
+        currPos = (currPos + hashStep) % maxSize;
     }
 
-    return res; 
+    return res;
 }
 
 template <typename TKey, typename TData>
@@ -144,10 +140,8 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::GetCurrent() const {
 }
 
 template <typename TKey, typename TData>
-void ArrayHashTable<TKey, TData>::Next() {
-    if (currPos >= 0 && currPos < maxSize) {
-        currPos = GetNextPos(currPos); 
-    }
+void ArrayHashTable<TKey, TData>::GetNextPos(int pos) {
+    return (pos + hashStep) % maxSize;
 }
 
 #endif 
