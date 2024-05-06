@@ -69,7 +69,6 @@ ScanTable<TKey, TData>::~ScanTable() {
             if (recs[i] != nullptr) delete recs[i];
         delete recs;
     }
-
 }
 
 template <typename TKey, typename TData>
@@ -102,6 +101,7 @@ void ScanTable<TKey, TData>::Remove(TKey key) {
     }
 
     TabRecord<TKey, TData>* recordToRemove = Find(key);
+
     if (recordToRemove == nullptr) {
         throw"No record";
     }
@@ -119,7 +119,6 @@ TabRecord<TKey, TData>* ScanTable<TKey, TData>::GetCurrent() const {
     }
     throw("Out of range");
 }
-
 
 template <typename TKey, typename TData>
 bool ScanTable<TKey, TData>::IsEnded() const {

@@ -5,8 +5,9 @@
 template <typename TKey, typename TData>
 class ArrayHashTable : public HashTable<TKey, TData> {
 private:
-    TabRecord<TKey, TData>* pMark;
     TabRecord<TKey, TData>** recs;
+    TabRecord<TKey, TData>* pMark;
+
     int freePos;
     int hashStep;
 public:
@@ -38,7 +39,6 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) : HashTable<TKey, T
     for (int i = 0; i < n; ++i) {
         recs[i] = nullptr; 
     }
-
 
     freePos = -1;
     count = 0;
@@ -108,9 +108,6 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey key) {
                 freePos = currPos;
             }
             break;  
-        }
-        else if (recs[currPos] == pMark) {
-            
         }
         else if (recs[currPos]->GetKey() == key) {
             res = recs[currPos];

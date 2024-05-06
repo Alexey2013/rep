@@ -12,7 +12,6 @@ public:
 
     TabRecord<TKey, TData>* Find(TKey key) override;
     void Insert(TKey key, TData* data) override;
-    void Remove(TKey key) override;
 };
 
 
@@ -49,49 +48,22 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(TKey key) {
 
 template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::Insert(TKey key, TData* data) {
-    if (IsEmpty()) {
-        recs[0] = new TabRecord<TKey, TData>(key, data);
-        count++;
-        return;
-    }
-
     if (IsFull()) {
         throw "Table is full";
     }
 
-    TabRecord<TKey, TData>* recordToInsert = Find(key);
-    if (recordToInsert != nullptr) {
+    if (Find(key) != nullptr) {
         throw "Key already exists";
     }
 
-    int pos = count - 1;
-    while (pos >= 0 && recs[pos]->GetKey() > key) {
-        recs[pos + 1] = recs[pos];
-        pos--;
+    int insertIndex = count;
+    while (insertIndex > 0 && recs[insertIndex - 1]->GetKey() > key) {
+        recs[insertIndex] = recs[insertIndex - 1];
+        insertIndex--;
     }
-    recs[pos + 1] = new TabRecord<TKey, TData>(key, data);
+
+    recs[insertIndex] = new TabRecord<TKey, TData>(key, data);
     count++;
-}
-
-template <typename TKey, typename TData>
-void SortedTable<TKey, TData>::Remove(TKey key) {
-    if (IsEmpty()) {
-        throw "Table is empty";
-    }
-    TabRecord<TKey, TData>* recordToRemove = Find(key);
-
-    if (recordToRemove == nullptr) {
-        throw "No such element";
-    }
-    delete recordToRemove;
-    int pos = 0;
-    while (pos < count && recs[pos]->GetKey() != key) {
-        pos++;
-    }
-    for (int i = pos; i < count - 1; i++) {
-        recs[i] = recs[i + 1];
-    }
-    count--;
 }
 
 template <typename TKey, typename TData>
@@ -120,6 +92,5 @@ void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** arr, int left,
     QuickSort(arr, left, j);
     QuickSort(arr, i, right);
 }
-
 
 #endif 
