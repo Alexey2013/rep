@@ -100,17 +100,17 @@ void ScanTable<TKey, TData>::Remove(TKey key) {
         throw "Table is empty";
     }
 
-    TabRecord<TKey, TData>* recordToRemove = Find(key);
-
-    if (recordToRemove == nullptr) {
-        throw"No record";
+    if (Find(key) == nullptr) { 
+        throw "Element was not found";
+        return;
     }
-    delete recordToRemove;
-    for (int i = currPos; i < count - 1; ++i) {
+    delete recs[currPos];
+    for (int i = currPos; i < this->count; i++)
         recs[i] = recs[i + 1];
-    }
-    --count;
+        --count;
 }
+
+
 
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ScanTable<TKey, TData>::GetCurrent() const {

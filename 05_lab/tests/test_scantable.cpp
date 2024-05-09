@@ -1,4 +1,5 @@
 #include "ScanTable.h"
+#include "polynom.h"
 #include <gtest.h>
 
 TEST(ScanTable,table_is_empty) {
