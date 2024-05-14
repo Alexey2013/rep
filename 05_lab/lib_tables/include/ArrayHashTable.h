@@ -163,4 +163,8 @@ void ArrayHashTable<TKey, TData>::Next()  {
     }
 }
 
+template <typename string, typename TPolynom>
+class ArrayHashTable : public HashTable<TKey, TData> {
+};
+
 #endif 
