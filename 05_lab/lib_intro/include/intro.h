@@ -9,7 +9,7 @@ class Tables {
 private:
     ScanTable<string, TPolynom > scanTable;
     SortedTable<string, TPolynom> sortedTable;
-    ArrayHashTable<string, TPolynom> arrayHashTable;
+    PolynomialHashTable<string, TPolynom> arrayHashTable;
 
     void poly_ops();
     int choose_table();
@@ -212,11 +212,11 @@ do {
     }
     case 4: { 
         cout << "ScanTable" << endl;
-        cout << scanTable;
+        cout << scanTable << endl;
         cout << "SortedTable" << endl;
-        cout << sortedTable;
+        cout << sortedTable << endl;
         cout << "ArrayHashTable" << endl;
-        cout << arrayHashTable;
+        cout << arrayHashTable << endl;
         break;
     }
     case 5: { poly_ops(); break; }

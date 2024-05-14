@@ -1,6 +1,6 @@
 #ifndef _ARRAY_HASH_TABLE_H
 #define _ARRAY_HASH_TABLE_H
-#include <HashTAble.h>
+#include <HashTable.h>
 
 template <typename TKey, typename TData>
 class ArrayHashTable : public HashTable<TKey, TData> {
@@ -10,6 +10,8 @@ private:
 
     int freePos;
     int hashStep;
+    void GetNextPos(int pos);
+    virtual size_t hashFunc(const TKey& key) override;
 public:
     ArrayHashTable(int n, int step);
     ArrayHashTable(const ArrayHashTable& ahtable);
@@ -18,14 +20,16 @@ public:
     TabRecord <TKey, TData>* Find(const TKey key);
     void Insert(TKey key, TData* data);
     void Remove(TKey key);
-    void GetNextPos(int pos);
     void Next();
     void Reset();
     TabRecord<TKey, TData>* GetCurrent() const;
     friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable<TKey, TData>& t){
+        if (t.IsEmpty()) {
+            out << "Table is empty"<<endl;
+            return out;
+        }
         ArrayHashTable<TKey, TData> table(t); 
         table.Reset();
-
         while (!table.IsEnded()) {
             out << *table.GetCurrent();
             table.Next();
@@ -33,6 +37,7 @@ public:
         return out;
     }
 };
+
 
 template <typename TKey, typename TData>
 ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) : HashTable<TKey, TData>(n) {
@@ -69,6 +74,12 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) : Has
             recs[i] = new TabRecord<TKey, TData>(*ahtable.recs[i]);
         }
     }
+}
+
+template<class TKey, class TData>
+size_t ArrayHashTable<TKey, TData>::hashFunc(const TKey& key)
+{
+    return std::hash<TKey>{}(key) % maxSize;
 }
 
 template <typename TKey, typename TData>
@@ -164,7 +175,18 @@ void ArrayHashTable<TKey, TData>::Next()  {
 }
 
 template <typename string, typename TPolynom>
-class ArrayHashTable : public HashTable<TKey, TData> {
+class PolynomialHashTable : public ArrayHashTable<string, TPolynom> {
+    size_t hashFunc(const string& key) const { 
+        uint64_t hashValue = 0;
+        for (char ch : key) {
+            hashValue +=ch;
+        }
+        return (hashValue % maxSize);
+    }
+
+public:
+    PolynomialHashTable(int n, int step) : ArrayHashTable<string, TPolynom>(n, step) {}
 };
+
 
 #endif 

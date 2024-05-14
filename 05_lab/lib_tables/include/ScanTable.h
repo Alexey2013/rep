@@ -18,6 +18,10 @@ public:
     TabRecord<TKey, TData>* GetCurrent() const override;
     bool IsEnded() const;
     friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t) {
+        if (t.IsEmpty()) {
+            out << "Table is empty" << endl;
+            return out;
+        }
         for (int i = 0; i < t.maxSize; ++i)
         {
             if (t.recs[i] != nullptr)

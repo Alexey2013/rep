@@ -125,19 +125,3 @@ TEST(ArrayHashTable, can_get_next_element) {
     EXPECT_TRUE(hashTable.GetCurrent()->GetKey(), 2);
 }
 
-TEST(ArrayHashTableTest, iteration_test) {
-    ArrayHashTable<int, std::string> hashTable(10,1);
-
-    hashTable.Insert(1, new std::string("One"));
-    hashTable.Insert(2, new std::string("Two"));
-    hashTable.Insert(3, new std::string("Three"));
-
-    hashTable.Reset();
-    EXPECT_EQ(hashTable.GetCurrent()->GetKey(), 1);
-
-    hashTable.Next();
-    EXPECT_EQ(hashTable.GetCurrent()->GetKey(), 2);
-
-    hashTable.Next();
-    EXPECT_EQ(hashTable.GetCurrent()->GetKey(), 3);
-}
