@@ -11,7 +11,7 @@ private:
     int freePos;
     int hashStep;
     void GetNextPos(int pos);
-    virtual size_t hashFunc(const TKey& key) override;
+    virtual size_t hashFunc(const TKey& key) const override;
 public:
     ArrayHashTable(int n, int step);
     ArrayHashTable(const ArrayHashTable& ahtable);
@@ -76,11 +76,6 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) : Has
     }
 }
 
-template<class TKey, class TData>
-size_t ArrayHashTable<TKey, TData>::hashFunc(const TKey& key)
-{
-    return std::hash<TKey>{}(key) % maxSize;
-}
 
 template <typename TKey, typename TData>
 void ArrayHashTable<TKey, TData>::Insert(TKey key, TData* data) {
@@ -137,8 +132,13 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey key) {
 template <typename TKey, typename TData>
 ArrayHashTable<TKey, TData>::~ArrayHashTable()
 {
-    delete pMark;
+    for (int i = 0; i < maxSize; ++i) {
+        if (recs[i] != nullptr) {
+            delete recs[i];
+        }
+    }
     delete[] recs;
+    delete pMark;
 }
 
 template <typename TKey, typename TData>
@@ -172,6 +172,12 @@ void ArrayHashTable<TKey, TData>::Next()  {
     {
         currPos++;
     }
+}
+
+template<class TKey, class TData>
+size_t ArrayHashTable<TKey, TData>::hashFunc(const TKey& key) const
+{
+    return std::hash<TKey>{}(key) % maxSize;
 }
 
 template <typename string, typename TPolynom>
