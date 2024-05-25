@@ -20,6 +20,7 @@ public:
     virtual void Reset();
     virtual void Next();
     virtual bool IsEnded() const;
+
 };
 
 template <typename TKey, typename TData>

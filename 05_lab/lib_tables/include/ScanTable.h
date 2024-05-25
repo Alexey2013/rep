@@ -24,10 +24,7 @@ public:
         }
         for (int i = 0; i < t.maxSize; ++i)
         {
-            if (t.recs[i] != nullptr)
-            {
-                out << *(t.recs[i]);
-            }
+            if (t.recs[i] != nullptr) out << *(t.recs[i]);
         }
         return out;
     }

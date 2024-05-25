@@ -1,6 +1,7 @@
 #ifndef _TAB_RECORD_H
 #define _TAB_RECORD_H
 #include <iostream>
+#include <iomanip> 
 using namespace std;
 
 template <typename TKey, typename TData>
@@ -20,7 +21,7 @@ public:
 	bool operator!=(const TabRecord<TKey, TData>& record) const;
 	friend ostream& operator<<(std::ostream& out, const TabRecord < TKey, TData>& record)
 	{
-		out << record.GetKey() <<"  "<< *record.GetData() << endl;
+		out << left << setw(10) << record.GetKey() << " | " << left << setw(10) << *record.GetData();
 		return out;
 	}
 };

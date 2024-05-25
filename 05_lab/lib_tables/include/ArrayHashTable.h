@@ -23,21 +23,17 @@ public:
     void Next();
     void Reset();
     TabRecord<TKey, TData>* GetCurrent() const;
-    friend std::ostream& operator<<(std::ostream& out, const ArrayHashTable<TKey, TData>& t){
+    friend ostream& operator<<(ostream& out, const ArrayHashTable<TKey, TData>& t) {
         if (t.IsEmpty()) {
-            out << "Table is empty"<<endl;
+            out << "Table is empty";
             return out;
         }
-        ArrayHashTable<TKey, TData> table(t); 
-        table.Reset();
-        while (!table.IsEnded()) {
-            out << *table.GetCurrent();
-            table.Next();
+        for (int i = 0; i < t.maxSize; i++) {
+                if (t.recs[i] != nullptr) out << *(t.recs[i]);   
         }
         return out;
-    }
+    };
 };
-
 
 template <typename TKey, typename TData>
 ArrayHashTable<TKey, TData>::ArrayHashTable(int n, int step) : HashTable<TKey, TData>(n) {
@@ -75,7 +71,6 @@ ArrayHashTable<TKey, TData>::ArrayHashTable(const ArrayHashTable& ahtable) : Has
         }
     }
 }
-
 
 template <typename TKey, typename TData>
 void ArrayHashTable<TKey, TData>::Insert(TKey key, TData* data) {
@@ -116,7 +111,10 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey key) {
             if (freePos == -1) {
                 freePos = currPos;
             }
-            break;  
+            break;
+        }
+        else if (recs[currPos] == pMark && freePos == -1){
+            freePos = currPos;
         }
         else if (recs[currPos]->GetKey() == key) {
             res = recs[currPos];
