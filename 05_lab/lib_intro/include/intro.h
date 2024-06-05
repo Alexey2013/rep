@@ -117,12 +117,12 @@ void Tables::remove(const string& str) {
 
 void Tables::poly_ops() {
     string pol_name1, pol_name2;
-    cout << "Enter first polynomial: ";
+    cout << "Enter first polynomial:";
     cin >> pol_name1;
 
     TabRecord<string, TPolynom>* rec1 = find(pol_name1);
     if (rec1 != nullptr) {
-        cout << "Enter second polynomial: ";
+        cout << "Enter second polynomial:";
         cin >> pol_name2;
 
         TabRecord<string, TPolynom>* rec2 =find(pol_name2);

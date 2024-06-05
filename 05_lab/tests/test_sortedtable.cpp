@@ -43,7 +43,7 @@ TEST(SortedTable, can_get_next_element) {
     int key2 = 2;
     string data2 = "Data2";
     table.Insert(key2, new std::string(data2));
-
+    table.Reset();
     table.Next();
     EXPECT_TRUE(table.GetCurrent()->GetKey(), 2);
 }
@@ -59,6 +59,7 @@ TEST(SortedTable, can_find_record) {
     string data2 = "Data2";
     table.Insert(key2, new std::string(data2));
 
+    table.Reset();
     table.Next();
     EXPECT_TRUE(table.GetCurrent()->GetData(), table.Find(1)->GetData());
 }
@@ -107,6 +108,7 @@ TEST(SortedTable, insert_is_sorting) {
     table.Insert(4, new std::string(data));
     table.Insert(1, new std::string(data));
 
+    table.Reset();
     EXPECT_EQ(1, table.GetCurrent()->GetKey());
     table.Next();
     EXPECT_EQ(2, table.GetCurrent()->GetKey());

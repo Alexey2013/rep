@@ -29,7 +29,8 @@ public:
             return out;
         }
         for (int i = 0; i < t.maxSize; i++) {
-                if (t.recs[i] != nullptr) out << *(t.recs[i]);   
+                if (t.recs[i] != nullptr && t.recs[i] != t.pMark)
+                    out << *(t.recs[i]);   
         }
         return out;
     };
@@ -130,14 +131,14 @@ TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::Find(const TKey key) {
 template <typename TKey, typename TData>
 ArrayHashTable<TKey, TData>::~ArrayHashTable()
 {
-    for (int i = 0; i < maxSize; ++i) {
-        if (recs[i] != nullptr) {
-            delete recs[i];
-        }
+    for (int i = 0; i < maxSize; i++)
+    {
+        if (recs[i] != nullptr && recs[i] != pMark) delete recs[i];
     }
-    delete[] recs;
     delete pMark;
+    delete[] recs;
 }
+
 
 template <typename TKey, typename TData>
 TabRecord<TKey, TData>* ArrayHashTable<TKey, TData>::GetCurrent() const {

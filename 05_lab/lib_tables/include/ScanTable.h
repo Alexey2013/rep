@@ -22,7 +22,7 @@ public:
             out << "Table is empty" << endl;
             return out;
         }
-        for (int i = 0; i < t.maxSize; ++i)
+        for (int i = 0; i < t.count; ++i)
         {
             if (t.recs[i] != nullptr) out << *(t.recs[i]);
         }
@@ -37,9 +37,9 @@ ScanTable<TKey, TData>::ScanTable(int _maxSize) : Table<TKey, TData>(maxSize) {
     }
     currPos = 0;
     maxSize = _maxSize;
-    recs = new TabRecord<TKey, TData>* [_maxSize]; 
+    recs = new TabRecord<TKey, TData>* [_maxSize];
     for (int i = 0; i < _maxSize; ++i) {
-        recs[i] = nullptr; 
+        recs[i] = nullptr;
     }
 }
 
@@ -101,14 +101,14 @@ void ScanTable<TKey, TData>::Remove(TKey key) {
         throw "Table is empty";
     }
 
-    if (Find(key) == nullptr) { 
+    if (Find(key) == nullptr) {
         throw "Element was not found";
         return;
     }
     delete recs[currPos];
     for (int i = currPos; i < this->count; i++)
         recs[i] = recs[i + 1];
-        --count;
+    --count;
 }
 
 
@@ -125,5 +125,6 @@ template <typename TKey, typename TData>
 bool ScanTable<TKey, TData>::IsEnded() const {
     return currPos >= count;
 }
+
 
 #endif 

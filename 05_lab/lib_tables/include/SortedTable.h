@@ -33,16 +33,18 @@ TabRecord<TKey, TData>* SortedTable<TKey, TData>::Find(TKey key) {
     while (left <= right) {
         int middle = (left + right) / 2;
         if (recs[middle]->GetKey() == key) {
+            currPos = middle;
             return recs[middle];
         }
-        else if (recs[middle]->GetKey()> key) {
+        else if (recs[middle]->GetKey() > key) {
+            currPos = middle;
             right = middle - 1;
         }
         else {
             left = middle + 1;
         }
     }
-
+    currPos = left;
     return nullptr;
 }
 
@@ -65,6 +67,7 @@ void SortedTable<TKey, TData>::Insert(TKey key, TData* data) {
     recs[insertIndex] = new TabRecord<TKey, TData>(key, data);
     count++;
 }
+
 
 template <typename TKey, typename TData>
 void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** arr, int left, int right) {
@@ -92,5 +95,6 @@ void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData>** arr, int left,
     QuickSort(arr, left, j);
     QuickSort(arr, i, right);
 }
+
 
 #endif 
